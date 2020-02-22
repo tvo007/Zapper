@@ -1,1 +1,1 @@
-A project management app
+A project management app. WIP.
