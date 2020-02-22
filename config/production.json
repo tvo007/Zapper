@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://tvo007:Raizcheat12@clustermb3-mm02i.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken",
+  "githubClientId": "ac7f197bae58ddc2c114",
+  "githubSecret": "4a8cf5db89aa078b70a49bbcfc4880a768018b95"
+}
