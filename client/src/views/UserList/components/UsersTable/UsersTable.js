@@ -18,7 +18,6 @@ import {
   Typography,
   TablePagination
 } from '@material-ui/core';
-
 import { getInitials } from 'helpers';
 
 const useStyles = makeStyles(theme => ({

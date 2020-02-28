@@ -1,17 +1,14 @@
 import React, {useState} from 'react';
-import {Link as RouterLink, withRouter, Redirect} from 'react-router-dom';
+import {
+  Link as RouterLink,
+  withRouter,
+} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {login} from '../../actions/auth';
 import {makeStyles} from '@material-ui/styles';
-import {
-  Grid,
-  Button,
-  TextField,
-  Link,
-  Typography,
-} from '@material-ui/core';
+import {Grid, Button, TextField, Link, Typography} from '@material-ui/core';
 
 // const schema = {
 //   email: {
@@ -148,8 +145,9 @@ const SignIn = ({login, history, isAuthenticated}) => {
   //   formState.touched[field] && formState.errors[field] ? true : false;
 
   //redir if logged in
+
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    history.push ('/dashboard');
   }
 
   return (
@@ -175,8 +173,7 @@ const SignIn = ({login, history, isAuthenticated}) => {
         </Grid>
         <Grid className={classes.content} item lg={7} xs={12}>
           <div className={classes.content}>
-            <div className={classes.contentHeader}>
-            </div>
+            <div className={classes.contentHeader} />
             <div className={classes.contentBody}>
               <form className={classes.form} onSubmit={e => handleSignIn (e)}>
                 <Typography className={classes.title} variant="h2">

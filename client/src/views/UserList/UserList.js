@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-
-import { UsersToolbar, UsersTable } from './components';
+// import {UsersToolbar} from './components'
+import {connect} from 'react-redux';
+import {getProfiles} from '../../actions/profile';
+import { UsersTable } from './components';
 import mockData from './data';
 
 const useStyles = makeStyles(theme => ({
@@ -20,7 +22,7 @@ const UserList = () => {
 
   return (
     <div className={classes.root}>
-      <UsersToolbar />
+      {/**UsersToolbar would go here */}
       <div className={classes.content}>
         <UsersTable users={users} />
       </div>
@@ -28,4 +30,18 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+// UserList.propTypes = {
+//   getProfiles: PropTypes.func.isRequired,
+//   profile: PropTypes.object.isRequired,
+// };
+
+const mapStateToProps = state => ({
+  profile: state.profile,
+});
+
+export default connect (mapStateToProps, {getProfiles})(UserList);
+
+//took out Ussers toolbar for now
+
+
+
