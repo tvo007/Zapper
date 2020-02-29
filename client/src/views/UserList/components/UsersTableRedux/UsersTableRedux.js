@@ -44,7 +44,7 @@ const useStyles = makeStyles (theme => ({
 //users: {user: {_id, name, avatar}, status, company, location, skills}
 //users.user
 const UsersTableRedux = props => {
-  const {className, users, ...rest} = props;
+  const {className, profiles, ...rest} = props;
 
   const classes = useStyles ();
 
@@ -53,12 +53,12 @@ const UsersTableRedux = props => {
   const [page, setPage] = useState (0);
 
   const handleSelectAll = event => {
-    const {users} = props;
+    const {profiles} = props;
 
     let selectedUsers;
 
     if (event.target.checked) {
-      selectedUsers = users.map (user => user.user._id);
+      selectedUsers = profiles.map (profile => profile.user._id);
     } else {
       selectedUsers = [];
     }
@@ -104,11 +104,11 @@ const UsersTableRedux = props => {
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedUsers.length === users.length}
+                      checked={selectedUsers.length === profiles.length}
                       color="primary"
                       indeterminate={
                         selectedUsers.length > 0 &&
-                          selectedUsers.length < users.length
+                          selectedUsers.length < profiles.length
                       }
                       onChange={handleSelectAll}
                     />
@@ -121,19 +121,19 @@ const UsersTableRedux = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.slice (0, rowsPerPage).map (user => (
+                {profiles.slice (0, rowsPerPage).map (profile => (
                   <TableRow
                     className={classes.tableRow}
                     hover
-                    key={user.user._id}
-                    selected={selectedUsers.indexOf (user.user._id) !== -1}
+                    key={profile.user._id}
+                    selected={selectedUsers.indexOf (profile.user._id) !== -1}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedUsers.indexOf (user.user._id) !== -1}
+                        checked={selectedUsers.indexOf (profile.user._id) !== -1}
                         color="primary"
                         onChange={event =>
-                          handleSelectOne (event, user.user._id)}
+                          handleSelectOne (event, profile.user._id)}
                         value="true"
                       />
                     </TableCell>
@@ -141,24 +141,24 @@ const UsersTableRedux = props => {
                       <div className={classes.nameContainer}>
                         <Avatar
                           className={classes.avatar}
-                          src={user.user.avatar}
+                          src={profile.user.avatar}
                         >
-                          {getInitials (user.user.name)}
+                          {getInitials (profile.user.name)}
                         </Avatar>
                         <Typography variant="body1">
-                          {user.user.name}
+                          {profile.user.name}
                         </Typography>
                       </div>
                     </TableCell>
-                    <TableCell>{user.user.email}</TableCell>
+                    <TableCell>{profile.user.email}</TableCell>
                     <TableCell>
-                      {user.location}
+                      {profile.location}
                     </TableCell>
                     <TableCell>
                       BRUH
                     </TableCell>
                     <TableCell>
-                      {moment (user.date).format ('DD/MM/YYYY')}
+                      {moment (profile.date).format ('DD/MM/YYYY')}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -170,7 +170,7 @@ const UsersTableRedux = props => {
       <CardActions className={classes.actions}>
         <TablePagination
           component="div"
-          count={users.length}
+          count={profiles.length}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handleRowsPerPageChange}
           page={page}
@@ -184,7 +184,7 @@ const UsersTableRedux = props => {
 
 UsersTableRedux.propTypes = {
   className: PropTypes.string,
-  users: PropTypes.array.isRequired,
+  profiles: PropTypes.array.isRequired,
 };
 
 export default UsersTableRedux;
