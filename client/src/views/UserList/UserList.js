@@ -1,11 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import {makeStyles} from '@material-ui/styles';
 // import {UsersToolbar} from './components'
 import {connect} from 'react-redux';
 import {getProfiles} from '../../actions/profile';
 import {UsersTable} from './components';
-import UsersTableRedux from './components/UsersTableRedux/UsersTableRedux';
-import mockData from './data';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -19,8 +17,6 @@ const useStyles = makeStyles (theme => ({
 const UserList = ({getProfiles, profile: {profiles}}) => {
   const classes = useStyles ();
 
-  const [users] = useState (mockData);
-
   useEffect (
     () => {
       getProfiles ();
@@ -32,8 +28,7 @@ const UserList = ({getProfiles, profile: {profiles}}) => {
     <div className={classes.root}>
       {/**UsersToolbar would go here */}
       <div className={classes.content}>
-        <UsersTable users={users} />
-        <UsersTableRedux profiles={profiles} />
+        <UsersTable profiles={profiles} />
       </div>
     </div>
   );
