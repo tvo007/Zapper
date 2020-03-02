@@ -14,7 +14,7 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const UserList = ({getProfiles, profile: {profiles}}) => {
+const UserList = ({getProfiles, profile: {profiles, loading}}) => {
   const classes = useStyles ();
 
   useEffect (
@@ -24,14 +24,13 @@ const UserList = ({getProfiles, profile: {profiles}}) => {
     [getProfiles]
   );
 
-  return (
+  return loading && profiles === null ? <div>LOADING!</div> :
     <div className={classes.root}>
       {/**UsersToolbar would go here */}
       <div className={classes.content}>
         <UsersTable profiles={profiles} />
       </div>
     </div>
-  );
 };
 
 // UserList.propTypes = {

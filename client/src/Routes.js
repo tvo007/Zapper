@@ -16,8 +16,14 @@ import {
   NotFound as NotFoundView,
 } from './views';
 
-const Routes = () => {
+//experiemntal redux addition
+import {connect} from 'react-redux';
 
+
+const Routes = ({auth: {user: _id}}) => {
+
+  const authIdRoute = `/profile/${_id}`
+  
   return (
     <Switch>
       <Redirect exact from="/" to="/dashboard" />
@@ -70,7 +76,7 @@ const Routes = () => {
           component={AccountView}
           exact
           layout={MainLayout}
-          path="/account"
+          path={authIdRoute}
         />
         <RouteWithLayout
           component={SettingsView}
@@ -90,4 +96,9 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+
+export default connect(mapStateToProps)(Routes);

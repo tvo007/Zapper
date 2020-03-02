@@ -13,6 +13,9 @@ import SettingsIcon from '@material-ui/icons/Settings';
 
 import {Profile, SidebarNav} from './components';
 
+import {connect} from 'react-redux';
+
+
 const useStyles = makeStyles (theme => ({
   drawer: {
     width: 240,
@@ -37,8 +40,9 @@ const useStyles = makeStyles (theme => ({
 }));
 
 const Sidebar = props => {
-  const {open, variant, onClose, className, ...rest} = props;
+  const {open, variant, onClose, className, auth: {user: _id} } = props;
 
+  const authIdRoute = `/profile/${_id}`
   const classes = useStyles ();
 
   const pages = [
@@ -69,7 +73,7 @@ const Sidebar = props => {
     },
     {
       title: 'Account',
-      href: '/account',
+      href: authIdRoute,
       icon: <AccountBoxIcon />,
     },
     {
@@ -79,7 +83,7 @@ const Sidebar = props => {
     },
   ];
 
-  return (
+  return  (
     <Drawer
       anchor="left"
       classes={{paper: classes.drawer}}
@@ -87,7 +91,7 @@ const Sidebar = props => {
       open={open}
       variant={variant}
     >
-      <div {...rest} className={clsx (classes.root, className)}>
+      <div className={clsx (classes.root, className)}>
         <Profile />
         <Divider className={classes.divider} />
         <SidebarNav className={classes.nav} pages={pages} />
@@ -103,4 +107,8 @@ Sidebar.propTypes = {
   variant: PropTypes.string.isRequired,
 };
 
-export default Sidebar;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(Sidebar);
