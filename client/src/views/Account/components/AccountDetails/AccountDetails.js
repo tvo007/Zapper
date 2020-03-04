@@ -27,7 +27,8 @@ const initialState = {
   skills: '',
   bio: '',
   githubusername: '',
-  status: ''
+  status: '',
+  avatar: '',
 };
 
 const AccountDetails = props => {
@@ -65,6 +66,7 @@ const AccountDetails = props => {
     githubusername,
     bio,
     status,
+    avatar,
     ...rest
   } = formData;
 
@@ -95,6 +97,17 @@ const AccountDetails = props => {
                 name="location"
                 onChange={e => handleChange(e)}
                 value={location}
+                variant="outlined"
+              />
+              </Grid>
+              <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Avatar"
+                margin="dense"
+                name="avatar"
+                onChange={e => handleChange(e)}
+                value={avatar}
                 variant="outlined"
               />
               </Grid>

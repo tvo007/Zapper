@@ -1,4 +1,3 @@
-
 import React, {useEffect} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import clsx from 'clsx';
@@ -28,7 +27,7 @@ const Profile = ({
   className,
   getCurrentProfile,
   auth: {user},
-  profile: {profile, loading}
+  profile: {profile, loading},
 }) => {
   useEffect (
     () => {
@@ -39,22 +38,21 @@ const Profile = ({
 
   const classes = useStyles ();
 
-  
-    return profile === null || loading ? <div>LOADING!</div> :
-    <div className={clsx (classes.root, className)}>
-      <Avatar
-        alt="Person"
-        className={classes.avatar}
-        component={RouterLink}
-        src={profile.user.avatar}
-        to="/settings"
-      />
-      <Typography className={classes.name} variant="h4">
-        {profile.user.name}
-      </Typography>
-      <Typography variant="body2">{profile.bio}</Typography>
-    </div>
-  
+  return profile === null || loading
+    ? <div>LOADING!</div>
+    : <div className={clsx (classes.root, className)}>
+        <Avatar
+          alt="Person"
+          className={classes.avatar}
+          component={RouterLink}
+          src={profile.avatar}
+          to="/settings"
+        />
+        <Typography className={classes.name} variant="h4">
+          {profile.user.name}
+        </Typography>
+        <Typography variant="body2">{profile.bio}</Typography>
+      </div>;
 };
 
 Profile.propTypes = {
@@ -71,9 +69,8 @@ const mapStateToProps = state => ({
 
 export default connect (mapStateToProps, {getCurrentProfile}) (Profile);
 
-
-
-{/**
+{
+  /**
  * import React, {useEffect} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import clsx from 'clsx';
@@ -146,9 +143,11 @@ const mapStateToProps = state => ({
 
 export default connect (mapStateToProps, {getCurrentProfile}) (Profile);
  * 
- */}
+ */
+}
 
- {/**
+{
+  /**
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
@@ -213,4 +212,5 @@ Profile.propTypes = {
 export default Profile;
 
 
-*/}
+*/
+}

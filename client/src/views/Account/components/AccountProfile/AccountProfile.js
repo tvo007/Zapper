@@ -74,7 +74,7 @@ const AccountProfile = props => {
               {moment ().format ('hh:mm A')} ({user.timezone})
             </Typography>
           </div>
-          <Avatar className={classes.avatar} src={profile.user.avatar} />
+          <Avatar className={classes.avatar} src={profile.avatar} />
         </div>
         <div className={classes.progress}>
           <Typography variant="body1">Profile Completeness: 70%</Typography>

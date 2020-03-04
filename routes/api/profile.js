@@ -59,6 +59,7 @@ router.post (
       status,
       githubusername,
       skills,
+      avatar,
       youtube,
       facebook,
       twitter,
@@ -79,6 +80,7 @@ router.post (
         : skills.split (',').map (skill => ' ' + skill.trim ()),
       status,
       githubusername,
+      avatar
     };
 
     // const socialfields = {youtube, twitter, instagram, linkedin, facebook};
