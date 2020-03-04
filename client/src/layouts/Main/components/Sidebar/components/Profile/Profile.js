@@ -1,3 +1,4 @@
+
 import React, {useEffect} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import clsx from 'clsx';
@@ -69,6 +70,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect (mapStateToProps, {getCurrentProfile}) (Profile);
+
 
 
 {/**

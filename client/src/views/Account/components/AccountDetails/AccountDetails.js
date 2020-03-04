@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
+import {withRouter} from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
+import {makeStyles} from '@material-ui/styles';
 import {
   Card,
   CardHeader,
@@ -10,174 +11,158 @@ import {
   Divider,
   Grid,
   Button,
-  TextField
+  TextField,
 } from '@material-ui/core';
+import {connect} from 'react-redux';
+import {createProfile, getCurrentProfile} from '../../../../actions/profile';
 
-const useStyles = makeStyles(() => ({
-  root: {}
+const useStyles = makeStyles (() => ({
+  root: {},
 }));
 
+const initialState = {
+  company: '',
+  website: '',
+  location: '',
+  skills: '',
+  bio: '',
+  githubusername: '',
+  status: ''
+};
+
 const AccountDetails = props => {
-  const { className, ...rest } = props;
+  const {
+    className,
+    profile: {profile, loading},
+    createProfile,
+    getCurrentProfile,
+    history,
+  } = props;
 
-  const classes = useStyles();
+  const classes = useStyles ();
 
-  const [values, setValues] = useState({
-    firstName: 'Shen',
-    lastName: 'Zhi',
-    email: 'shen.zhi@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
+  const [formData, setFormData] = useState (initialState);
 
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
+  useEffect (
+    () => {
+      if (!profile) getCurrentProfile ();
+      if (!loading) {
+        const profileData = {...initialState};
+        for (const key in profile) {
+          if (key in profileData) profileData[key] = profile[key];
+        }
+        setFormData (profileData);
+      }
+    },
+    [loading, getCurrentProfile, profile]
+  );
+
+  const {
+    company,
+    website,
+    location,
+    skills,
+    githubusername,
+    bio,
+    status,
+    ...rest
+  } = formData;
+
+  const handleChange = e => {
+    setFormData ({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
   };
 
-  const states = [
-    {
-      value: 'alabama',
-      label: 'Alabama'
-    },
-    {
-      value: 'new-york',
-      label: 'New York'
-    },
-    {
-      value: 'san-francisco',
-      label: 'San Francisco'
-    }
-  ];
+  const onSubmit = e => {
+    e.preventDefault ();
+    createProfile (formData, history, true);
+  };
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <form
-        autoComplete="off"
-        noValidate
-      >
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
+    <Card {...rest} className={clsx (classes.root, className)}>
+      <form autoComplete="off" onSubmit={e => onSubmit (e)}>
+        <CardHeader title="Profile" />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+          <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
-                label="First name"
+                label="Location"
                 margin="dense"
-                name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
+                name="location"
+                onChange={e => handleChange(e)}
+                value={location}
+                variant="outlined"
+              />
+              </Grid>
+              <Grid item md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Status"
+                margin="dense"
+                name="status"
+                onChange={e => handleChange(e)}
+                value={status}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Last name"
+                label="Company"
                 margin="dense"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
+                name="company"
+                onChange={e => handleChange(e)}
+                value={company}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Email Address"
+                label="Website"
                 margin="dense"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
+                name="website"
+                onChange={e => handleChange(e)}
+                value={website}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Phone Number"
+                label="Github Username"
                 margin="dense"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
+                name="githubusername"
+                onChange={e => handleChange(e)}
+                type="text"
+                value={githubusername}
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Select State"
+                label="Skills"
                 margin="dense"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                // eslint-disable-next-line react/jsx-sort-props
-                SelectProps={{ native: true }}
-                value={values.state}
+                name="skills"
+                onChange={e => handleChange(e)}
+                type="text"
+                value={skills}
                 variant="outlined"
-              >
-                {states.map(option => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Country"
+                label="Bio"
                 margin="dense"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
+                name="bio"
+                onChange={e => handleChange(e)}
+                value={bio}
                 variant="outlined"
               />
             </Grid>
@@ -185,10 +170,7 @@ const AccountDetails = props => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            color="primary"
-            variant="contained"
-          >
+          <Button color="primary" variant="contained" type="submit">
             Save details
           </Button>
         </CardActions>
@@ -198,7 +180,57 @@ const AccountDetails = props => {
 };
 
 AccountDetails.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  createProfile: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
 };
 
-export default AccountDetails;
+const mapStateToProps = state => ({
+  profile: state.profile,
+});
+
+export default connect (mapStateToProps, {createProfile, getCurrentProfile}) (
+  withRouter (AccountDetails)
+);
+
+{/**
+
+  const states = [
+    {
+      value: 'alabama',
+      label: 'Alabama',
+    },
+    {
+      value: 'new-york',
+      label: 'New York',
+    },
+    {
+      value: 'san-francisco',
+      label: 'San Francisco',
+    },
+  ];
+
+<TextField
+                fullWidth
+                label="Select State"
+                margin="dense"
+                name="state"
+                onChange={handleChange}
+                required
+                select
+                // eslint-disable-next-line react/jsx-sort-props
+                SelectProps={{native: true}}
+                value={formData.state}
+                variant="outlined"
+              >
+                {states.map (option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </TextField>
+
+
+
+*/}

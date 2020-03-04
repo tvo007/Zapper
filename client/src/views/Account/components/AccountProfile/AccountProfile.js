@@ -64,7 +64,7 @@ const AccountProfile = props => {
               color="textSecondary"
               variant="body1"
             >
-              {user.city}, {user.country}
+              {profile.location}
             </Typography>
             <Typography
               className={classes.dateText}
@@ -74,7 +74,7 @@ const AccountProfile = props => {
               {moment ().format ('hh:mm A')} ({user.timezone})
             </Typography>
           </div>
-          <Avatar className={classes.avatar} src={user.avatar} />
+          <Avatar className={classes.avatar} src={profile.user.avatar} />
         </div>
         <div className={classes.progress}>
           <Typography variant="body1">Profile Completeness: 70%</Typography>

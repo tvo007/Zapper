@@ -4,7 +4,7 @@ const config = require ('config');
 const router = express.Router ();
 const auth = require ('../../middleware/auth');
 const {check, validationResult} = require ('express-validator');
-
+const normalize = require('normalize-url');
 const Profile = require ('../../models/Profile');
 const User = require ('../../models/User');
 const Post = require ('../../models/Post');
@@ -81,13 +81,13 @@ router.post (
       githubusername,
     };
 
-    const socialfields = {youtube, twitter, instagram, linkedin, facebook};
+    // const socialfields = {youtube, twitter, instagram, linkedin, facebook};
 
-    for (const [key, value] of Object.entries (socialfields)) {
-      if (value.length > 0)
-        socialfields[key] = normalize (value, {forceHttps: true});
-    }
-    profileFields.social = socialfields;
+    // for (const [key, value] of Object.entries (socialfields)) {
+    //   if (value.length > 0)
+    //     socialfields[key] = normalize (value, {forceHttps: true});
+    // }
+    // profileFields.social = socialfields;
 
     try {
       // Using upsert option (creates new doc if no match is found):
