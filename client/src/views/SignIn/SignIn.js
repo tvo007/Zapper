@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Link as RouterLink,
-  withRouter,
-} from 'react-router-dom';
+import {Link as RouterLink, withRouter, Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
@@ -120,7 +117,7 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const SignIn = ({login, history, isAuthenticated}) => {
+const SignIn = ({login, isAuthenticated}) => {
   const classes = useStyles ();
 
   const [formState, setFormState] = useState ({
@@ -147,7 +144,7 @@ const SignIn = ({login, history, isAuthenticated}) => {
   //redir if logged in
 
   if (isAuthenticated) {
-    history.push ('/dashboard');
+    return <Redirect to="/dashboard" />;
   }
 
   return (

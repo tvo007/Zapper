@@ -19,11 +19,9 @@ import {
 //experiemntal redux addition
 import {connect} from 'react-redux';
 
-
 const Routes = ({auth: {user: _id}}) => {
+  const authIdRoute = `/profile/${_id}`;
 
-  const authIdRoute = `/profile/${_id}`
-  
   return (
     <Switch>
       <Redirect exact from="/" to="/dashboard" />
@@ -58,7 +56,7 @@ const Routes = ({auth: {user: _id}}) => {
           component={ProductListView}
           exact
           layout={MainLayout}
-          path="/products"
+          path="/projects"
         />
         <RouteWithLayout
           component={TypographyView}
@@ -85,6 +83,12 @@ const Routes = ({auth: {user: _id}}) => {
           path="/settings"
         />
         <RouteWithLayout
+          component={SettingsView} // to be refined into unique project route
+          exact
+          layout={MainLayout}
+          path="/project/:id"
+        />
+        <RouteWithLayout
           component={NotFoundView}
           exact
           layout={MinimalLayout}
@@ -97,8 +101,7 @@ const Routes = ({auth: {user: _id}}) => {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 
-
-export default connect(mapStateToProps)(Routes);
+export default connect (mapStateToProps) (Routes);
