@@ -13,13 +13,17 @@ import {
   Settings as SettingsView,
   SignUp as SignUpView,
   SignIn as SignInView,
+  Project as ProjectView,
   NotFound as NotFoundView,
 } from './views';
 
 //experiemntal redux addition
 import {connect} from 'react-redux';
 
-const Routes = ({auth: {user: _id}}) => {
+const Routes = (
+  {
+    auth: {user: _id},
+}) => {
   const authIdRoute = `/profile/${_id}`;
 
   return (
@@ -83,10 +87,10 @@ const Routes = ({auth: {user: _id}}) => {
           path="/settings"
         />
         <RouteWithLayout
-          component={SettingsView} // to be refined into unique project route
+          component={ProjectView} // to be refined into unique project route
           exact
           layout={MainLayout}
-          path="/project/:id"
+          path="/projects/:id"
         />
         <RouteWithLayout
           component={NotFoundView}
@@ -102,6 +106,7 @@ const Routes = ({auth: {user: _id}}) => {
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  project: state.project
 });
 
 export default connect (mapStateToProps) (Routes);
