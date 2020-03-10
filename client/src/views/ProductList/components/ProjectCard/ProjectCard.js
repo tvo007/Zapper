@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux';
 import {deleteProject} from '../../../../actions/project';
 import clsx from 'clsx';
@@ -68,6 +69,7 @@ const ProjectCard = props => {
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
+      <Link to={`/projects/${_id}`}>
       <CardContent>
         <Typography align="center" gutterBottom variant="h4">
           {title}
@@ -77,6 +79,8 @@ const ProjectCard = props => {
         </Typography>
         <Typography align="center" variant="body1">
           Team Lead: {name}
+        </Typography>
+        <Typography align="center" variant="body1">
         </Typography>
       </CardContent>
       <Divider />
@@ -102,6 +106,7 @@ const ProjectCard = props => {
           </Grid>
         </Grid>
       </CardActions>
+      </Link>
     </Card>
   );
 };

@@ -1,9 +1,8 @@
 import React from 'react';
 import {Switch, Redirect} from 'react-router-dom';
 import {RouteWithLayout} from './components';
-import {PrivateRouteWithLayout} from './components'
+import {PrivateRouteWithLayout} from './components';
 import {Main as MainLayout, Minimal as MinimalLayout} from './layouts';
-import PrivateRoute from './components/routing/PrivateRoute';
 import {
   Dashboard as DashboardView,
   ProductList as ProductListView,
@@ -21,10 +20,7 @@ import {
 //experiemntal redux addition
 import {connect} from 'react-redux';
 
-const Routes = (
-  {
-    auth: {user: _id},
-}) => {
+const Routes = ({auth: {user: _id}}) => {
   const authIdRoute = `/profile/${_id}`;
 
   return (
@@ -44,62 +40,61 @@ const Routes = (
         path="/sign-in"
       />
 
-      <PrivateRoute>
-        <RouteWithLayout
-          component={DashboardView}
-          exact
-          layout={MainLayout}
-          path="/dashboard"
-        />
-        <RouteWithLayout
-          component={UserListView}
-          exact
-          layout={MainLayout}
-          path="/users"
-        />
-        <RouteWithLayout
-          component={ProductListView}
-          exact
-          layout={MainLayout}
-          path="/projects"
-        />
-        <RouteWithLayout
-          component={TypographyView}
-          exact
-          layout={MainLayout}
-          path="/typography"
-        />
-        <RouteWithLayout
-          component={IconsView}
-          exact
-          layout={MainLayout}
-          path="/icons"
-        />
-        <RouteWithLayout
-          component={AccountView}
-          exact
-          layout={MainLayout}
-          path={authIdRoute}
-        />
-        <RouteWithLayout
-          component={SettingsView}
-          exact
-          layout={MainLayout}
-          path="/settings"
-        />
-        <RouteWithLayout
-          component={ProjectView} // to be refined into unique project route
-          exact
-          layout={MainLayout}
-          path="/projects/:id"
-        />
-        <RouteWithLayout
-          component={NotFoundView}
-          exact
-          layout={MinimalLayout}
-          path="/not-found"
-        />
-      </PrivateRoute>
+      <PrivateRouteWithLayout
+        component={DashboardView}
+        exact
+        layout={MainLayout}
+        path="/dashboard"
+      />
+      <PrivateRouteWithLayout
+        component={UserListView}
+        exact
+        layout={MainLayout}
+        path="/users"
+      />
+      <PrivateRouteWithLayout
+        component={ProductListView}
+        exact
+        layout={MainLayout}
+        path="/projects"
+      />
+      <PrivateRouteWithLayout
+        component={ProjectView} // to be refined into unique project route
+        exact
+        layout={MainLayout}
+        path="/projects/:id"
+      />
+      <PrivateRouteWithLayout
+        component={TypographyView}
+        exact
+        layout={MainLayout}
+        path="/typography"
+      />
+      <PrivateRouteWithLayout
+        component={IconsView}
+        exact
+        layout={MainLayout}
+        path="/icons"
+      />
+      <PrivateRouteWithLayout
+        component={AccountView}
+        exact
+        layout={MainLayout}
+        path={authIdRoute}
+      />
+      <PrivateRouteWithLayout
+        component={SettingsView}
+        exact
+        layout={MainLayout}
+        path="/settings"
+      />
+      <PrivateRouteWithLayout
+        component={NotFoundView}
+        exact
+        layout={MinimalLayout}
+        path="/not-found"
+      />
+
       <Redirect to="/not-found" />
     </Switch>
   );
@@ -107,7 +102,7 @@ const Routes = (
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  project: state.project
+  project: state.project,
 });
 
 export default connect (mapStateToProps) (Routes);

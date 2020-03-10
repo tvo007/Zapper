@@ -15,26 +15,25 @@ const useStyles = makeStyles (theme => ({
 const Project = ({getProject, project: {project, loading}, match}) => {
   useEffect (
     () => {
-      getProject (project._id);
+      getProject (match.params.id);
     },
-    [getProject, project._id]
+    [getProject, match.params.id]
   );
   const classes = useStyles ();
 
-  return (
-    <div className={classes.root}>
-      {project === null || loading
-        ? <div>LOADING!</div>
-        : <Grid container spacing={4}>
+  return loading || project === null
+    ? <div>LOADING!</div>
+    : <div className={classes.root}>
+        
+          <Grid container spacing={4}>
             <Grid item lg={4} md={6} xl={4} xs={12}>
               <ProjectDetails project={project} />
             </Grid>
             <Grid item lg={8} md={6} xl={8} xs={12}>
               <h2>UNDER CONSTRUCTION: TASK STUFF GOES HERE</h2>
             </Grid>
-          </Grid>}
-    </div>
-  );
+          </Grid> 
+      </div>;
 };
 
 Project.propTypes = {
@@ -47,3 +46,10 @@ const mapStateToProps = state => ({
 });
 
 export default connect (mapStateToProps, {getProject}) (Project);
+
+{
+  /**
+loading || project === null
+        ? <div>LOADING!</div>
+        :  */
+}

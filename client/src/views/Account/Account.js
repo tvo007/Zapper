@@ -16,6 +16,7 @@ const Account = ({
   getProfileById,
   profile: {profile, loading},
   auth: {user},
+  match
 }) => {
   useEffect (
     () => {
