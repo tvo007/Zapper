@@ -5,6 +5,7 @@ import {Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
+import {TaskForm} from './components'
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -24,15 +25,15 @@ const Project = ({getProject, project: {project, loading}, match}) => {
   return loading || project === null
     ? <div>LOADING!</div>
     : <div className={classes.root}>
-        
-          <Grid container spacing={4}>
-            <Grid item lg={4} md={6} xl={4} xs={12}>
-              <ProjectDetails project={project} />
-            </Grid>
-            <Grid item lg={8} md={6} xl={8} xs={12}>
-              <h2>UNDER CONSTRUCTION: TASK STUFF GOES HERE</h2>
-            </Grid>
-          </Grid> 
+
+        <Grid container spacing={4}>
+          <Grid item lg={12} md={12} xl={12} xs={12}>
+            <ProjectDetails project={project} />
+          </Grid>
+          <Grid item lg={8} md={6} xl={8} xs={12}>
+            <TaskForm projectId={project._id}/>
+          </Grid>
+        </Grid>
       </div>;
 };
 

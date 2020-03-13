@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import {Grid} from '@material-ui/core';
 import moment from 'moment';
 import {makeStyles} from '@material-ui/styles';
 import {
@@ -13,6 +14,9 @@ import {
   Button,
   LinearProgress,
 } from '@material-ui/core';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import BugReportIcon from '@material-ui/icons/BugReport';
+import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 
 const useStyles = makeStyles (theme => ({
   root: {},
@@ -36,20 +40,22 @@ const useStyles = makeStyles (theme => ({
 
 const ProjectDetails = props => {
   const {
-    project,
+    project: {
+      _id,
+      title,
+      name,
+      description,
+      avatar,
+      user,
+      tasks,
+      tickets,
+      date,
+    },
     className,
     ...rest
   } = props;
 
   const classes = useStyles ();
-
-  const user = {
-    name: 'Shen Zhi',
-    city: 'Los Angeles',
-    country: 'USA',
-    timezone: 'GTM-7',
-    avatar: '/images/avatars/avatar_11.png',
-  };
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
@@ -57,24 +63,37 @@ const ProjectDetails = props => {
         <div className={classes.details}>
           <div>
             <Typography gutterBottom variant="h2">
-              <h2>Placeholder1</h2>
+              {title}
             </Typography>
             <Typography
               className={classes.locationText}
               color="textSecondary"
               variant="body1"
             >
-              <h2>Placeholder 2</h2>
+              Project Lead: {name}
             </Typography>
             <Typography
               className={classes.dateText}
               color="textSecondary"
               variant="body1"
             >
-              {moment ().format ('hh:mm A')} ({user.timezone})
+              Project Members: {name}
+            </Typography>
+            <Typography
+              className={classes.dateText}
+              color="textSecondary"
+              variant="body1"
+            >
+              Description: {description}
+            </Typography>
+            <Typography
+              className={classes.dateText}
+              color="textSecondary"
+              variant="body1"
+            >
+              Readme: Add a readme section that can be edited here!
             </Typography>
           </div>
-          <h2>Placeholder 3</h2>
         </div>
         <div className={classes.progress}>
           <Typography variant="body1">Profile Completeness: 70%</Typography>
@@ -84,17 +103,33 @@ const ProjectDetails = props => {
       <Divider />
       <CardActions>
         <Button className={classes.uploadButton} color="primary" variant="text">
-          Upload picture
+          View Tasks
         </Button>
-        <Button variant="text">Remove picture</Button>
+        <Button variant="text">View Tickets</Button>
       </CardActions>
+      <Grid container justify="flex-start">
+        <Grid className={classes.statsItem} item>
+          <Typography display="inline" variant="body2">
+            <AssignmentLateIcon className={classes.statsIcon} />
+            {tasks.length} Tasks
+          </Typography>
+        </Grid>
+        <Grid className={classes.statsItem} item>
+          <Typography display="inline" variant="body2">
+            <BugReportIcon className={classes.statsIcon} />
+            {tickets.length} Tickets
+          </Typography>
+        </Grid>
+
+      </Grid>
+
     </Card>
   );
 };
 
 ProjectDetails.propTypes = {
   className: PropTypes.string,
-  project: PropTypes.object.isRequired
+  project: PropTypes.object.isRequired,
 };
 
 export default ProjectDetails;
