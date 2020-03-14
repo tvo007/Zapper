@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
@@ -14,9 +14,7 @@ import {
 } from '@material-ui/core';
 import {connect} from 'react-redux';
 import {
-  addTask,
-  deleteTask,
-  toggleTaskCompleted,
+  addTask
 } from '../../../../actions/project';
 
 const useStyles = makeStyles (() => ({
@@ -36,7 +34,7 @@ const TaskForm = props => {
 
   const onSubmit = e => {
     e.preventDefault ();
-    addTask (projectId, {setTaskDescription});
+    addTask (projectId, {taskDescription});
     setTaskDescription ('');
   };
 

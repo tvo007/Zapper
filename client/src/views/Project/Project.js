@@ -5,7 +5,7 @@ import {Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
-import {TaskForm} from './components'
+import {TaskForm, TaskItem} from './components'
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -30,8 +30,13 @@ const Project = ({getProject, project: {project, loading}, match}) => {
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <ProjectDetails project={project} />
           </Grid>
-          <Grid item lg={8} md={6} xl={8} xs={12}>
+          <Grid item lg={8} md={6} xl={8} xs={12}> 
             <TaskForm projectId={project._id}/>
+            <div className='comments'>
+            {project.tasks.map(task => (
+                <TaskItem key={task._id} task={task} projectId={project._id} />
+            ))}
+        </div>
           </Grid>
         </Grid>
       </div>;
