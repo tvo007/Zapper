@@ -2,19 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {Grid} from '@material-ui/core';
-import moment from 'moment';
+//import moment from 'moment';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
   CardActions,
   CardContent,
-  Avatar,
+  //Avatar,
   Typography,
   Divider,
   Button,
   LinearProgress,
 } from '@material-ui/core';
-import GetAppIcon from '@material-ui/icons/GetApp';
+//import GetAppIcon from '@material-ui/icons/GetApp';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 
@@ -41,6 +41,18 @@ const useStyles = makeStyles (theme => ({
 const ProjectDetails = props => {
   const {
     project: {
+      title,
+      name,
+      description,
+      tasks,
+      tickets,
+    },
+    className,
+    ...rest
+  } = props;
+
+  /**
+   * project: {
       _id,
       title,
       name,
@@ -51,9 +63,7 @@ const ProjectDetails = props => {
       tickets,
       date,
     },
-    className,
-    ...rest
-  } = props;
+   */
 
   const classes = useStyles ();
 

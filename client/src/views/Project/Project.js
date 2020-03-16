@@ -5,7 +5,7 @@ import {Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
-import {TaskForm, TaskItem} from './components'
+import {TaskForm, TaskItem} from './components';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -30,13 +30,13 @@ const Project = ({getProject, project: {project, loading}, match}) => {
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <ProjectDetails project={project} />
           </Grid>
-          <Grid item lg={8} md={6} xl={8} xs={12}> 
-            <TaskForm projectId={project._id}/>
-            <div className='comments'>
-            {project.tasks.map(task => (
+          <Grid item lg={4} md={4} xl={4} xs={12}>
+            <TaskForm projectId={project._id} />
+            <div className="comments">
+              {project.tasks.map (task => (
                 <TaskItem key={task._id} task={task} projectId={project._id} />
-            ))}
-        </div>
+              ))}
+            </div>
           </Grid>
         </Grid>
       </div>;
@@ -57,5 +57,22 @@ export default connect (mapStateToProps, {getProject}) (Project);
   /**
 loading || project === null
         ? <div>LOADING!</div>
-        :  */
+        :  
+
+        original task form grid/to be deleted later
+   <Grid item lg={8} md={6} xl={8} xs={12}> 
+            <TaskForm projectId={project._id}/>
+            <div className='comments'>
+            {project.tasks.map(task => (
+                <TaskItem key={task._id} task={task} projectId={project._id} />
+            ))}
+        </div>
+          </Grid>     
+        
+        
+        
+        
+
+
+        */
 }

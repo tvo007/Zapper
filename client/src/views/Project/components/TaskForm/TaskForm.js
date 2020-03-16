@@ -42,18 +42,17 @@ const TaskForm = props => {
     <Card {...rest} className={clsx (classes.root, className)}>
       <form autoComplete="off" onSubmit={onSubmit}>
         <CardHeader title="Tasks" />
-        <Divider />
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
+            <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter a task."
-                margin="dense"
+                label="Enter a task"
                 name="text"
                 value={taskDescription}
                 onChange={e => setTaskDescription (e.target.value)}
                 variant="outlined"
+                required
               />
             </Grid>
           </Grid>

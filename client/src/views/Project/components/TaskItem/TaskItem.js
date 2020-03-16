@@ -4,17 +4,18 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
-  CardHeader,
+  //CardHeader,
   CardContent,
   CardActions,
   Divider,
   Grid,
   Button,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
 import {deleteTask, toggleTaskCompleted} from '../../../../actions/project';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -24,12 +25,14 @@ const TaskItem = props => {
   const {
     className,
     projectId,
-    task: {_id, taskDescription, name, avatar, user, date, isCompleted},
+    task: {_id, taskDescription, isCompleted},
     auth,
     deleteTask,
     toggleTaskCompleted,
     ...rest
   } = props;
+
+  //task: {_id, taskDescription, name, avatar, user, date, isCompleted}
 
   const classes = useStyles ();
 
@@ -45,13 +48,13 @@ const TaskItem = props => {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
-            <Typography style={taskCompletedStyling}>Task: {taskDescription}</Typography>
+            <Typography style={taskCompletedStyling}> {taskDescription}</Typography>
             <CardActions>
           <Button color="primary" variant="contained" type="button" onClick={toggleHandler}>
-            Toggle Complete
+            <AssignmentTurnedInIcon />
           </Button>
           <Button color="primary" variant="contained" type="button" onClick={deleteHandler}>
-            Delete Task
+          <DeleteForeverIcon />
           </Button>
         </CardActions>
             </Grid>

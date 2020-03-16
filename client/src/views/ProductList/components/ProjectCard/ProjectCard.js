@@ -14,7 +14,7 @@ import {
   Divider,
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import GetAppIcon from '@material-ui/icons/GetApp';
+//import GetAppIcon from '@material-ui/icons/GetApp';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 
@@ -55,15 +55,26 @@ const ProjectCard = props => {
       title,
       name,
       description,
+      tasks,
+      tickets,
+    },
+    showActions,
+    ...rest
+  } = props;
+
+  /**
+   * project: {
+      _id,
+      title,
+      name,
+      description,
       avatar,
       user,
       tasks,
       tickets,
       date,
     },
-    showActions,
-    ...rest
-  } = props;
+   */
 
   const classes = useStyles ();
 
