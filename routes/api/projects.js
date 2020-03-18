@@ -67,7 +67,7 @@ router.get ('/', auth, async (req, res) => {
   }
 });
 
-//@route get api/posts/:id
+//@route get api/projects/:id
 //desc: get posts by id
 //access private
 
@@ -88,6 +88,65 @@ router.get ('/:id', auth, async (req, res) => {
     res.status (500).send ('Server Error');
   }
 });
+
+// @route  PUT api/projects/:id
+// @desc   Edit a post
+// @access Private
+
+router.put (
+  '/:project_id',
+  [auth, check ('description', 'Description is required').not ().isEmpty ()],
+  async (req, res) => {
+    const errors = validationResult (req);
+    if (!errors.isEmpty ()) res.status (400).json ({errors: errors.array ()});
+    // Confirm and acquirer original post
+    const originalProject = await Project.findOne ({
+      _id: req.params.project_id,
+    });
+
+    if (!originalProject) {
+      // If post not found
+      res.status (404).json ({errors: [{msg: 'Resource Not Found'}]});
+    } else if (originalProject.user.toString () !== req.user.id) {
+      // if incorrect user somehow attempts to access resource
+      res
+        .status (401)
+        .json ({errors: [{msg: 'Invalid Credentials; User not authorized'}]});
+    } else {
+      const {description} = req.body; // only value that should change
+      const {name, avatar, title, user, tasks, tickets, date} = originalProject; // all other values should remain the same
+      let newProject = {
+        description,
+        name,
+        avatar,
+        user,
+        title,
+        tasks,
+        tickets,
+        date,
+        edited: {
+          // added to create updated post feature
+          updated: true,
+          date: Date.now (),
+        },
+      };
+
+      try {
+        // find and update resource and ensure id remains the same
+        const project = await Project.findOneAndUpdate (
+          {_id: req.params.project_id},
+          {$set: {_id: req.params.project_id, ...newProject}},
+          {new: true}
+        );
+        res.status (200).json (project);
+        
+      } catch (err) {
+        console.error (err.message);
+        res.status (500).json ({errors: [{msg: 'Server Error'}]});
+      }
+    }
+  }
+);
 
 //@route delete api/projects/:id
 //desc: del a project
@@ -116,7 +175,7 @@ router.delete ('/:id', auth, async (req, res) => {
 });
 
 // @route    POST api/projects/tasks/:id
-// @desc     create a task for the project
+// @desc     create/update a task for the project
 // @access   Private
 router.post (
   '/tasks/:id',
@@ -156,6 +215,10 @@ router.post (
     }
   }
 );
+
+// @route    PUT api/projects/tasks/:id
+// @desc     edit a task for project
+// @access   Private
 
 // @route    DELETE api/projects/tasks/:id/:task_id
 // @desc     Delete id

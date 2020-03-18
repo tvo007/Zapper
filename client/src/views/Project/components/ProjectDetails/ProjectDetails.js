@@ -17,6 +17,7 @@ import {
 //import GetAppIcon from '@material-ui/icons/GetApp';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles (theme => ({
   root: {},
@@ -40,13 +41,7 @@ const useStyles = makeStyles (theme => ({
 
 const ProjectDetails = props => {
   const {
-    project: {
-      title,
-      name,
-      description,
-      tasks,
-      tickets,
-    },
+    project: {title, name, description, tasks, tickets},
     className,
     ...rest
   } = props;
@@ -105,17 +100,18 @@ const ProjectDetails = props => {
             </Typography>
           </div>
         </div>
-        <div className={classes.progress}>
-          <Typography variant="body1">Profile Completeness: 70%</Typography>
-          <LinearProgress value={70} variant="determinate" />
-        </div>
       </CardContent>
       <Divider />
       <CardActions>
-        <Button className={classes.uploadButton} color="primary" variant="text">
+      <Button color="primary" variant="contained" type="button">
+          <EditIcon />
+        </Button>
+        <Button color="primary" variant="contained" type="button">
           View Tasks
         </Button>
-        <Button variant="text">View Tickets</Button>
+        <Button color="primary" variant="contained" type="button">
+          View Tickets
+        </Button>
       </CardActions>
       <Grid container justify="flex-start">
         <Grid className={classes.statsItem} item>

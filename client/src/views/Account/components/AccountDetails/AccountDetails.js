@@ -95,29 +95,29 @@ const AccountDetails = props => {
                 label="Location"
                 margin="dense"
                 name="location"
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 value={location}
                 variant="outlined"
               />
-              </Grid>
-              <Grid item md={6} xs={12}>
+            </Grid>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Avatar"
                 margin="dense"
                 name="avatar"
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 value={avatar}
                 variant="outlined"
               />
-              </Grid>
-              <Grid item md={6} xs={12}>
+            </Grid>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Status"
                 margin="dense"
                 name="status"
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 value={status}
                 variant="outlined"
               />
@@ -128,7 +128,7 @@ const AccountDetails = props => {
                 label="Company"
                 margin="dense"
                 name="company"
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 value={company}
                 variant="outlined"
               />
@@ -139,7 +139,7 @@ const AccountDetails = props => {
                 label="Website"
                 margin="dense"
                 name="website"
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 value={website}
                 variant="outlined"
               />
@@ -150,7 +150,7 @@ const AccountDetails = props => {
                 label="Github Username"
                 margin="dense"
                 name="githubusername"
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 type="text"
                 value={githubusername}
                 variant="outlined"
@@ -162,7 +162,7 @@ const AccountDetails = props => {
                 label="Skills"
                 margin="dense"
                 name="skills"
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 type="text"
                 value={skills}
                 variant="outlined"
@@ -174,7 +174,7 @@ const AccountDetails = props => {
                 label="Bio"
                 margin="dense"
                 name="bio"
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 value={bio}
                 variant="outlined"
               />
@@ -207,7 +207,8 @@ export default connect (mapStateToProps, {createProfile, getCurrentProfile}) (
   withRouter (AccountDetails)
 );
 
-{/**
+{
+  /**
 
   const states = [
     {
@@ -246,4 +247,5 @@ export default connect (mapStateToProps, {createProfile, getCurrentProfile}) (
 
 
 
-*/}
+*/
+}

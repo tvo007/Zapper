@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
   //CardHeader,
+  TextField,
   CardContent,
   CardActions,
   Divider,
@@ -16,6 +17,7 @@ import {connect} from 'react-redux';
 import {deleteTask, toggleTaskCompleted} from '../../../../actions/project';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -43,24 +45,58 @@ const TaskItem = props => {
     textDecoration: isCompleted ? 'line-through' : null,
   };
 
+  const [taskEditToggle, setTaskEditToggle] = useState (false);
+  const [taskItemData, setTaskItemData] = useState (taskDescription);
+
+  const handleTaskEditToggle = () => {
+    setTaskEditToggle (!taskEditToggle);
+  };
+
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-            <Typography style={taskCompletedStyling}> {taskDescription}</Typography>
+      <CardContent>
+        <Grid container spacing={3}>
+          <Grid item md={6} xs={12}>
+            <Typography style={taskCompletedStyling}>
+              {' '}{taskDescription}
+            </Typography>
             <CardActions>
-          <Button color="primary" variant="contained" type="button" onClick={toggleHandler}>
-            <AssignmentTurnedInIcon />
-          </Button>
-          <Button color="primary" variant="contained" type="button" onClick={deleteHandler}>
-          <DeleteForeverIcon />
-          </Button>
-        </CardActions>
-            </Grid>
+              <Button
+                color="primary"
+                variant="contained"
+                type="button"
+                onClick={toggleHandler}
+              >
+                <AssignmentTurnedInIcon />
+              </Button>
+              <Button color="primary" variant="contained" type="button">
+                <EditOutlinedIcon />
+              </Button>
+              <Button
+                color="primary"
+                variant="contained"
+                type="button"
+                onClick={deleteHandler}
+              >
+                <DeleteForeverIcon />
+              </Button>
+            </CardActions>
           </Grid>
-        </CardContent>
-        <Divider />
+        </Grid>
+      </CardContent>
+      <CardContent>
+        <Grid item md={6} xs={12}>
+          <TextField
+            fullWidth
+            label="Task Description"
+            margin="dense"
+            name="taskDescription"
+            value={taskItemData}
+            onChange={e => setTaskItemData (e.target.value)}
+            variant="outlined"
+          />
+        </Grid>
+      </CardContent>
     </Card>
   );
 };

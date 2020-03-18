@@ -26,7 +26,7 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const ProductList = ({getProjects, project: {projects, loading}}) => {
+const ProjectList = ({getProjects, project: {projects, loading}}) => {
   const classes = useStyles ();
 
   useEffect (
@@ -77,7 +77,7 @@ const ProductList = ({getProjects, project: {projects, loading}}) => {
   );
 };
 
-ProductList.propTypes = {
+ProjectList.propTypes = {
   className: PropTypes.string,
   getProjects: PropTypes.func.isRequired,
   project: PropTypes.object.isRequired,
@@ -87,4 +87,4 @@ const mapStateToProps = state => ({
   project: state.project,
 });
 
-export default connect (mapStateToProps, {getProjects}) (ProductList);
+export default connect (mapStateToProps, {getProjects}) (ProjectList);

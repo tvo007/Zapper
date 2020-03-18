@@ -5,7 +5,7 @@ import {Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
-import {TaskForm, TaskItem, TicketForm, TicketItem} from './components';
+import {TaskForm, TaskItem, TicketForm, TicketItem, ProjectDetailsForm} from './components';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -29,6 +29,7 @@ const Project = ({getProject, project: {project, loading}, match}) => {
         <Grid container spacing={4}>
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <ProjectDetails project={project} />
+            <ProjectDetailsForm projectId={project._id}/>
           </Grid>
           <Grid item lg={4} md={4} xl={4} xs={12}>
             <TaskForm projectId={project._id} />

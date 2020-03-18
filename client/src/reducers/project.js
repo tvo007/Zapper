@@ -1,6 +1,7 @@
 import {
   GET_PROJECTS,
   PROJECT_ERROR,
+  EDIT_PROJECT,
   DELETE_PROJECT,
   GET_PROJECT,
   ADD_PROJECT,
@@ -30,6 +31,7 @@ export default function (state = initialState, action) {
         loading: false,
       };
     case GET_PROJECT:
+    case EDIT_PROJECT:
       return {
         ...state,
         project: payload,

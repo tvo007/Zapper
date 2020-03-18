@@ -3,6 +3,7 @@ import {setAlert} from './alert';
 import {
   GET_PROJECTS,
   PROJECT_ERROR,
+  EDIT_PROJECT,
   DELETE_PROJECT,
   GET_PROJECT,
   ADD_PROJECT,
@@ -38,6 +39,7 @@ export const addProject = formData => async dispatch => {
       'Content-Type': 'application/json',
     },
   };
+
   try {
     // const res =
 
@@ -49,6 +51,37 @@ export const addProject = formData => async dispatch => {
     });
 
     dispatch (setAlert ('Project Created', 'success'));
+  } catch (err) {
+    dispatch ({
+      type: PROJECT_ERROR,
+      payload: {msg: err.response.statusText, status: err.response.status},
+    });
+  }
+};
+
+//EDIT PROJECT
+export const editProject = (id, formData) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    // const res =
+
+    const res = await axios.put (
+      `/api/projects/${id}`,
+      formData,
+      config
+    );
+
+    dispatch ({
+      type: EDIT_PROJECT,
+      payload: res.data
+    });
+
+    dispatch (setAlert ('Project Editted.', 'success'));
   } catch (err) {
     dispatch ({
       type: PROJECT_ERROR,
