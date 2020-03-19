@@ -29,7 +29,7 @@ const Project = ({getProject, project: {project, loading}, match}) => {
         <Grid container spacing={4}>
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <ProjectDetails project={project} />
-            <ProjectDetailsForm projectId={project._id}/>
+            <ProjectDetailsForm projectId={project._id} projectDescription={project.description}/>
           </Grid>
           <Grid item lg={4} md={4} xl={4} xs={12}>
             <TaskForm projectId={project._id} />

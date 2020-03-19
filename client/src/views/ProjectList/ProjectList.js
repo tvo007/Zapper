@@ -6,10 +6,7 @@ import {makeStyles} from '@material-ui/styles';
 import {IconButton, Grid, Typography} from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-
-import {ProductsToolbar, ProductCard} from './components';
-import ProjectCard from './components/ProjectCard/ProjectCard'
-import mockData from './data';
+import {ProjectForm, ProjectCard} from './components';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -36,33 +33,21 @@ const ProjectList = ({getProjects, project: {projects, loading}}) => {
     [getProjects]
   );
 
-  const [products] = useState (mockData);
-
   return (
     <div className={classes.root}>
-      <ProductsToolbar />
-      <div className={classes.content}>
-        <Grid container spacing={3}>
-          {products.map (product => (
-            <Grid item key={product.id} lg={4} md={6} xs={12}>
-              <ProductCard product={product} />
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-      <div>Projects marker</div>
+      <ProjectForm />
       {projects === null || loading
-        ? <div>LOADING!</div> : 
-        <div className={classes.content}>
-        <Grid container spacing={3}>
-          {projects.map (project => (
-            <Grid item key={project._id} lg={4} md={6} xs={12}>
-              <ProjectCard project={project} />
+        ? <div>LOADING!</div>
+        : <div className={classes.content}>
+            <Grid container spacing={3}>
+              {projects.map (project => (
+                <Grid item key={project._id} lg={4} md={6} xs={12}>
+                  <ProjectCard project={project} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      </div>}
-      
+          </div>}
+
       <div className={classes.pagination}>
         <Typography variant="caption">1-6 of 20</Typography>
         <IconButton>
@@ -72,7 +57,6 @@ const ProjectList = ({getProjects, project: {projects, loading}}) => {
           <ChevronRightIcon />
         </IconButton>
       </div>
-      <h3>BRUHHHH PROJECT MARKER</h3>
     </div>
   );
 };

@@ -21,11 +21,7 @@ const useStyles = makeStyles (() => ({
 }));
 
 const ProjectDetailsForm = props => {
-  const {
-    projectId,
-    className,
-    editProject,
-  } = props;
+  const {projectId, className, editProject, projectDescription} = props;
 
   /**
    * project: {
@@ -43,7 +39,7 @@ const ProjectDetailsForm = props => {
 
   const classes = useStyles ();
 
-  const [description, setDescription] = useState ('');
+  const [description, setDescription] = useState (projectDescription);
 
   // const handleChange = e => {
   //   setTaskDescription (e.target.value);
