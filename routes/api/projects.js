@@ -139,7 +139,6 @@ router.put (
           {new: true}
         );
         res.status (200).json (project);
-        
       } catch (err) {
         console.error (err.message);
         res.status (500).json ({errors: [{msg: 'Server Error'}]});
@@ -182,6 +181,7 @@ router.post (
   [
     auth,
     [
+      check ('taskSummary', 'Task summary is required').not ().isEmpty (),
       check ('taskDescription', 'Task description is required')
         .not ()
         .isEmpty (),
@@ -198,6 +198,7 @@ router.post (
       const project = await Project.findById (req.params.id);
 
       const newTask = {
+        taskSummary: req.body.taskSummary,
         taskDescription: req.body.taskDescription,
         name: user.name,
         avatar: user.avatar,
@@ -310,6 +311,7 @@ router.post (
   [
     auth,
     [
+      check ('ticketSummary', 'Ticket summary is required').not ().isEmpty (),
       check ('ticketDescription', 'Ticket description is required')
         .not ()
         .isEmpty (),
@@ -326,6 +328,7 @@ router.post (
       const project = await Project.findById (req.params.id);
 
       const newTicket = {
+        ticketSummary: req.body.ticketSummary,
         ticketDescription: req.body.ticketDescription,
         name: user.name,
         avatar: user.avatar,

@@ -56,6 +56,11 @@ const ProjectSchema = new Schema ({
         type: Schema.Types.ObjectId,
         ref: 'users',
       },
+      taskSummary: {
+        type: String,
+        required: true,
+      },
+
       taskDescription: {
         type: String,
         required: true,
@@ -90,6 +95,10 @@ const ProjectSchema = new Schema ({
       user: {
         type: Schema.Types.ObjectId,
         ref: 'users',
+      },
+      ticketSummary: {
+        type: String,
+        required: true,
       },
       ticketDescription: {
         type: String,

@@ -13,9 +13,12 @@ import {
   TextField,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {
-  addTask
-} from '../../../../actions/project';
+import {addTask} from '../../../../actions/project';
+
+const initialState = {
+  taskSummary: '',
+  taskDescription: '',
+};
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -26,7 +29,19 @@ const TaskForm = props => {
 
   const classes = useStyles ();
 
-  const [taskDescription, setTaskDescription] = useState ('');
+  const [formData, setFormData] = useState (initialState);
+
+  const {taskSummary, taskDescription} = formData;
+
+  const handleChange = e => {
+    setFormData ({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // const [taskSummary, setTaskSummary] = useState ('');
+  // const [taskDescription, setTaskDescription] = useState ('');
 
   // const handleChange = e => {
   //   setTaskDescription (e.target.value);
@@ -34,8 +49,8 @@ const TaskForm = props => {
 
   const onSubmit = e => {
     e.preventDefault ();
-    addTask (projectId, {taskDescription});
-    setTaskDescription ('');
+    addTask (projectId, formData);
+    setFormData (initialState);
   };
 
   return (
@@ -47,10 +62,21 @@ const TaskForm = props => {
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter a task"
-                name="text"
+                label="Enter task summary."
+                name="taskSummary"
+                value={taskSummary}
+                onChange={e => handleChange (e)}
+                variant="outlined"
+                required
+              />
+            </Grid>
+            <Grid item md={12} xs={12}>
+              <TextField
+                fullWidth
+                label="Enter task description."
+                name="taskDescription"
                 value={taskDescription}
-                onChange={e => setTaskDescription (e.target.value)}
+                onChange={e => handleChange (e)}
                 variant="outlined"
                 required
               />

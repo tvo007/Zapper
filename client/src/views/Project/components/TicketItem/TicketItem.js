@@ -25,7 +25,7 @@ const TicketItem = props => {
   const {
     className,
     projectId,
-    ticket: {_id, ticketDescription, isCompleted},
+    ticket: {_id, ticketSummary, ticketDescription, isCompleted},
     auth,
     deleteTicket,
     toggleTicketCompleted,
@@ -48,6 +48,9 @@ const TicketItem = props => {
       <CardContent>
         <Grid container spacing={3}>
           <Grid item md={6} xs={12}>
+            <Typography style={ticketCompletedStyling}>
+              {' '}{ticketSummary}
+            </Typography>
             <Typography style={ticketCompletedStyling}>
               {' '}{ticketDescription}
             </Typography>

@@ -17,6 +17,11 @@ import {
   addTicket
 } from '../../../../actions/project';
 
+const initialState = {
+  ticketSummary: '',
+  ticketDescription: ''
+}
+
 const useStyles = makeStyles (() => ({
   root: {},
 }));
@@ -26,16 +31,21 @@ const TicketForm = props => {
 
   const classes = useStyles ();
 
-  const [ticketDescription, setTicketDescription] = useState ('');
+  const [formData, setFormData] = useState (initialState);
 
-  // const handleChange = e => {
-  //   setTaskDescription (e.target.value);
-  // };
+  const {ticketSummary, ticketDescription} = formData;
+
+  const handleChange = e => {
+    setFormData ({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const onSubmit = e => {
     e.preventDefault ();
-    addTicket (projectId, {ticketDescription});
-    setTicketDescription ('');
+    addTicket (projectId, formData);
+    setFormData(initialState);
   };
 
   return (
@@ -44,13 +54,24 @@ const TicketForm = props => {
         <CardHeader title="Tickets" />
         <CardContent>
           <Grid container spacing={3}>
+          <Grid item md={12} xs={12}>
+              <TextField
+                fullWidth
+                label="Enter a ticket summary."
+                name="ticketSummary"
+                value={ticketSummary}
+                onChange={e => handleChange(e)}
+                variant="outlined"
+                required
+              />
+            </Grid>
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
                 label="Enter a ticket summary."
-                name="text"
+                name="ticketDescription"
                 value={ticketDescription}
-                onChange={e => setTicketDescription (e.target.value)}
+                onChange={e => handleChange(e)}
                 variant="outlined"
                 required
               />
