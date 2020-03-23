@@ -11,6 +11,7 @@ import {
   ADD_TICKET,
   REMOVE_TICKET,
   TOGGLE_TICKET_COMPLETED,
+  ADD_SUBTASK
 } from '../actions/types';
 
 const initialState = {
@@ -92,6 +93,19 @@ export default function (state = initialState, action) {
       return {
         ...state,
         project: {...state.project, tasks: payload},
+        loading: false,
+      };
+    case ADD_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          tasks: state.project.tasks.map (
+            (task) =>
+              task._id === payload.taskId
+                ? {...task, subTasks: payload} : task     
+          ),
+        },
         loading: false,
       };
     case ADD_TICKET:

@@ -257,8 +257,6 @@ router.delete ('/tasks/:id/:task_id', auth, async (req, res) => {
   }
 });
 
-//-----------
-//change to toggleComplete
 //@route put api/projects/tasks/:id/:task_id/isCompleted
 //desc: like a post
 //access private
@@ -300,6 +298,66 @@ router.put ('/tasks/:id/:task_id/isCompleted', auth, async (req, res) => {
     res.status (500).send ('Server Error');
   }
 });
+
+// @route    POST api/projects/tasks/:id/:task_id
+// @desc     add subtasks under tasks
+// @access   Private
+
+router.post (
+  '/tasks/:id/:task_id/subTasks',
+  [
+    auth,
+    [
+      check ('subTaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subTaskDescription', 'Subtask description is required')
+        .not ()
+        .isEmpty (),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult (req);
+    if (!errors.isEmpty ()) {
+      return res.status (400).json ({errors: errors.array ()});
+    }
+
+    try {
+      const user = await User.findById (req.user.id).select ('-password');
+      const project = await Project.findById (req.params.id);
+      // Pull out task
+      const task = project.tasks.find (task => task.id === req.params.task_id);
+
+      if (!task) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      // Check user
+      if (task.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const addIndex = project.tasks
+        .map (task => task.id)
+        .indexOf (req.params.task_id);
+
+      const newSubTask = {
+        subTaskSummary: req.body.subTaskSummary,
+        subTaskDescription: req.body.subTaskDescription,
+        name: user.name,
+        avatar: user.avatar,
+        user: req.user.id,
+      };
+
+      project.tasks[addIndex].subTasks.unshift(newSubTask)
+
+      await project.save ();
+
+      res.json (project.tasks);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
+    }
+  }
+);
 
 /**------------add ticket routes here! */
 

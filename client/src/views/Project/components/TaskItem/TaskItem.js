@@ -18,6 +18,7 @@ import {deleteTask, toggleTaskCompleted} from '../../../../actions/project';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import SubTaskItem from '../SubTaskItem';
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -27,7 +28,7 @@ const TaskItem = props => {
   const {
     className,
     projectId,
-    task: {_id, taskSummary, taskDescription, isCompleted},
+    task: {task, _id, taskSummary, taskDescription, isCompleted, subTasks},
     auth,
     deleteTask,
     toggleTaskCompleted,
@@ -84,6 +85,17 @@ const TaskItem = props => {
                 <DeleteForeverIcon />
               </Button>
             </CardActions>
+            <CardContent>
+              <div>
+                {subTasks.map (subtask => (
+                  <SubTaskItem
+                    key={subtask._id}
+                    subtask={subtask}
+                    taskId={_id}
+                  />
+                ))}
+              </div>
+              </CardContent>
           </Grid>
         </Grid>
       </CardContent>
@@ -106,8 +118,8 @@ TaskItem.propTypes = {
 
 export default connect (null, {deleteTask, toggleTaskCompleted}) (TaskItem);
 
-
-{/**
+{
+  /**
 
 <CardContent>
         <Grid item md={6} xs={12}>
@@ -123,4 +135,5 @@ export default connect (null, {deleteTask, toggleTaskCompleted}) (TaskItem);
         </Grid>
       </CardContent>
 
-*/}
+*/
+}

@@ -5,4 +5,6 @@ export {default as TaskItem} from './TaskItem'
 export {default as TicketForm} from './TicketForm'
 export {default as TicketItem} from './TicketItem'
 export {default as ProjectDetailsForm} from './ProjectDetailsForm'
+export {default as SubTaskForm} from './SubTaskForm'
+export {default as SubTaskItem} from './SubTaskItem'
 

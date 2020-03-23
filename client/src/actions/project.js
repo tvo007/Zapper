@@ -13,6 +13,7 @@ import {
   ADD_TICKET,
   REMOVE_TICKET,
   TOGGLE_TICKET_COMPLETED,
+  ADD_SUBTASK,
 } from './types';
 
 //get projects
@@ -70,15 +71,11 @@ export const editProject = (id, formData) => async dispatch => {
   try {
     // const res =
 
-    const res = await axios.put (
-      `/api/projects/${id}`,
-      formData,
-      config
-    );
+    const res = await axios.put (`/api/projects/${id}`, formData, config);
 
     dispatch ({
       type: EDIT_PROJECT,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch (setAlert ('Project Editted.', 'success'));
@@ -194,6 +191,34 @@ export const toggleTaskCompleted = (projectId, taskId) => async dispatch => {
     dispatch (setAlert ('Task status has changed!', 'success'));
   } catch (err) {
     console.log (err);
+    dispatch ({
+      type: PROJECT_ERROR,
+      payload: {msg: err.response.statusText, status: err.response.status},
+    });
+  }
+};
+
+//add task
+export const addSubTask = (projectId, taskId, formData) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  try {
+    const res = await axios.post (
+      `/api/projects/tasks/${projectId}/${taskId}/subTasks`,
+      formData,
+      config
+    );
+
+    dispatch ({
+      type: ADD_SUBTASK,
+      payload: res.data,
+    });
+
+    dispatch (setAlert ('Sub task Added', 'success'));
+  } catch (err) {
     dispatch ({
       type: PROJECT_ERROR,
       payload: {msg: err.response.statusText, status: err.response.status},
