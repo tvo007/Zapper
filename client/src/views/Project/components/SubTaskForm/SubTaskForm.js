@@ -13,25 +13,25 @@ import {
   TextField,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {addTask} from '../../../../actions/project';
+import {addSubTask} from '../../../../actions/project';
 
 const initialState = {
-  taskSummary: '',
-  taskDescription: '',
+  subTaskSummary: '',
+  subTaskDescription: '',
 };
 
 const useStyles = makeStyles (() => ({
   root: {},
 }));
 
-const TaskForm = props => {
-  const {className, projectId, addTask, ...rest} = props;
+const SubTaskForm = props => {
+  const {className, projectId, taskId, addSubTask} = props;
 
   const classes = useStyles ();
 
   const [formData, setFormData] = useState (initialState);
 
-  const {taskSummary, taskDescription} = formData;
+  const {subTaskSummary, subTaskDescription} = formData;
 
   const handleChange = e => {
     setFormData ({
@@ -49,22 +49,22 @@ const TaskForm = props => {
 
   const onSubmit = e => {
     e.preventDefault ();
-    addTask (projectId, formData);
+    addSubTask (projectId, taskId, formData);
     setFormData (initialState);
   };
 
   return (
-    <Card {...rest} className={clsx (classes.root, className)}>
+    <Card className={clsx (classes.root, className)}>
       <form autoComplete="off" onSubmit={onSubmit}>
-        <CardHeader title="Tasks" />
+        <CardHeader title="SubTasks" />
         <CardContent>
           <Grid container spacing={3}>
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter task summary."
-                name="taskSummary"
-                value={taskSummary}
+                label="Enter subtask summary."
+                name="subTaskSummary"
+                value={subTaskSummary}
                 onChange={e => handleChange (e)}
                 variant="outlined"
                 required
@@ -73,9 +73,9 @@ const TaskForm = props => {
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter task description."
-                name="taskDescription"
-                value={taskDescription}
+                label="Enter subtask description."
+                name="subTaskDescription"
+                value={subTaskDescription}
                 onChange={e => handleChange (e)}
                 variant="outlined"
                 required
@@ -86,7 +86,7 @@ const TaskForm = props => {
         <Divider />
         <CardActions>
           <Button color="primary" variant="contained" type="submit">
-            Create Task
+            Create Subtask
           </Button>
         </CardActions>
       </form>
@@ -94,9 +94,9 @@ const TaskForm = props => {
   );
 };
 
-TaskForm.propTypes = {
+SubTaskForm.propTypes = {
   className: PropTypes.string,
-  addTask: PropTypes.func.isRequired,
+  addSubTask: PropTypes.func.isRequired,
 };
 
-export default connect (null, {addTask}) (TaskForm);
+export default connect (null, {addSubTask}) (SubTaskForm);

@@ -19,6 +19,7 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import SubTaskItem from '../SubTaskItem';
+import SubTaskForm from '../SubTaskForm';
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -85,6 +86,7 @@ const TaskItem = props => {
                 <DeleteForeverIcon />
               </Button>
             </CardActions>
+            <SubTaskForm projectId={projectId} taskId={_id} />
             <CardContent>
               <div>
                 {subTasks.map (subtask => (
@@ -95,7 +97,7 @@ const TaskItem = props => {
                   />
                 ))}
               </div>
-              </CardContent>
+            </CardContent>
           </Grid>
         </Grid>
       </CardContent>

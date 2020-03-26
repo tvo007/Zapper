@@ -11,7 +11,7 @@ import {
   ADD_TICKET,
   REMOVE_TICKET,
   TOGGLE_TICKET_COMPLETED,
-  ADD_SUBTASK
+  ADD_SUBTASK,
 } from '../actions/types';
 
 const initialState = {
@@ -101,9 +101,10 @@ export default function (state = initialState, action) {
         project: {
           ...state.project,
           tasks: state.project.tasks.map (
-            (task) =>
+            (task, index) =>
               task._id === payload.taskId
-                ? {...task, subTasks: payload} : task     
+                ? {...task, subTasks: payload.subTasks[index].subTasks}
+                : task
           ),
         },
         loading: false,

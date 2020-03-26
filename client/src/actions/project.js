@@ -198,7 +198,7 @@ export const toggleTaskCompleted = (projectId, taskId) => async dispatch => {
   }
 };
 
-//add task
+//add subtask
 export const addSubTask = (projectId, taskId, formData) => async dispatch => {
   const config = {
     headers: {
@@ -214,7 +214,7 @@ export const addSubTask = (projectId, taskId, formData) => async dispatch => {
 
     dispatch ({
       type: ADD_SUBTASK,
-      payload: res.data,
+      payload: {taskId, subTasks: res.data},
     });
 
     dispatch (setAlert ('Sub task Added', 'success'));

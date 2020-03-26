@@ -26,7 +26,6 @@ const useStyles = makeStyles (() => ({
 const SubTaskItem = props => {
   const {
     className,
-    projectId,
     subtask: {subTaskSummary, subTaskDescription, isCompleted},
     auth,
     // deleteTask,
