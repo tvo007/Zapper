@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {deleteProject} from '../../../../actions/project';
 import clsx from 'clsx';
@@ -12,11 +12,13 @@ import {
   Typography,
   Grid,
   Divider,
+  CardHeader,
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 //import GetAppIcon from '@material-ui/icons/GetApp';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const useStyles = makeStyles (theme => ({
   root: {},
@@ -50,14 +52,7 @@ const ProjectCard = props => {
     product,
     auth,
     deleteProject,
-    project: {
-      _id,
-      title,
-      name,
-      description,
-      tasks,
-      tickets,
-    },
+    project: {_id, title, name, description, tasks, tickets},
     showActions,
     ...rest
   } = props;
@@ -80,43 +75,45 @@ const ProjectCard = props => {
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
+      <Typography align="right">
+        <DeleteForeverIcon onClick={() => deleteProject (_id)} />
+      </Typography>
       <Link to={`/projects/${_id}`}>
-      <CardContent>
-        <Typography align="center" gutterBottom variant="h4">
-          {title}
-        </Typography>
-        <Typography align="center" variant="body1">
-          {description}
-        </Typography>
-        <Typography align="center" variant="body1">
-          Team Lead: {name}
-        </Typography>
-        <Typography align="center" variant="body1">
-        </Typography>
-      </CardContent>
-      <Divider />
-      <CardActions>
-        <Grid container justify="space-between">
-          <Grid className={classes.statsItem} item>
-            <AccessTimeIcon className={classes.statsIcon} />
-            <Typography display="inline" variant="body2">
-              Updated {/**insert time function here */}
-            </Typography>
+        <CardContent>
+          <Typography align="center" gutterBottom variant="h4">
+            {title}
+          </Typography>
+          <Typography align="center" variant="body1">
+            {description}
+          </Typography>
+          <Typography align="center" variant="body1">
+            Team Lead: {name}
+          </Typography>
+          <Typography align="center" variant="body1" />
+        </CardContent>
+        <Divider />
+        <CardActions>
+          <Grid container justify="space-between">
+            <Grid className={classes.statsItem} item>
+              <AccessTimeIcon className={classes.statsIcon} />
+              <Typography display="inline" variant="body2">
+                Updated {/**insert time function here */}
+              </Typography>
+            </Grid>
+            <Grid className={classes.statsItem} item>
+              <AssignmentLateIcon className={classes.statsIcon} />
+              <Typography display="inline" variant="body2">
+                {tasks.length} Tasks
+              </Typography>
+            </Grid>
+            <Grid className={classes.statsItem} item>
+              <BugReportIcon className={classes.statsIcon} />
+              <Typography display="inline" variant="body2">
+                {tickets.length} Tickets
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid className={classes.statsItem} item>
-            <AssignmentLateIcon className={classes.statsIcon} />
-            <Typography display="inline" variant="body2">
-              {tasks.length} Tasks
-            </Typography>
-          </Grid>
-          <Grid className={classes.statsItem} item>
-            <BugReportIcon className={classes.statsIcon} />
-            <Typography display="inline" variant="body2">
-              {tickets.length} Tickets
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardActions>
+        </CardActions>
       </Link>
     </Card>
   );
@@ -125,6 +122,7 @@ const ProjectCard = props => {
 ProjectCard.propTypes = {
   className: PropTypes.string,
   project: PropTypes.object.isRequired,
+  deleteProject: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

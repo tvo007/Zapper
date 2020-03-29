@@ -347,7 +347,7 @@ router.post (
         user: req.user.id,
       };
 
-      project.tasks[addIndex].subTasks.unshift(newSubTask)
+      project.tasks[addIndex].subTasks.unshift (newSubTask);
 
       await project.save ();
 
