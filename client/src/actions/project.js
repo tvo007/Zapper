@@ -14,6 +14,8 @@ import {
   REMOVE_TICKET,
   TOGGLE_TICKET_COMPLETED,
   ADD_SUBTASK,
+  REMOVE_SUBTASK,
+  TOGGLE_SUBTASK,
 } from './types';
 
 //get projects
@@ -198,6 +200,8 @@ export const toggleTaskCompleted = (projectId, taskId) => async dispatch => {
   }
 };
 
+//-------subtasks-------
+
 //add subtask
 export const addSubTask = (projectId, taskId, formData) => async dispatch => {
   const config = {
@@ -218,6 +222,33 @@ export const addSubTask = (projectId, taskId, formData) => async dispatch => {
     });
 
     dispatch (setAlert ('Sub task Added', 'success'));
+  } catch (err) {
+    dispatch ({
+      type: PROJECT_ERROR,
+      payload: {msg: err.response.statusText, status: err.response.status},
+    });
+  }
+};
+
+//delete subtasks
+export const deleteSubTask = (
+  projectId,
+  taskId,
+  subTaskId
+) => async dispatch => {
+  try {
+    // const res =
+
+    const res = await axios.delete (
+      `/api/projects/tasks/${projectId}/${taskId}/${subTaskId}`
+    );
+
+    dispatch ({
+      type: REMOVE_SUBTASK,
+      payload: {taskId, subTasks: res.data}
+    });
+
+    dispatch (setAlert ('Task Removed', 'success'));
   } catch (err) {
     dispatch ({
       type: PROJECT_ERROR,

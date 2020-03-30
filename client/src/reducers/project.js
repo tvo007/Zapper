@@ -12,6 +12,8 @@ import {
   REMOVE_TICKET,
   TOGGLE_TICKET_COMPLETED,
   ADD_SUBTASK,
+  REMOVE_SUBTASK,
+  TOGGLE_SUBTASK,
 } from '../actions/types';
 
 const initialState = {
@@ -135,6 +137,26 @@ export default function (state = initialState, action) {
         },
         loading: false,
       };
+    case REMOVE_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          tasks: state.project.tasks.map (
+            (task, index) =>
+              task._id === payload.taskId
+                ? {
+                    ...task,
+                    subTasks: payload.subTasks[index].subTasks.filter (
+                      subtask => subtask._id !== payload
+                    ),
+                  }
+                : task
+          ),
+        },
+        loading: false,
+      };
+
     default:
       return state;
   }

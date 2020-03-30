@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
-  //CardHeader,
+  CardHeader,
   TextField,
   CardContent,
   CardActions,
@@ -56,14 +56,12 @@ const TaskItem = props => {
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
+      <CardHeader title={taskSummary} style={taskCompletedStyling} />
       <CardContent>
         <Grid container spacing={3}>
           <Grid item md={6} xs={12}>
             <Typography style={taskCompletedStyling}>
-              {' '}{taskSummary}
-            </Typography>
-            <Typography style={taskCompletedStyling}>
-              {' '}{taskDescription}
+              Description: {taskDescription}
             </Typography>
             <CardActions>
               <Button
@@ -92,8 +90,10 @@ const TaskItem = props => {
                 {subTasks.map (subtask => (
                   <SubTaskItem
                     key={subtask._id}
+                    subTaskId={subtask._id}
                     subtask={subtask}
                     taskId={_id}
+                    projectId={projectId}
                   />
                 ))}
               </div>

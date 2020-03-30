@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
-  //CardHeader,
+  CardHeader,
   TextField,
   CardContent,
   CardActions,
@@ -14,10 +14,10 @@ import {
   Typography,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-//import {deleteTask, toggleTaskCompleted} from '../../../../actions/project';
-// import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-// import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-// import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import {deleteSubTask} from '../../../../actions/project';
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -26,9 +26,12 @@ const useStyles = makeStyles (() => ({
 const SubTaskItem = props => {
   const {
     className,
+    projectId,
+    taskId,
+    subTaskId,
     subtask: {subTaskSummary, subTaskDescription, isCompleted},
     auth,
-    // deleteTask,
+    deleteSubTask
     // toggleTaskCompleted
   } = props;
 
@@ -36,30 +39,51 @@ const SubTaskItem = props => {
 
   const classes = useStyles ();
 
-//   const toggleHandler = e => toggleTaskCompleted (projectId, _id);
-//   const deleteHandler = e => deleteTask (projectId, _id);
+  //   const toggleHandler = e => toggleTaskCompleted (projectId, _id);
+  const deleteHandler = e => deleteSubTask (projectId, taskId, subTaskId);
 
   const taskCompletedStyling = {
     textDecoration: isCompleted ? 'line-through' : null,
   };
 
-//   const [taskEditToggle, setTaskEditToggle] = useState (false);
+  //   const [taskEditToggle, setTaskEditToggle] = useState (false);
   // const [taskItemData, setTaskItemData] = useState (taskDescription);
 
-//   const handleTaskEditToggle = () => {
-//     setTaskEditToggle (!taskEditToggle);
-//   };
+  //   const handleTaskEditToggle = () => {
+  //     setTaskEditToggle (!taskEditToggle);
+  //   };
 
   return (
-    
-        <div>
-            <Typography style={taskCompletedStyling}>
-              {' '}{subTaskSummary}
-            </Typography>
+    <Card className={clsx (classes.root, className)}>
+      <CardHeader title={subTaskSummary} style={taskCompletedStyling} />
+      <CardContent>
+        <Grid container spacing={3}>
+          <Grid item md={6} xs={12}>
             <Typography style={taskCompletedStyling}>
               {' '}{subTaskDescription}
             </Typography>
-            {/*<CardActions>
+
+          </Grid>
+          <CardActions>
+            <Button color="primary" variant="contained" type="button">
+              <AssignmentTurnedInIcon />
+            </Button>
+            <Button color="primary" variant="contained" type="button">
+              <EditOutlinedIcon />
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              type="button"
+              onClick={deleteHandler}
+            >
+              <DeleteForeverIcon />
+            </Button>
+          </CardActions>
+        </Grid>
+      </CardContent>
+
+      {/*<CardActions>
               <Button
                 color="primary"
                 variant="contained"
@@ -80,7 +104,7 @@ const SubTaskItem = props => {
                 <DeleteForeverIcon />
               </Button>
             </CardActions>*/}
-    </div>
+    </Card>
   );
 };
 
@@ -89,14 +113,14 @@ SubTaskItem.propTypes = {
   //projectId: PropTypes.string.isRequired,
   subtask: PropTypes.object.isRequired,
   // auth: PropTypes.object.isRequired,
-//   deleteTask: PropTypes.func.isRequired,
-//   toggleTaskCompleted: PropTypes.func.isRequired,
+  //   deleteTask: PropTypes.func.isRequired,
+  //   toggleTaskCompleted: PropTypes.func.isRequired,
 };
 
 // const mapStateToProps = state => ({
 //   auth: state.auth,
 // });
 
-export default connect () (SubTaskItem);
+export default connect (null, {deleteSubTask}) (SubTaskItem);
 
 // export default connect (null, {deleteTask, toggleTaskCompleted}) (TaskItem);

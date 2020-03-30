@@ -29,10 +29,16 @@ export const EDIT_PROJECT = 'EDIT_PROJECT'
 export const DELETE_PROJECT = 'DELETE_PROJECT'
 export const GET_PROJECT = 'GET_PROJECT'
 export const ADD_PROJECT = 'ADD_PROJECT'
+
+//tasks
 export const ADD_TASK = 'ADD_TASK'
 export const REMOVE_TASK = 'REMOVE_TASK'
 export const TOGGLE_TASK_COMPLETED = 'TOGGLE_TASK_COMPLETED'
+//subtasks
 export const ADD_SUBTASK = 'ADD_SUBTASK'
+export const REMOVE_SUBTASK = 'REMOVE_SUBTASK'
+export const TOGGLE_SUBTASK = 'TOGGLE_SUBTASK'
+
 //---ticket types
 export const ADD_TICKET = 'ADD_TICKET'
 export const REMOVE_TICKET = 'REMOVE_TICKET'
