@@ -17,7 +17,7 @@ import {connect} from 'react-redux';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import {deleteSubTask} from '../../../../actions/project';
+import {deleteSubTask, toggleSubTask} from '../../../../actions/project';
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -31,15 +31,15 @@ const SubTaskItem = props => {
     subTaskId,
     subtask: {subTaskSummary, subTaskDescription, isCompleted},
     auth,
-    deleteSubTask
-    // toggleTaskCompleted
+    deleteSubTask,
+    toggleSubTask,
   } = props;
 
   //subtask: {_id, taskDescription, name, avatar, user, date, isCompleted}
 
   const classes = useStyles ();
 
-  //   const toggleHandler = e => toggleTaskCompleted (projectId, _id);
+  const toggleHandler = e => toggleSubTask (projectId, taskId, subTaskId);
   const deleteHandler = e => deleteSubTask (projectId, taskId, subTaskId);
 
   const taskCompletedStyling = {
@@ -65,12 +65,18 @@ const SubTaskItem = props => {
 
           </Grid>
           <CardActions>
-            <Button color="primary" variant="contained" type="button">
+            <Button
+              color="primary"
+              variant="contained"
+              type="button"
+              onClick={toggleHandler}
+            >
               <AssignmentTurnedInIcon />
             </Button>
             <Button color="primary" variant="contained" type="button">
               <EditOutlinedIcon />
             </Button>
+
             <Button
               color="primary"
               variant="contained"
@@ -121,6 +127,6 @@ SubTaskItem.propTypes = {
 //   auth: state.auth,
 // });
 
-export default connect (null, {deleteSubTask}) (SubTaskItem);
+export default connect (null, {deleteSubTask, toggleSubTask}) (SubTaskItem);
 
 // export default connect (null, {deleteTask, toggleTaskCompleted}) (TaskItem);

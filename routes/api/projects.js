@@ -412,6 +412,60 @@ router.delete ('/tasks/:id/:task_id/:subtask_id', auth, async (req, res) => {
   }
 });
 
+//@route put api/projects/tasks/:id/:task_id/:subtask_id/isCompleted
+//desc: toggle subtask for complettion
+//access private
+router.put (
+  '/tasks/:id/:task_id/:subtask_id/isCompleted',
+  auth,
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.id);
+
+      // Pull out task
+      const task = project.tasks.find (task => task.id === req.params.task_id);
+
+      // Make sure task exists
+      if (!task) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      // Check user
+      if (task.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      //task.isCompleted = !task.isCompleted;
+      const taskIndex = project.tasks
+        .map (task => task.id)
+        .indexOf (req.params.task_id);
+
+      const subtask = project.tasks[taskIndex].subTasks.find (
+        subtask => subtask.id === req.params.subtask_id
+      );
+
+      // Make sure subtask exists
+      if (!subtask) {
+        return res.status (404).json ({msg: 'Subtask does not exist'});
+      }
+
+      // Check user
+      if (subtask.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      subtask.isCompleted = !subtask.isCompleted;
+
+      await project.save ();
+
+      res.json (project.tasks);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
 /**------------add ticket routes here! */
 
 // @route    POST api/projects/tickets/:id

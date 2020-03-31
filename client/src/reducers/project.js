@@ -90,6 +90,33 @@ export default function (state = initialState, action) {
         },
         loading: false,
       };
+
+    case TOGGLE_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          tasks: state.project.tasks.map (
+            (task, index) =>
+              task._id === payload.taskId
+                ? {
+                    ...task,
+                    subTasks: payload.subTasks[index].subTasks.map (
+                      (subtask, index) =>
+                        subtask._id === payload.subTaskId
+                          ? {
+                              ...subtask,
+                              isCompleted: payload.isCompleted[index]
+                                .isCompleted,
+                            }
+                          : subtask
+                    ),
+                  }
+                : task
+          ),
+        },
+        loading: false,
+      };
     //^^subject to change
     case ADD_TASK:
       return {

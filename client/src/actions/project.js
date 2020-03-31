@@ -245,11 +245,39 @@ export const deleteSubTask = (
 
     dispatch ({
       type: REMOVE_SUBTASK,
-      payload: {taskId, subTasks: res.data}
+      payload: {taskId, subTasks: res.data},
     });
 
     dispatch (setAlert ('Task Removed', 'success'));
   } catch (err) {
+    dispatch ({
+      type: PROJECT_ERROR,
+      payload: {msg: err.response.statusText, status: err.response.status},
+    });
+  }
+};
+
+//toggle subtask
+export const toggleSubTask = (
+  projectId,
+  taskId,
+  subTaskId
+) => async dispatch => {
+  try {
+    const res = await axios.put (
+      `/api/projects/tasks/${projectId}/${taskId}/${subTaskId}/isCompleted`
+    );
+
+    dispatch ({
+      type: TOGGLE_SUBTASK,
+      payload: {taskId, subTasks: res.data},
+    });
+
+    //res.data returns project.tasks array
+
+    dispatch (setAlert ('Task status has changed!', 'success'));
+  } catch (err) {
+    console.log (err);
     dispatch ({
       type: PROJECT_ERROR,
       payload: {msg: err.response.statusText, status: err.response.status},
