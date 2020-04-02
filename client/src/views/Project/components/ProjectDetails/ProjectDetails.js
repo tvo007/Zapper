@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {Grid} from '@material-ui/core';
@@ -43,6 +43,9 @@ const ProjectDetails = props => {
   const {
     project: {title, name, description, tasks, tickets},
     className,
+    handleProjectFormToggle,
+    handleShowTasks,
+    handleShowTickets,
     ...rest
   } = props;
 
@@ -103,13 +106,18 @@ const ProjectDetails = props => {
       </CardContent>
       <Divider />
       <CardActions>
-      <Button color="primary" variant="contained" type="button">
+        <Button
+          color="primary"
+          variant="contained"
+          type="button"
+          onClick={handleProjectFormToggle}
+        >
           <EditIcon />
         </Button>
-        <Button color="primary" variant="contained" type="button">
+        <Button color="primary" variant="contained" type="button" onClick={handleShowTasks}>
           View Tasks
         </Button>
-        <Button color="primary" variant="contained" type="button">
+        <Button color="primary" variant="contained" type="button" onClick={handleShowTickets}>
           View Tickets
         </Button>
       </CardActions>

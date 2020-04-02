@@ -1,11 +1,17 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
-import {TaskForm, TaskItem, TicketForm, TicketItem, ProjectDetailsForm} from './components';
+import {
+  TaskForm,
+  TaskItem,
+  TicketForm,
+  TicketItem,
+  ProjectDetailsForm,
+} from './components';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -22,31 +28,65 @@ const Project = ({getProject, project: {project, loading}, match}) => {
   );
   const classes = useStyles ();
 
+  const [projectFormToggle, setProjectFormToggle] = useState (false);
+
+  const [showTasksToggle, setShowTasksToggle] = useState (true);
+
+  const [showTicketsToggle, setShowTicketsToggle] = useState (false);
+
+  const handleProjectFormToggle = () => {
+    setProjectFormToggle (!projectFormToggle);
+  };
+
+  const handleShowTasks = () => {
+    setShowTasksToggle (!showTasksToggle);
+  };
+
+  const handleShowTickets = () => {
+    setShowTicketsToggle (!showTicketsToggle);
+  };
+
+  const showProjectForm = projectFormToggle
+    ? <ProjectDetailsForm
+        projectId={project._id}
+        projectDescription={project.description}
+      />
+    : null;
+
   return loading || project === null
     ? <div>LOADING!</div>
     : <div className={classes.root}>
 
         <Grid container spacing={4}>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <ProjectDetails project={project} />
-            <ProjectDetailsForm projectId={project._id} projectDescription={project.description}/>
+            <ProjectDetails
+              project={project}
+              handleProjectFormToggle={handleProjectFormToggle}
+              handleShowTasks = {handleShowTasks}
+              handleShowTickets = {handleShowTickets}
+            />
+            {showProjectForm}
           </Grid>
-          <Grid item lg={4} md={4} xl={4} xs={12}>
+          {showTasksToggle ? <Grid item lg={4} md={4} xl={4} xs={12}>
             <TaskForm projectId={project._id} />
             <div>
               {project.tasks.map (task => (
                 <TaskItem key={task._id} task={task} projectId={project._id} />
               ))}
             </div>
-          </Grid>
-          <Grid item lg={4} md={4} xl={4} xs={12}>
+          </Grid>: null}
+          {showTicketsToggle ? <Grid item lg={4} md={4} xl={4} xs={12}>
             <TicketForm projectId={project._id} />
             <div>
               {project.tickets.map (ticket => (
-                <TicketItem key={ticket._id} ticket={ticket} projectId={project._id} />
+                <TicketItem
+                  key={ticket._id}
+                  ticket={ticket}
+                  projectId={project._id}
+                />
               ))}
             </div>
-          </Grid>
+          </Grid>: null}
         </Grid>
       </div>;
 };
