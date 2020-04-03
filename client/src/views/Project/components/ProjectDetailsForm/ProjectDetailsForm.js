@@ -14,7 +14,6 @@ import {
 } from '@material-ui/core';
 import {connect} from 'react-redux';
 import {editProject} from '../../../../actions/project';
-import project from 'reducers/project';
 
 const useStyles = makeStyles (() => ({
   root: {},

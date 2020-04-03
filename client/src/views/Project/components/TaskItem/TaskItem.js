@@ -29,7 +29,7 @@ const TaskItem = props => {
   const {
     className,
     projectId,
-    task: {task, _id, taskSummary, taskDescription, isCompleted, subTasks},
+    task: {_id, taskSummary, taskDescription, isCompleted, subTasks},
     auth,
     deleteTask,
     toggleTaskCompleted,
@@ -50,9 +50,9 @@ const TaskItem = props => {
   const [taskEditToggle, setTaskEditToggle] = useState (false);
   // const [taskItemData, setTaskItemData] = useState (taskDescription);
 
-  const handleTaskEditToggle = () => {
-    setTaskEditToggle (!taskEditToggle);
-  };
+  // const handleTaskEditToggle = () => {
+  //   setTaskEditToggle (!taskEditToggle);
+  // };
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
@@ -120,22 +120,4 @@ TaskItem.propTypes = {
 
 export default connect (null, {deleteTask, toggleTaskCompleted}) (TaskItem);
 
-{
-  /**
 
-<CardContent>
-        <Grid item md={6} xs={12}>
-          <TextField
-            fullWidth
-            label="Task Description"
-            margin="dense"
-            name="taskDescription"
-            value={taskItemData}
-            onChange={e => setTaskItemData (e.target.value)}
-            variant="outlined"
-          />
-        </Grid>
-      </CardContent>
-
-*/
-}

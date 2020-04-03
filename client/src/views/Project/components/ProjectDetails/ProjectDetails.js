@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {Grid} from '@material-ui/core';
@@ -12,7 +12,6 @@ import {
   Typography,
   Divider,
   Button,
-  LinearProgress,
 } from '@material-ui/core';
 //import GetAppIcon from '@material-ui/icons/GetApp';
 import BugReportIcon from '@material-ui/icons/BugReport';
@@ -114,10 +113,20 @@ const ProjectDetails = props => {
         >
           <EditIcon />
         </Button>
-        <Button color="primary" variant="contained" type="button" onClick={handleShowTasks}>
+        <Button
+          color="primary"
+          variant="contained"
+          type="button"
+          onClick={handleShowTasks}
+        >
           View Tasks
         </Button>
-        <Button color="primary" variant="contained" type="button" onClick={handleShowTickets}>
+        <Button
+          color="primary"
+          variant="contained"
+          type="button"
+          onClick={handleShowTickets}
+        >
           View Tickets
         </Button>
       </CardActions>

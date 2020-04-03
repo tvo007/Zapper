@@ -62,31 +62,39 @@ const Project = ({getProject, project: {project, loading}, match}) => {
             <ProjectDetails
               project={project}
               handleProjectFormToggle={handleProjectFormToggle}
-              handleShowTasks = {handleShowTasks}
-              handleShowTickets = {handleShowTickets}
+              handleShowTasks={handleShowTasks}
+              handleShowTickets={handleShowTickets}
             />
             {showProjectForm}
           </Grid>
-          {showTasksToggle ? <Grid item lg={4} md={4} xl={4} xs={12}>
-            <TaskForm projectId={project._id} />
-            <div>
-              {project.tasks.map (task => (
-                <TaskItem key={task._id} task={task} projectId={project._id} />
-              ))}
-            </div>
-          </Grid>: null}
-          {showTicketsToggle ? <Grid item lg={4} md={4} xl={4} xs={12}>
-            <TicketForm projectId={project._id} />
-            <div>
-              {project.tickets.map (ticket => (
-                <TicketItem
-                  key={ticket._id}
-                  ticket={ticket}
-                  projectId={project._id}
-                />
-              ))}
-            </div>
-          </Grid>: null}
+          {showTasksToggle
+            ? <Grid item lg={12} md={12} xl={12} xs={12}>
+                <TaskForm projectId={project._id} />
+                <div>
+                  {project.tasks.map (task => (
+                    <TaskItem
+                      key={task._id}
+                      task={task}
+                      projectId={project._id}
+                    />
+                  ))}
+                </div>
+              </Grid>
+            : null}
+          {showTicketsToggle
+            ? <Grid item lg={12} md={12} xl={12} xs={12}>
+                <TicketForm projectId={project._id} />
+                <div>
+                  {project.tickets.map (ticket => (
+                    <TicketItem
+                      key={ticket._id}
+                      ticket={ticket}
+                      projectId={project._id}
+                    />
+                  ))}
+                </div>
+              </Grid>
+            : null}
         </Grid>
       </div>;
 };
@@ -102,26 +110,4 @@ const mapStateToProps = state => ({
 
 export default connect (mapStateToProps, {getProject}) (Project);
 
-{
-  /**
-loading || project === null
-        ? <div>LOADING!</div>
-        :  
 
-        original task form grid/to be deleted later
-   <Grid item lg={8} md={6} xl={8} xs={12}> 
-            <TaskForm projectId={project._id}/>
-            <div className='comments'>
-            {project.tasks.map(task => (
-                <TaskItem key={task._id} task={task} projectId={project._id} />
-            ))}
-        </div>
-          </Grid>     
-        
-        
-        
-        
-
-
-        */
-}
