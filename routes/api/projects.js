@@ -220,6 +220,68 @@ router.post (
 // @route    PUT api/projects/tasks/:id
 // @desc     edit a task for project
 // @access   Private
+// WIP advanced mongodb queries
+router.put (
+  '/tasks/:id/:task_id',
+  [
+    auth,
+    [
+      check ('taskSummary', 'Task summary is required').not ().isEmpty (),
+      check ('taskDescription', 'Task description is required')
+        .not ()
+        .isEmpty (),
+    ],
+  ],
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.id); // Pull out task
+      const task = project.tasks.find (task => task.id === req.params.task_id); // Make sure task exists
+      if (!task) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      } // Check user
+      if (task.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+      const {taskSummary, taskDescription} = req.body;
+      const {
+        _id,
+        user,
+        name,
+        avatar,
+        date,
+        isCompleted,
+        users,
+        taskPriority,
+        subTasks,
+      } = task;
+      let newTask = {
+        _id,
+        user,
+        taskSummary,
+        taskDescription,
+        name,
+        avatar,
+        date,
+        isCompleted,
+        users,
+        taskPriority,
+        subTasks,
+        edited: {
+          updated: true,
+          date: Date.now (),
+        },
+      }; // Get remove index
+      const editIndex = project.tasks
+        .map (task => task.id)
+        .indexOf (req.params.task_id);
+      project.tasks.splice (editIndex, 1, newTask);
+      await project.save ();
+      res.json (project.tasks);
+    } catch (err) {
+      res.status (500).send ('Server Error');
+    }
+  }
+);
 
 // @route    DELETE api/projects/tasks/:id/:task_id
 // @desc     Delete id
@@ -355,6 +417,93 @@ router.post (
     } catch (err) {
       console.error (err.message);
       res.status (500).send ('Server Error');
+    }
+  }
+);
+// @route    PUT api/projects/tasks/:id/:task_id/:subtask_id
+// @desc     edit subtask by id
+// @access   Private
+router.put (
+  '/tasks/:id/:task_id/:subtask_id',
+  [
+    auth,
+    [
+      check ('subTaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subTaskDescription', 'Subtask description is required')
+        .not ()
+        .isEmpty (),
+    ],
+  ],
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.id); // Pull out task
+      const task = project.tasks.find (task => task.id === req.params.task_id); // Make sure task exists
+      if (!task) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      } // Check user
+      if (task.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+      
+      const taskIndex = project.tasks
+        .map (task => task.id)
+        .indexOf (req.params.task_id);
+
+      const subtask = project.tasks[taskIndex].subTasks.find (
+        subtask => subtask.id === req.params.subtask_id
+      );
+
+      // Make sure subtask exists
+      if (!subtask) {
+        return res.status (404).json ({msg: 'Subtask does not exist'});
+      }
+
+      // Check user
+      if (subtask.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const {subTaskSummary, subTaskDescription} = req.body;
+
+      const {
+        _id,
+        user,
+        name,
+        avatar,
+        date,
+        isCompleted,
+        users,
+        taskPriority,
+      } = subtask;
+
+      let newSubTask = {
+        _id,
+        user,
+        subTaskSummary,
+        subTaskDescription,
+        name,
+        avatar,
+        date,
+        isCompleted,
+        users,
+        taskPriority,
+        edited: {
+          updated: true,
+          date: Date.now (),
+        },
+      };
+
+      
+
+      const editIndex = project.tasks[taskIndex].subTasks
+        .map (subtask => subtask.id)
+        .indexOf (req.params.subtask_id);
+
+      project.tasks[taskIndex].subTasks.splice (editIndex, 1, newSubTask);
+      await project.save ();
+      res.json (project.tasks);
+    } catch (err) {
+      res.status (500).send ('Server Error');
     }
   }
 );

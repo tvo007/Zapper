@@ -78,6 +78,8 @@ const SubTaskForm = props => {
                 value={subTaskDescription}
                 onChange={e => handleChange (e)}
                 variant="outlined"
+                multiline
+                rows="4"
                 required
               />
             </Grid>

@@ -39,9 +39,12 @@ const TaskItem = props => {
   //task: {_id, taskDescription, name, avatar, user, date, isCompleted}
 
   const classes = useStyles ();
-
+  const [showSubtasksToggle, setShowSubtasksToggle] = useState (false);
   const toggleHandler = e => toggleTaskCompleted (projectId, _id);
   const deleteHandler = e => deleteTask (projectId, _id);
+  const handleShowSubtasks = () => {
+    setShowSubtasksToggle (!showSubtasksToggle);
+  };
 
   const taskCompletedStyling = {
     textDecoration: isCompleted ? 'line-through' : null,
@@ -83,21 +86,33 @@ const TaskItem = props => {
               >
                 <DeleteForeverIcon />
               </Button>
+              <Button
+                color="primary"
+                variant="contained"
+                type="button"
+                onClick={handleShowSubtasks}
+              >
+                View Subtasks {subTasks.length}
+              </Button>
             </CardActions>
-            <SubTaskForm projectId={projectId} taskId={_id} />
-            <CardContent>
-              <div>
-                {subTasks.map (subtask => (
-                  <SubTaskItem
-                    key={subtask._id}
-                    subTaskId={subtask._id}
-                    subtask={subtask}
-                    taskId={_id}
-                    projectId={projectId}
-                  />
-                ))}
-              </div>
-            </CardContent>
+            {showSubtasksToggle
+              ? <div>
+                  <SubTaskForm projectId={projectId} taskId={_id} />
+                  <CardContent>
+                    <div>
+                      {subTasks.map (subtask => (
+                        <SubTaskItem
+                          key={subtask._id}
+                          subTaskId={subtask._id}
+                          subtask={subtask}
+                          taskId={_id}
+                          projectId={projectId}
+                        />
+                      ))}
+                    </div>
+                  </CardContent>
+                </div>
+              : null}
           </Grid>
         </Grid>
       </CardContent>
@@ -119,5 +134,3 @@ TaskItem.propTypes = {
 // });
 
 export default connect (null, {deleteTask, toggleTaskCompleted}) (TaskItem);
-
-
