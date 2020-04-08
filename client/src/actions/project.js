@@ -16,6 +16,8 @@ import {
   ADD_SUBTASK,
   REMOVE_SUBTASK,
   TOGGLE_SUBTASK,
+  EDIT_TASK,
+  EDIT_SUBTASK
 } from './types';
 
 //get projects
@@ -147,6 +149,31 @@ export const addTask = (projectId, formData) => async dispatch => {
     });
 
     dispatch (setAlert ('Task Added', 'success'));
+  } catch (err) {
+    dispatch ({
+      type: PROJECT_ERROR,
+      payload: {msg: err.response.statusText, status: err.response.status},
+    });
+  }
+};
+
+//edit task
+export const editTask = (projectId, taskId, formData) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const res = await axios.put (`/api/projects/tasks/${projectId}/${taskId}`, formData, config);
+
+    dispatch ({
+      type: EDIT_TASK,
+      payload: res.data
+    });
+
+    dispatch (setAlert ('Task Removed', 'success'));
   } catch (err) {
     dispatch ({
       type: PROJECT_ERROR,

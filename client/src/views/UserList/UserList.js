@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/styles';
 // import {UsersToolbar} from './components'
 import {connect} from 'react-redux';
@@ -24,13 +24,14 @@ const UserList = ({getProfiles, profile: {profiles, loading}}) => {
     [getProfiles]
   );
 
-  return loading && profiles === null ? <div>LOADING!</div> :
-    <div className={classes.root}>
-      {/**UsersToolbar would go here */}
-      <div className={classes.content}>
-        <UsersTable profiles={profiles} />
-      </div>
-    </div>
+  return loading && profiles === null
+    ? <div>LOADING!</div>
+    : <div className={classes.root}>
+        {/**UsersToolbar would go here */}
+        <div className={classes.content}>
+          <UsersTable profiles={profiles} />
+        </div>
+      </div>;
 };
 
 // UserList.propTypes = {

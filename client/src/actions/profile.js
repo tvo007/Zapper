@@ -8,7 +8,7 @@ import {
   UPDATE_PROFILE,
   ACCOUNT_DELETED,
   CLEAR_PROFILE,
-  GET_REPOS
+  GET_REPOS,
 } from './types';
 
 //get users profile
@@ -30,9 +30,6 @@ export const getCurrentProfile = () => async dispatch => {
 
 //get all profiles
 export const getProfiles = () => async dispatch => {
-  dispatch({type: CLEAR_PROFILE});
-
-
   try {
     const res = await axios.get ('/api/profile');
 
@@ -50,7 +47,6 @@ export const getProfiles = () => async dispatch => {
 
 //get profile by id
 export const getProfileById = userId => async dispatch => {
-
   try {
     const res = await axios.get (`/api/profile/user/${userId}`);
 
@@ -68,7 +64,6 @@ export const getProfileById = userId => async dispatch => {
 
 //get github repos
 export const getGithubRepos = username => async dispatch => {
-
   try {
     const res = await axios.get (`/api/profile/github/${username}`);
 

@@ -14,6 +14,8 @@ import {
 } from '@material-ui/core';
 import {connect} from 'react-redux';
 import {addSubTask} from '../../../../actions/project';
+import AddCircleOutlineRoundedIcon
+  from '@material-ui/icons/AddCircleOutlineRounded';
 
 const initialState = {
   subTaskSummary: '',
@@ -32,13 +34,21 @@ const SubTaskForm = props => {
   const [formData, setFormData] = useState (initialState);
 
   const {subTaskSummary, subTaskDescription} = formData;
+  const [addSubtaskToggle, setAddSubtaskToggle] = useState (false);
 
+  const handleAddTaskToggle = () => {
+    setAddSubtaskToggle (!addSubtaskToggle);
+  };
   const handleChange = e => {
     setFormData ({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
+
+  const expandForm = (
+    <AddCircleOutlineRoundedIcon type="submit" onClick={handleAddTaskToggle} />
+  );
 
   // const [taskSummary, setTaskSummary] = useState ('');
   // const [taskDescription, setTaskDescription] = useState ('');
@@ -55,43 +65,51 @@ const SubTaskForm = props => {
 
   return (
     <Card className={clsx (classes.root, className)}>
-      <form autoComplete="off" onSubmit={onSubmit}>
+      <div style={{display: 'flex', alignItems: 'center'}}>
         <CardHeader title="SubTasks" />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={12} xs={12}>
-              <TextField
-                fullWidth
-                label="Enter subtask summary."
-                name="subTaskSummary"
-                value={subTaskSummary}
-                onChange={e => handleChange (e)}
-                variant="outlined"
-                required
-              />
-            </Grid>
-            <Grid item md={12} xs={12}>
-              <TextField
-                fullWidth
-                label="Enter subtask description."
-                name="subTaskDescription"
-                value={subTaskDescription}
-                onChange={e => handleChange (e)}
-                variant="outlined"
-                multiline
-                rows="4"
-                required
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button color="primary" variant="contained" type="submit">
-            Create Subtask
-          </Button>
-        </CardActions>
-      </form>
+        {expandForm}
+      </div>
+      {addSubtaskToggle
+        ? <form autoComplete="off" onSubmit={onSubmit}>
+
+            <CardContent>
+              <Grid container spacing={3}>
+                <Grid item md={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Enter subtask summary."
+                    name="subTaskSummary"
+                    value={subTaskSummary}
+                    onChange={e => handleChange (e)}
+                    variant="outlined"
+                    required
+                  />
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Enter subtask description."
+                    name="subTaskDescription"
+                    value={subTaskDescription}
+                    onChange={e => handleChange (e)}
+                    variant="outlined"
+                    multiline
+                    rows="4"
+                    required
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+
+            <Divider />
+            <CardActions>
+              <Button color="primary" variant="contained" type="submit">
+                Create Subtask
+              </Button>
+            </CardActions>
+
+          </form>
+        : null}
     </Card>
   );
 };

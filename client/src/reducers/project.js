@@ -14,6 +14,8 @@ import {
   ADD_SUBTASK,
   REMOVE_SUBTASK,
   TOGGLE_SUBTASK,
+  EDIT_TASK,
+  EDIT_SUBTASK,
 } from '../actions/types';
 
 const initialState = {
@@ -119,11 +121,13 @@ export default function (state = initialState, action) {
       };
     //^^subject to change
     case ADD_TASK:
+    case EDIT_TASK:
       return {
         ...state,
         project: {...state.project, tasks: payload},
         loading: false,
       };
+
     case ADD_SUBTASK:
       return {
         ...state,

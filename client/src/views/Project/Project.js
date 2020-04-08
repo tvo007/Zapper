@@ -76,6 +76,7 @@ const Project = ({getProject, project: {project, loading}, match}) => {
                       key={task._id}
                       task={task}
                       projectId={project._id}
+                      taskId={task._id}
                     />
                   ))}
                 </div>

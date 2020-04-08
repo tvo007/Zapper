@@ -112,7 +112,7 @@ const TaskForm = props => {
   );
 };
 
-TaskForm.propTypes = {
+TaskForm.propTypes =  {
   className: PropTypes.string,
   addTask: PropTypes.func.isRequired,
 };

@@ -444,7 +444,7 @@ router.put (
       if (task.user.toString () !== req.user.id) {
         return res.status (401).json ({msg: 'User not authorized'});
       }
-      
+
       const taskIndex = project.tasks
         .map (task => task.id)
         .indexOf (req.params.task_id);
@@ -492,8 +492,6 @@ router.put (
           date: Date.now (),
         },
       };
-
-      
 
       const editIndex = project.tasks[taskIndex].subTasks
         .map (subtask => subtask.id)

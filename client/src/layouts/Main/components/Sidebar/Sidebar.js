@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
@@ -10,11 +10,11 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
+import {getCurrentProfile} from '../../../../actions/profile';
 
 import {Profile, SidebarNav} from './components';
 
 import {connect} from 'react-redux';
-
 
 const useStyles = makeStyles (theme => ({
   drawer: {
@@ -40,9 +40,21 @@ const useStyles = makeStyles (theme => ({
 }));
 
 const Sidebar = props => {
-  const {open, variant, onClose, className, auth: {user: _id} } = props;
+  const {
+    open,
+    variant,
+    onClose,
+    className,
+    auth: {user: _id},
+    getCurrentProfile,
+    profile,
+  } = props;
 
-  const authIdRoute = `/profile/${_id}`
+  useEffect (() => {
+    getCurrentProfile ();
+  }, []);
+
+  const authIdRoute = `/profile/${_id}`;
   const classes = useStyles ();
 
   const pages = [
@@ -83,7 +95,7 @@ const Sidebar = props => {
     },
   ];
 
-  return  (
+  return (
     <Drawer
       anchor="left"
       classes={{paper: classes.drawer}}
@@ -92,7 +104,7 @@ const Sidebar = props => {
       variant={variant}
     >
       <div className={clsx (classes.root, className)}>
-        <Profile />
+        <Profile profile={profile} />
         <Divider className={classes.divider} />
         <SidebarNav className={classes.nav} pages={pages} />
       </div>
@@ -108,7 +120,8 @@ Sidebar.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  profile: state.profile,
 });
 
-export default connect(mapStateToProps)(Sidebar);
+export default connect (mapStateToProps, {getCurrentProfile}) (Sidebar);

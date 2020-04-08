@@ -4,8 +4,6 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {Avatar, Typography} from '@material-ui/core';
-import {connect} from 'react-redux';
-import {getCurrentProfile} from '../../../../../../actions/profile';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -23,19 +21,7 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const Profile = ({
-  className,
-  getCurrentProfile,
-  auth: {user},
-  profile: {profile, loading},
-}) => {
-  useEffect (
-    () => {
-      getCurrentProfile ();
-    },
-    [getCurrentProfile]
-  );
-
+const Profile = ({className, profile: {profile, loading}}) => {
   const classes = useStyles ();
 
   return profile === null || loading
@@ -57,14 +43,7 @@ const Profile = ({
 
 Profile.propTypes = {
   className: PropTypes.string,
-  getCurrentProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  profile: state.profile,
-});
-
-export default connect (mapStateToProps, {getCurrentProfile}) (Profile);
+export default Profile;
