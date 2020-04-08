@@ -61,6 +61,7 @@ const SubTaskForm = props => {
     e.preventDefault ();
     addSubTask (projectId, taskId, formData);
     setFormData (initialState);
+    handleAddTaskToggle ();
   };
 
   return (

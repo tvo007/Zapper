@@ -50,9 +50,12 @@ const Sidebar = props => {
     profile,
   } = props;
 
-  useEffect (() => {
-    getCurrentProfile ();
-  }, []);
+  useEffect (
+    () => {
+      getCurrentProfile ();
+    },
+    [getCurrentProfile]
+  );
 
   const authIdRoute = `/profile/${_id}`;
   const classes = useStyles ();

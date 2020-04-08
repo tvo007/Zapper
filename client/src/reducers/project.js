@@ -122,6 +122,7 @@ export default function (state = initialState, action) {
     //^^subject to change
     case ADD_TASK:
     case EDIT_TASK:
+    case EDIT_SUBTASK:
       return {
         ...state,
         project: {...state.project, tasks: payload},

@@ -173,7 +173,7 @@ export const editTask = (projectId, taskId, formData) => async dispatch => {
       payload: res.data
     });
 
-    dispatch (setAlert ('Task Removed', 'success'));
+    dispatch (setAlert ('Task details changed!', 'success'));
   } catch (err) {
     dispatch ({
       type: PROJECT_ERROR,
@@ -256,6 +256,34 @@ export const addSubTask = (projectId, taskId, formData) => async dispatch => {
     });
   }
 };
+
+//edit subtask
+export const editSubtask = (projectId, taskId, subTaskId, formData) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const res = await axios.put (`/api/projects/tasks/${projectId}/${taskId}/${subTaskId}`, formData, config);
+
+    dispatch ({
+      type: EDIT_SUBTASK,
+      payload: res.data
+    });
+
+    dispatch (setAlert ('Subtask details changed!', 'success'));
+  } catch (err) {
+    dispatch ({
+      type: PROJECT_ERROR,
+      payload: {msg: err.response.statusText, status: err.response.status},
+    });
+  }
+};
+
+
+
 
 //delete subtasks
 export const deleteSubTask = (
