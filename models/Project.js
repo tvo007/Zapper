@@ -127,6 +127,83 @@ const ProjectSchema = new Schema ({
     },
   ],
 
+  stories: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+      },
+      storySummary: {
+        type: String,
+        required: true,
+      },
+
+      storyDescription: {
+        type: String,
+        required: true,
+      },
+      name: {
+        type: String,
+      },
+      avatar: {
+        type: String,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      isCompleted: {
+        type: Boolean,
+        default: false,
+      },
+      users: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+      },
+      storyPriority: {
+        type: Number,
+      },
+      subTasks: [
+        {
+          user: {
+            type: Schema.Types.ObjectId,
+            ref: 'users',
+          },
+          subTaskSummary: {
+            type: String,
+            required: true,
+          },
+
+          subTaskDescription: {
+            type: String,
+            required: true,
+          },
+          name: {
+            type: String,
+          },
+          avatar: {
+            type: String,
+          },
+          date: {
+            type: Date,
+            default: Date.now,
+          },
+          isCompleted: {
+            type: Boolean,
+            default: false,
+          },
+          users: {
+            type: Schema.Types.ObjectId,
+            ref: 'users',
+          },
+          taskPriority: {
+            type: Number,
+          },
+        },
+      ],
+    },
+  ],
+
   tickets: [
     {
       user: {

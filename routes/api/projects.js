@@ -220,7 +220,6 @@ router.post (
 // @route    PUT api/projects/tasks/:id
 // @desc     edit a task for project
 // @access   Private
-// WIP advanced mongodb queries
 router.put (
   '/tasks/:id/:task_id',
   [
@@ -341,17 +340,6 @@ router.put ('/tasks/:id/:task_id/isCompleted', auth, async (req, res) => {
 
     task.isCompleted = !task.isCompleted;
 
-    //check if post has already been liked
-
-    // if (
-    //   post.likes.filter (like => like.user.toString () === req.user.id).length >
-    //   0
-    // ) {
-    //   return res.status (400).json ({msg: 'Post already liked.'});
-    // }
-
-    // post.likes.unshift ({user: req.user.id});
-
     await project.save ();
 
     res.json (project.tasks);
@@ -420,6 +408,7 @@ router.post (
     }
   }
 );
+
 // @route    PUT api/projects/tasks/:id/:task_id/:subtask_id
 // @desc     edit subtask by id
 // @access   Private
@@ -612,6 +601,481 @@ router.put (
     }
   }
 );
+
+//story routes go here vvvvvvvvvv
+//
+//
+//
+
+// @route    POST api/projects/stories/:id
+// @desc     create a story for the project
+// @access   Private
+
+router.post (
+  '/stories/:id',
+  [
+    auth,
+    [
+      check ('storySummary', 'Story summary is required').not ().isEmpty (),
+      check ('storyDescription', 'Story description is required')
+        .not ()
+        .isEmpty (),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult (req);
+    if (!errors.isEmpty ()) {
+      return res.status (400).json ({errors: errors.array ()});
+    }
+
+    try {
+      const user = await User.findById (req.user.id).select ('-password');
+      const project = await Project.findById (req.params.id);
+
+      const newStory = {
+        storySummary: req.body.storySummary,
+        storyDescription: req.body.storyDescription,
+        name: user.name,
+        avatar: user.avatar,
+        user: req.user.id,
+      };
+
+      project.stories.unshift (newStory);
+
+      await project.save ();
+
+      res.json (project.stories);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
+// @route    PUT api/projects/stories/:id
+// @desc     edit a story for project
+// @access   Private
+
+router.put (
+  '/stories/:id/:story_id',
+  [
+    auth,
+    [
+      check ('storySummary', 'Story summary is required').not ().isEmpty (),
+      check ('storyDescription', 'Story description is required')
+        .not ()
+        .isEmpty (),
+    ],
+  ],
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.id); // Pull out story
+      const story = project.stories.find (
+        story => story.id === req.params.story_id
+      ); // Make sure story exists
+      if (!story) {
+        return res.status (404).json ({msg: 'Story does not exist'});
+      } // Check user
+      if (story.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+      const {storySummary, storyDescription} = req.body;
+      const {
+        _id,
+        user,
+        name,
+        avatar,
+        date,
+        isCompleted,
+        users,
+        storyPriority,
+        subTasks,
+      } = story;
+      let newStory = {
+        _id,
+        user,
+        storySummary,
+        storyDescription,
+        name,
+        avatar,
+        date,
+        isCompleted,
+        users,
+        storyPriority,
+        subTasks,
+        edited: {
+          updated: true,
+          date: Date.now (),
+        },
+      }; // Get edit index
+      const editIndex = project.stories
+        .map (story => story.id)
+        .indexOf (req.params.story_id);
+      project.tasks.splice (editIndex, 1, newStory);
+      await project.save ();
+      res.json (project.stories);
+    } catch (err) {
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
+// @route    DELETE api/projects/stories/:id/:task_id
+// @desc     Delete id
+// @access   Private
+router.delete ('/stories/:id/:story_id', auth, async (req, res) => {
+  try {
+    const project = await Project.findById (req.params.id);
+
+    // Pull out task
+    const story = project.stories.find (
+      story => story.id === req.params.story_id
+    );
+
+    // Make sure story exists
+    if (!story) {
+      return res.status (404).json ({msg: 'Story does not exist'});
+    }
+
+    // Check user
+    if (story.user.toString () !== req.user.id) {
+      return res.status (401).json ({msg: 'User not authorized'});
+    }
+
+    // Get remove index
+    const removeIndex = project.stories
+      .map (story => story.id)
+      .indexOf (req.params.story_id);
+
+    project.stories.splice (removeIndex, 1);
+
+    await project.save ();
+
+    res.json (project.stories);
+  } catch (err) {
+    console.error (err.message);
+    res.status (500).send ('Server Error');
+  }
+});
+
+//@route put api/projects/stories/:id/:story_id/isCompleted
+//desc: mark completed/not
+//access private
+router.put ('/stories/:id/:story_id/isCompleted', auth, async (req, res) => {
+  try {
+    const project = await Project.findById (req.params.id);
+
+    // Pull out task
+    const story = project.stories.find (
+      story => story.id === req.params.story_id
+    );
+
+    // Make sure story exists
+    if (!story) {
+      return res.status (404).json ({msg: 'Story does not exist'});
+    }
+
+    // Check user
+    if (story.user.toString () !== req.user.id) {
+      return res.status (401).json ({msg: 'User not authorized'});
+    }
+
+    story.isCompleted = !story.isCompleted;
+
+    await project.save ();
+
+    res.json (project.stories);
+  } catch (err) {
+    console.error (err.message);
+    res.status (500).send ('Server Error');
+  }
+});
+
+//story subtasks go here
+
+// @route    POST api/projects/stories/:id/:story_id
+// @desc     add subtasks under stories
+// @access   Private
+
+router.post (
+  '/stories/:id/:story_id/subTasks',
+  [
+    auth,
+    [
+      check ('subTaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subTaskDescription', 'Subtask description is required')
+        .not ()
+        .isEmpty (),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult (req);
+    if (!errors.isEmpty ()) {
+      return res.status (400).json ({errors: errors.array ()});
+    }
+
+    try {
+      const user = await User.findById (req.user.id).select ('-password');
+      const project = await Project.findById (req.params.id);
+      // Pull out story
+      const story = project.stories.find (
+        story => story.id === req.params.story_id
+      );
+
+      if (!story) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      // Check user
+      if (story.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const addIndex = project.stories
+        .map (story => story.id)
+        .indexOf (req.params.story_id);
+
+      const newSubTask = {
+        subTaskSummary: req.body.subTaskSummary,
+        subTaskDescription: req.body.subTaskDescription,
+        name: user.name,
+        avatar: user.avatar,
+        user: req.user.id,
+      };
+
+      project.stories[addIndex].subTasks.unshift (newSubTask);
+
+      await project.save ();
+
+      res.json (project.stories);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
+// @route    PUT api/projects/stories/:id/:story_id/:subtask_id
+// @desc     edit subtask by id
+// @access   Private
+router.put (
+  '/stories/:id/:story_id/:subtask_id',
+  [
+    auth,
+    [
+      check ('subTaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subTaskDescription', 'Subtask description is required')
+        .not ()
+        .isEmpty (),
+    ],
+  ],
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.id); // Pull out task
+      const story = project.tasks.find (
+        story => story.id === req.params.task_id
+      ); // Make sure task exists
+      if (!story) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      } // Check user
+      if (story.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const storyIndex = project.tasks
+        .map (story => story.id)
+        .indexOf (req.params.story_id);
+
+      const subtask = project.stories[storyIndex].subTasks.find (
+        subtask => subtask.id === req.params.subtask_id
+      );
+
+      // Make sure subtask exists
+      if (!subtask) {
+        return res.status (404).json ({msg: 'Subtask does not exist'});
+      }
+
+      // Check user
+      if (subtask.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const {subTaskSummary, subTaskDescription} = req.body;
+
+      const {
+        _id,
+        user,
+        name,
+        avatar,
+        date,
+        isCompleted,
+        users,
+        taskPriority,
+      } = subtask;
+
+      let newSubTask = {
+        _id,
+        user,
+        subTaskSummary,
+        subTaskDescription,
+        name,
+        avatar,
+        date,
+        isCompleted,
+        users,
+        taskPriority,
+        edited: {
+          updated: true,
+          date: Date.now (),
+        },
+      };
+
+      const editIndex = project.stories[taskIndex].subTasks
+        .map (subtask => subtask.id)
+        .indexOf (req.params.subtask_id);
+
+      project.stories[storyIndex].subTasks.splice (editIndex, 1, newSubTask);
+      await project.save ();
+      res.json (project.stories);
+    } catch (err) {
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
+// @route    DELETE api/projects/stories/:id/:story_id/:subtask_id
+// @desc     Delete subtask by id
+// @access   Private
+
+router.delete ('/stories/:id/:story_id/:subtask_id', auth, async (req, res) => {
+  try {
+    const project = await Project.findById (req.params.id);
+
+    const story = project.stories.find (
+      story => story.id === req.params.story_id
+    );
+
+    // Make sure task exists
+    if (!story) {
+      return res.status (404).json ({msg: 'Task does not exist'});
+    }
+
+    // Check user
+    if (story.user.toString () !== req.user.id) {
+      return res.status (401).json ({msg: 'User not authorized'});
+    }
+
+    const storyIndex = project.stories
+      .map (story => story.id)
+      .indexOf (req.params.story_id);
+
+    const subtask = project.stories[storyIndex].subTasks.find (
+      subtask => subtask.id === req.params.subtask_id
+    );
+
+    // Make sure subtask exists
+    if (!subtask) {
+      return res.status (404).json ({msg: 'Subtask does not exist'});
+    }
+
+    // Check user
+    if (subtask.user.toString () !== req.user.id) {
+      return res.status (401).json ({msg: 'User not authorized'});
+    }
+
+    // Get remove index
+    const removeIndex = project.stories[storyIndex].subTasks
+      .map (subtask => subtask.id)
+      .indexOf (req.params.subtask_id);
+
+    project.stories[storyIndex].subTasks.splice (removeIndex, 1);
+
+    await project.save ();
+
+    res.json (project.stories);
+  } catch (err) {
+    console.error (err.message);
+    res.status (500).send ('Server Error');
+  }
+});
+
+//@route put api/projects/stories/:id/:story_id/:subtask_id/isCompleted
+//desc: toggle subtask for complettion
+//access private
+router.put (
+  '/stories/:id/:story_id/:subtask_id/isCompleted',
+  auth,
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.id);
+
+      // Pull out task
+      const story = project.stories.find (
+        story => story.id === req.params.story_id
+      );
+
+      // Make sure task exists
+      if (!story) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      // Check user
+      if (story.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      //task.isCompleted = !task.isCompleted;
+      const storyIndex = project.stories
+        .map (story => story.id)
+        .indexOf (req.params.story_id);
+
+      const subtask = project.stories[storyIndex].subTasks.find (
+        subtask => subtask.id === req.params.subtask_id
+      );
+
+      // Make sure subtask exists
+      if (!subtask) {
+        return res.status (404).json ({msg: 'Subtask does not exist'});
+      }
+
+      // Check user
+      if (subtask.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      subtask.isCompleted = !subtask.isCompleted;
+
+      await project.save ();
+
+      res.json (project.stories);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 
 /**------------add ticket routes here! */
 
