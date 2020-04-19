@@ -13,7 +13,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {addSubTask} from '../../../../actions/project';
+import {addStorySubtask} from '../../../../actions/story';
 import AddCircleOutlineRoundedIcon
   from '@material-ui/icons/AddCircleOutlineRounded';
 
@@ -26,8 +26,8 @@ const useStyles = makeStyles (() => ({
   root: {},
 }));
 
-const SubTaskForm = props => {
-  const {className, projectId, taskId, addSubTask} = props;
+const StorySubtaskForm = props => {
+  const {className, projectId, storyId, addStorySubtask} = props;
 
   const classes = useStyles ();
 
@@ -50,16 +50,9 @@ const SubTaskForm = props => {
     <AddCircleOutlineRoundedIcon type="submit" onClick={handleAddTaskToggle} />
   );
 
-  // const [taskSummary, setTaskSummary] = useState ('');
-  // const [taskDescription, setTaskDescription] = useState ('');
-
-  // const handleChange = e => {
-  //   setTaskDescription (e.target.value);
-  // };
-
   const onSubmit = e => {
     e.preventDefault ();
-    addSubTask (projectId, taskId, formData);
+    addStorySubtask (projectId, storyId, formData);
     setFormData (initialState);
     handleAddTaskToggle ();
   };
@@ -67,7 +60,7 @@ const SubTaskForm = props => {
   return (
     <Card className={clsx (classes.root, className)}>
       <div style={{display: 'flex', alignItems: 'center'}}>
-        <CardHeader title="SubTasks" />
+        <CardHeader title="Story Subtasks" />
         {expandForm}
       </div>
       {addSubtaskToggle
@@ -105,7 +98,7 @@ const SubTaskForm = props => {
             <Divider />
             <CardActions>
               <Button color="primary" variant="contained" type="submit">
-                Create Subtask
+                Create Story Subtask
               </Button>
             </CardActions>
 
@@ -115,9 +108,9 @@ const SubTaskForm = props => {
   );
 };
 
-SubTaskForm.propTypes = {
+StorySubtaskForm.propTypes = {
   className: PropTypes.string,
-  addSubTask: PropTypes.func.isRequired,
+  addStorySubtask: PropTypes.func.isRequired,
 };
 
-export default connect (null, {addSubTask}) (SubTaskForm);
+export default connect (null, {addStorySubtask}) (StorySubtaskForm);

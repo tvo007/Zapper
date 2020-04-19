@@ -11,6 +11,8 @@ import {
   TicketForm,
   TicketItem,
   ProjectDetailsForm,
+  StoryForm,
+  StoryItem,
 } from './components';
 
 const useStyles = makeStyles (theme => ({
@@ -32,6 +34,8 @@ const Project = ({getProject, project: {project, loading}, match}) => {
 
   const [showTasksToggle, setShowTasksToggle] = useState (true);
 
+  const [showStoriesToggle, setShowStoriesToggle] = useState (true);
+
   const [showTicketsToggle, setShowTicketsToggle] = useState (false);
 
   const handleProjectFormToggle = () => {
@@ -40,6 +44,10 @@ const Project = ({getProject, project: {project, loading}, match}) => {
 
   const handleShowTasks = () => {
     setShowTasksToggle (!showTasksToggle);
+  };
+
+  const handleShowStories = () => {
+    setShowStoriesToggle (!showStoriesToggle);
   };
 
   const handleShowTickets = () => {
@@ -64,6 +72,7 @@ const Project = ({getProject, project: {project, loading}, match}) => {
               handleProjectFormToggle={handleProjectFormToggle}
               handleShowTasks={handleShowTasks}
               handleShowTickets={handleShowTickets}
+              handleShowStories={handleShowStories}
             />
             {showProjectForm}
           </Grid>
@@ -77,6 +86,21 @@ const Project = ({getProject, project: {project, loading}, match}) => {
                       task={task}
                       projectId={project._id}
                       taskId={task._id}
+                    />
+                  ))}
+                </div>
+              </Grid>
+            : null}
+          {showStoriesToggle
+            ? <Grid item lg={12} md={12} xl={12} xs={12}>
+                <StoryForm projectId={project._id} />
+                <div>
+                  {project.stories.map (story => (
+                    <StoryItem
+                      key={story._id}
+                      story={story}
+                      projectId={project._id}
+                      storyId={story._id}
                     />
                   ))}
                 </div>
@@ -110,5 +134,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect (mapStateToProps, {getProject}) (Project);
-
-

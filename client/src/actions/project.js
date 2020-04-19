@@ -17,7 +17,7 @@ import {
   REMOVE_SUBTASK,
   TOGGLE_SUBTASK,
   EDIT_TASK,
-  EDIT_SUBTASK
+  EDIT_SUBTASK,
 } from './types';
 
 //get projects
@@ -128,6 +128,8 @@ export const getProject = id => async dispatch => {
     });
   }
 };
+
+//task actions here
 
 //add task
 export const addTask = (projectId, formData) => async dispatch => {
@@ -281,9 +283,6 @@ export const editSubtask = (projectId, taskId, subTaskId, formData) => async dis
     });
   }
 };
-
-
-
 
 //delete subtasks
 export const deleteSubTask = (

@@ -13,32 +13,32 @@ import {
   TextField,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {addSubTask} from '../../../../actions/project';
+import {addStory} from '../../../../actions/story';
 import AddCircleOutlineRoundedIcon
   from '@material-ui/icons/AddCircleOutlineRounded';
 
 const initialState = {
-  subTaskSummary: '',
-  subTaskDescription: '',
+  storySummary: '',
+  storyDescription: '',
 };
 
 const useStyles = makeStyles (() => ({
   root: {},
 }));
 
-const SubTaskForm = props => {
-  const {className, projectId, taskId, addSubTask} = props;
+const StoryForm = props => {
+  const {className, projectId, addStory, ...rest} = props;
 
   const classes = useStyles ();
 
   const [formData, setFormData] = useState (initialState);
+  const {storySummary, storyDescription} = formData;
 
-  const {subTaskSummary, subTaskDescription} = formData;
-  const [addSubtaskToggle, setAddSubtaskToggle] = useState (false);
-
-  const handleAddTaskToggle = () => {
-    setAddSubtaskToggle (!addSubtaskToggle);
+  const [showFormToggle, setShowFormToggle] = useState (false);
+  const handleShowForm = () => {
+    setShowFormToggle (!showFormToggle);
   };
+
   const handleChange = e => {
     setFormData ({
       ...formData,
@@ -47,40 +47,31 @@ const SubTaskForm = props => {
   };
 
   const expandForm = (
-    <AddCircleOutlineRoundedIcon type="submit" onClick={handleAddTaskToggle} />
+    <AddCircleOutlineRoundedIcon type="submit" onClick={handleShowForm} />
   );
-
-  // const [taskSummary, setTaskSummary] = useState ('');
-  // const [taskDescription, setTaskDescription] = useState ('');
-
-  // const handleChange = e => {
-  //   setTaskDescription (e.target.value);
-  // };
 
   const onSubmit = e => {
     e.preventDefault ();
-    addSubTask (projectId, taskId, formData);
+    addStory (projectId, formData);
     setFormData (initialState);
-    handleAddTaskToggle ();
   };
 
   return (
-    <Card className={clsx (classes.root, className)}>
+    <Card {...rest} className={clsx (classes.root, className)}>
       <div style={{display: 'flex', alignItems: 'center'}}>
-        <CardHeader title="SubTasks" />
+        <CardHeader title="Stories" />
         {expandForm}
       </div>
-      {addSubtaskToggle
+      {showFormToggle
         ? <form autoComplete="off" onSubmit={onSubmit}>
-
             <CardContent>
               <Grid container spacing={3}>
                 <Grid item md={12} xs={12}>
                   <TextField
                     fullWidth
-                    label="Enter subtask summary."
-                    name="subTaskSummary"
-                    value={subTaskSummary}
+                    label="Enter story summary."
+                    name="storySummary"
+                    value={storySummary}
                     onChange={e => handleChange (e)}
                     variant="outlined"
                     required
@@ -89,9 +80,9 @@ const SubTaskForm = props => {
                 <Grid item md={12} xs={12}>
                   <TextField
                     fullWidth
-                    label="Enter subtask description."
-                    name="subTaskDescription"
-                    value={subTaskDescription}
+                    label="Enter story description."
+                    name="storyDescription"
+                    value={storyDescription}
                     onChange={e => handleChange (e)}
                     variant="outlined"
                     multiline
@@ -99,15 +90,14 @@ const SubTaskForm = props => {
                     required
                   />
                 </Grid>
+                <CardActions>
+                  <Button color="primary" variant="contained" type="submit">
+                    Create Story
+                  </Button>
+                </CardActions>
               </Grid>
-            </CardContent>
 
-            <Divider />
-            <CardActions>
-              <Button color="primary" variant="contained" type="submit">
-                Create Subtask
-              </Button>
-            </CardActions>
+            </CardContent>
 
           </form>
         : null}
@@ -115,9 +105,9 @@ const SubTaskForm = props => {
   );
 };
 
-SubTaskForm.propTypes = {
+StoryForm.propTypes = {
   className: PropTypes.string,
-  addSubTask: PropTypes.func.isRequired,
+  addStory: PropTypes.func.isRequired,
 };
 
-export default connect (null, {addSubTask}) (SubTaskForm);
+export default connect (null, {addStory}) (StoryForm);

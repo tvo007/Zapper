@@ -16,6 +16,14 @@ import {
   TOGGLE_SUBTASK,
   EDIT_TASK,
   EDIT_SUBTASK,
+  ADD_STORY,
+  REMOVE_STORY,
+  EDIT_STORY,
+  TOGGLE_STORY_COMPLETED,
+  ADD_STORY_SUBTASK,
+  EDIT_STORY_SUBTASK,
+  REMOVE_STORY_SUBTASK,
+  TOGGLE_STORY_SUBTASK,
 } from '../actions/types';
 
 const initialState = {
@@ -184,6 +192,107 @@ export default function (state = initialState, action) {
                     ),
                   }
                 : task
+          ),
+        },
+        loading: false,
+      };
+    //story reducers
+    case ADD_STORY:
+    case EDIT_STORY:
+    case EDIT_STORY_SUBTASK:
+      return {
+        ...state,
+        project: {...state.project, stories: payload},
+        loading: false,
+      };
+
+    case REMOVE_STORY:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          stories: state.project.stories.filter (
+            story => story._id !== payload
+          ),
+        },
+        loading: false,
+      };
+
+    case TOGGLE_STORY_COMPLETED:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          stories: state.project.stories.map (
+            (story, index) =>
+              story._id === payload.storyId
+                ? {
+                    ...story,
+                    isCompleted: payload.isCompleted[index].isCompleted,
+                  }
+                : story
+          ),
+        },
+        loading: false,
+      };
+
+    case TOGGLE_STORY_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          stories: state.project.stories.map (
+            (story, index) =>
+              story._id === payload.storyId
+                ? {
+                    ...story,
+                    subTasks: payload.subTasks[index].subTasks.map (
+                      (subtask, index) =>
+                        subtask._id === payload.subTaskId
+                          ? {
+                              ...subtask,
+                              isCompleted: payload.isCompleted[index]
+                                .isCompleted,
+                            }
+                          : subtask
+                    ),
+                  }
+                : story
+          ),
+        },
+        loading: false,
+      };
+
+    case ADD_STORY_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          stories: state.project.stories.map (
+            (story, index) =>
+              story._id === payload.storyId
+                ? {...story, subTasks: payload.subTasks[index].subTasks}
+                : story
+          ),
+        },
+        loading: false,
+      };
+
+    case REMOVE_STORY_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          stories: state.project.stories.map (
+            (story, index) =>
+              story._id === payload.storyId
+                ? {
+                    ...story,
+                    subTasks: payload.subTasks[index].subTasks.filter (
+                      subtask => subtask._id !== payload
+                    ),
+                  }
+                : story
           ),
         },
         loading: false,

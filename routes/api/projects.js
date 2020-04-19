@@ -711,7 +711,7 @@ router.put (
       const editIndex = project.stories
         .map (story => story.id)
         .indexOf (req.params.story_id);
-      project.tasks.splice (editIndex, 1, newStory);
+      project.stories.splice (editIndex, 1, newStory);
       await project.save ();
       res.json (project.stories);
     } catch (err) {
@@ -872,8 +872,8 @@ router.put (
   async (req, res) => {
     try {
       const project = await Project.findById (req.params.id); // Pull out task
-      const story = project.tasks.find (
-        story => story.id === req.params.task_id
+      const story = project.stories.find (
+        story => story.id === req.params.story_id
       ); // Make sure task exists
       if (!story) {
         return res.status (404).json ({msg: 'Task does not exist'});
@@ -882,7 +882,7 @@ router.put (
         return res.status (401).json ({msg: 'User not authorized'});
       }
 
-      const storyIndex = project.tasks
+      const storyIndex = project.stories
         .map (story => story.id)
         .indexOf (req.params.story_id);
 
@@ -930,7 +930,7 @@ router.put (
         },
       };
 
-      const editIndex = project.stories[taskIndex].subTasks
+      const editIndex = project.stories[storyIndex].subTasks
         .map (subtask => subtask.id)
         .indexOf (req.params.subtask_id);
 

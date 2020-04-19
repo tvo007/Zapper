@@ -45,6 +45,7 @@ const ProjectDetails = props => {
     handleProjectFormToggle,
     handleShowTasks,
     handleShowTickets,
+    handleShowStories,
     ...rest
   } = props;
 
@@ -120,6 +121,14 @@ const ProjectDetails = props => {
           onClick={handleShowTasks}
         >
           View Tasks
+        </Button>
+        <Button
+          color="primary"
+          variant="contained"
+          type="button"
+          onClick={handleShowStories}
+        >
+          View Stories
         </Button>
         <Button
           color="primary"
