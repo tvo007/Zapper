@@ -13,7 +13,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {deleteTicket, toggleTicketCompleted} from '../../../../actions/project';
+import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 

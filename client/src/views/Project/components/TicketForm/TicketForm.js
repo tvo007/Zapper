@@ -13,14 +13,12 @@ import {
   TextField,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {
-  addTicket
-} from '../../../../actions/project';
+import {addTicket} from '../../../../actions/ticket';
 
 const initialState = {
   ticketSummary: '',
-  ticketDescription: ''
-}
+  ticketDescription: '',
+};
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -45,7 +43,7 @@ const TicketForm = props => {
   const onSubmit = e => {
     e.preventDefault ();
     addTicket (projectId, formData);
-    setFormData(initialState);
+    setFormData (initialState);
   };
 
   return (
@@ -54,13 +52,13 @@ const TicketForm = props => {
         <CardHeader title="Tickets" />
         <CardContent>
           <Grid container spacing={3}>
-          <Grid item md={12} xs={12}>
+            <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
                 label="Enter a ticket summary."
                 name="ticketSummary"
                 value={ticketSummary}
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 variant="outlined"
                 required
               />
@@ -71,7 +69,7 @@ const TicketForm = props => {
                 label="Enter a ticket summary."
                 name="ticketDescription"
                 value={ticketDescription}
-                onChange={e => handleChange(e)}
+                onChange={e => handleChange (e)}
                 variant="outlined"
                 required
               />

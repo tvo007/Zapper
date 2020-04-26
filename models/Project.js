@@ -239,6 +239,43 @@ const ProjectSchema = new Schema ({
       ticketPriority: {
         type: Number,
       },
+      // subtasks: {
+      //   user: {
+      //     type: Schema.Types.ObjectId,
+      //     ref: 'users',
+      //   },
+      //   subtaskSummary: {
+      //     type: String,
+      //     required: true,
+      //   },
+
+      //   subtaskDescription: {
+      //     type: String,
+      //     required: true,
+      //   },
+      //   name: {
+      //     type: String,
+      //   },
+      //   avatar: {
+      //     type: String,
+      //   },
+      //   date: {
+      //     type: Date,
+      //     default: Date.now,
+      //   },
+      //   isCompleted: {
+      //     type: Boolean,
+      //     default: false,
+      //   },
+      //   users: {
+      //     type: Schema.Types.ObjectId,
+      //     ref: 'users',
+      //   },
+      //   taskPriority: {
+      //     type: Number,
+      //   },
+      // },
+
     },
   ],
   date: {

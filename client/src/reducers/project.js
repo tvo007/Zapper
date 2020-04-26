@@ -24,6 +24,7 @@ import {
   EDIT_STORY_SUBTASK,
   REMOVE_STORY_SUBTASK,
   TOGGLE_STORY_SUBTASK,
+  EDIT_TICKET,
 } from '../actions/types';
 
 const initialState = {
@@ -82,25 +83,6 @@ export default function (state = initialState, action) {
         },
         loading: false,
       };
-
-    case TOGGLE_TICKET_COMPLETED:
-      return {
-        ...state,
-        project: {
-          ...state.project,
-          tickets: state.project.tickets.map (
-            (ticket, index) =>
-              ticket._id === payload.ticketId
-                ? {
-                    ...ticket,
-                    isCompleted: payload.isCompleted[index].isCompleted,
-                  }
-                : ticket
-          ),
-        },
-        loading: false,
-      };
-
     case TOGGLE_SUBTASK:
       return {
         ...state,
@@ -151,12 +133,7 @@ export default function (state = initialState, action) {
         },
         loading: false,
       };
-    case ADD_TICKET:
-      return {
-        ...state,
-        project: {...state.project, tickets: payload},
-        loading: false,
-      };
+
     case REMOVE_TASK:
       return {
         ...state,
@@ -166,17 +143,7 @@ export default function (state = initialState, action) {
         },
         loading: false,
       };
-    case REMOVE_TICKET:
-      return {
-        ...state,
-        project: {
-          ...state.project,
-          tickets: state.project.tickets.filter (
-            ticket => ticket._id !== payload
-          ),
-        },
-        loading: false,
-      };
+
     case REMOVE_SUBTASK:
       return {
         ...state,
@@ -293,6 +260,44 @@ export default function (state = initialState, action) {
                     ),
                   }
                 : story
+          ),
+        },
+        loading: false,
+      };
+
+    case ADD_TICKET:
+    case EDIT_TICKET:
+      return {
+        ...state,
+        project: {...state.project, tickets: payload},
+        loading: false,
+      };
+
+    case TOGGLE_TICKET_COMPLETED:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          tickets: state.project.tickets.map (
+            (ticket, index) =>
+              ticket._id === payload.ticketId
+                ? {
+                    ...ticket,
+                    isCompleted: payload.isCompleted[index].isCompleted,
+                  }
+                : ticket
+          ),
+        },
+        loading: false,
+      };
+
+    case REMOVE_TICKET:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          tickets: state.project.tickets.filter (
+            ticket => ticket._id !== payload
           ),
         },
         loading: false,
