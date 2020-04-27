@@ -11,3 +11,5 @@ export {default as SubTaskItem} from './SubTaskItem';
 export {default as StoryItem} from './StoryItem';
 export {default as StoryForm} from './StoryForm';
 export {default as TicketTable} from './TicketTable';
+export {default as TicketModal} from './TicketModal';
+export {default as TicketTableItem} from './TicketTableItem';

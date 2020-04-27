@@ -120,7 +120,6 @@ const Project = ({getProject, project: {project, loading}, match}) => {
                   ))}
                 </div>
                 <TicketTable tickets={project.tickets} />
-                TICKET TABLE COMPONENT GOES HERE
               </Grid>
             : null}
         </Grid>

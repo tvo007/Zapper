@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {makeStyles} from '@material-ui/styles';
 import {
@@ -17,6 +16,8 @@ import {
   Typography,
   TablePagination,
 } from '@material-ui/core';
+// import TicketModal from '../TicketModal';
+import TicketTableItem from '../TicketTableItem'
 // import {getInitials} from 'helpers';
 // import {connect} from 'react-redux';
 // import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
@@ -69,6 +70,7 @@ const TicketTable = props => {
   const [rowsPerPage, setRowsPerPage] = useState (10);
   const [page, setPage] = useState (0);
 
+  
   const handleSelectAll = event => {
     const {tickets} = props;
 
@@ -115,6 +117,7 @@ const TicketTable = props => {
     setRowsPerPage (event.target.value);
   };
 
+  /**testing functions for the modal drop down */
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
       <CardContent className={classes.content}>
@@ -134,47 +137,25 @@ const TicketTable = props => {
                       onChange={handleSelectAll}
                     />
                   </TableCell>
+                  <TableCell>Ticket ID</TableCell>
                   <TableCell>Summary</TableCell>
                   <TableCell>Description</TableCell>
-                  <TableCell>Author</TableCell>
-                  <TableCell>Status</TableCell>
+                  <TableCell>Subtasks</TableCell>
                   <TableCell>Date</TableCell>
+                  <TableCell>More Options</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tickets.slice (0, rowsPerPage).map (ticket => (
-                  <TableRow
-                    className={classes.tableRow}
-                    hover
-                    key={ticket._id}
-                    selected={selectedTickets.indexOf (ticket._id) !== -1}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selectedTickets.indexOf (ticket._id) !== -1}
-                        color="primary"
-                        onChange={event => handleSelectOne (event, ticket._id)}
-                        value="true"
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <div className={classes.nameContainer}>
-                        <Typography variant="body1">
-                          {ticket.ticketSummary}
-                        </Typography>
-                      </div>
-                    </TableCell>
-                    <TableCell>{ticket.ticketDescription}</TableCell>
-                    <TableCell>
-                      {ticket.name}
-                    </TableCell>
-                    <TableCell>
-                      ticket toggle status here
-                    </TableCell>
-                    <TableCell>
-                      {moment (ticket.date).format ('DD/MM/YYYY')}
-                    </TableCell>
-                  </TableRow>
+                {tickets.slice (0, rowsPerPage).map ((ticket) => (
+                  <TicketTableItem 
+                  key={ticket._id}
+                  id={ticket._id}
+                  ticketSummary={ticket.ticketSummary}
+                  ticketDescription={ticket.ticketSummary}
+                  date={ticket.date}
+                  handleSelectOne={handleSelectOne}
+                  selectedTickets={selectedTickets}
+                  />
                 ))}
               </TableBody>
             </Table>
