@@ -32,6 +32,9 @@ const TicketModal = props => {
     className,
     handleCloseModal,
     openModal,
+    ticketSummary,
+    ticketDescription,
+    date,
     // projectId,
     // ticket: {_id, ticketSummary, ticketDescription, isCompleted},
     // auth,
@@ -57,20 +60,28 @@ const TicketModal = props => {
       open={openModal}
       onClose={handleCloseModal}
       aria-labelledby="form-dialog-title"
+      fullWidth
+      maxWidth="lg"
     >
-      <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+      <DialogTitle id="form-dialog-title">Ticket ID placeholder</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          To subscribe to this website, please enter your email address here. We will send updates
-          occasionally.
+          <Typography>
+            Summary: {ticketSummary}
+          </Typography>
+          <Typography>
+            Description: {ticketDescription}
+          </Typography>
         </DialogContentText>
         <TextField
           autoFocus
           margin="dense"
           id="name"
-          label="Email Address"
-          type="email"
+          label="Add Subtask"
+          type="text"
           fullWidth
+          multiline
+          rows="4"
         />
       </DialogContent>
       <DialogActions>
@@ -78,7 +89,7 @@ const TicketModal = props => {
           Cancel
         </Button>
         <Button onClick={handleCloseModal} color="primary">
-          Subscribe
+          Save
         </Button>
       </DialogActions>
     </Dialog>

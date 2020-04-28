@@ -17,7 +17,7 @@ import {
   TablePagination,
 } from '@material-ui/core';
 // import TicketModal from '../TicketModal';
-import TicketTableItem from '../TicketTableItem'
+import TicketTableItem from '../TicketTableItem';
 // import {getInitials} from 'helpers';
 // import {connect} from 'react-redux';
 // import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
@@ -70,7 +70,6 @@ const TicketTable = props => {
   const [rowsPerPage, setRowsPerPage] = useState (10);
   const [page, setPage] = useState (0);
 
-  
   const handleSelectAll = event => {
     const {tickets} = props;
 
@@ -146,17 +145,19 @@ const TicketTable = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tickets.slice (0, rowsPerPage).map ((ticket) => (
-                  <TicketTableItem 
-                  key={ticket._id}
-                  id={ticket._id}
-                  ticketSummary={ticket.ticketSummary}
-                  ticketDescription={ticket.ticketSummary}
-                  date={ticket.date}
-                  handleSelectOne={handleSelectOne}
-                  selectedTickets={selectedTickets}
-                  />
-                ))}
+                {tickets
+                  .slice (0, rowsPerPage)
+                  .map (ticket => (
+                    <TicketTableItem
+                      key={ticket._id}
+                      id={ticket._id}
+                      ticketSummary={ticket.ticketSummary}
+                      ticketDescription={ticket.ticketDescription}
+                      date={ticket.date}
+                      handleSelectOne={handleSelectOne}
+                      selectedTickets={selectedTickets}
+                    />
+                  ))}
               </TableBody>
             </Table>
           </div>

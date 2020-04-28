@@ -2,12 +2,7 @@ import React, {useState} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
-import {
-  Checkbox,
-  TableCell,
-  TableRow,
-  Typography,
-} from '@material-ui/core';
+import {Checkbox, TableCell, TableRow, Typography} from '@material-ui/core';
 import TicketModal from '../TicketModal';
 import moment from 'moment';
 
@@ -74,7 +69,13 @@ const TicketTableItem = props => {
       <TableCell onClick={handleClickOpenModal}>
         Click here to pull down modal
       </TableCell>
-      <TicketModal handleCloseModal={handleCloseModal} openModal={openModal} />
+      <TicketModal
+        handleCloseModal={handleCloseModal}
+        openModal={openModal}
+        ticketSummary={ticketSummary}
+        ticketDescription={ticketDescription}
+        date={date}
+      />
 
     </TableRow>
   );
