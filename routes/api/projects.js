@@ -10,6 +10,7 @@ const Project = require ('../../models/Project');
 const Post = require ('../../models/Post');
 const Profile = require ('../../models/Profile');
 const User = require ('../../models/User');
+const shortid = require ('shortid');
 
 //route POST api/project
 //desc: Create a project
@@ -1112,6 +1113,8 @@ router.post (
       };
 
       project.tickets.unshift (newTicket);
+
+      
 
       await project.save ();
 

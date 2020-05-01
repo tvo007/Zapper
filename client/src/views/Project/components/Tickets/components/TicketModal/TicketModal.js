@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
-  //CardHeader,
+  CardHeader,
   CardContent,
   CardActions,
   Divider,
@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 // import {connect} from 'react-redux';
 // import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
+
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
@@ -65,14 +66,19 @@ const TicketModal = props => {
     >
       <DialogTitle id="form-dialog-title">Ticket ID placeholder</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <Typography>
-            Summary: {ticketSummary}
-          </Typography>
-          <Typography>
-            Description: {ticketDescription}
-          </Typography>
-        </DialogContentText>
+        <Card {...rest} className={clsx (classes.root, className)}>
+          <CardHeader title="TESTING" />
+        </Card>
+        <Typography>
+          Summary: {ticketSummary}
+        </Typography>
+        <Typography>
+          Description: {ticketDescription}
+        </Typography>
+        <Typography>
+          add cute form cards here
+        </Typography>
+
         <TextField
           autoFocus
           margin="dense"

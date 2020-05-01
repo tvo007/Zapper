@@ -17,7 +17,7 @@ import {
   TablePagination,
 } from '@material-ui/core';
 // import TicketModal from '../TicketModal';
-import TicketTableItem from '../TicketTableItem';
+import TicketItem from '../TicketItem';
 // import {getInitials} from 'helpers';
 // import {connect} from 'react-redux';
 // import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
@@ -48,6 +48,7 @@ const TicketTable = props => {
   const {
     className,
     tickets,
+    projectId,
     // tickets: {
     //   ticket: _id,
     //   user,
@@ -133,10 +134,9 @@ const TicketTable = props => {
                         selectedTickets.length > 0 &&
                           selectedTickets.length < tickets.length
                       }
-                      onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell>Ticket ID</TableCell>
+                  <TableCell>Ticket #</TableCell>
                   <TableCell>Summary</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Subtasks</TableCell>
@@ -148,7 +148,7 @@ const TicketTable = props => {
                 {tickets
                   .slice (0, rowsPerPage)
                   .map (ticket => (
-                    <TicketTableItem
+                    <TicketItem
                       key={ticket._id}
                       id={ticket._id}
                       ticketSummary={ticket.ticketSummary}
@@ -156,6 +156,8 @@ const TicketTable = props => {
                       date={ticket.date}
                       handleSelectOne={handleSelectOne}
                       selectedTickets={selectedTickets}
+                      projectId={projectId}
+                      ticketNumber={ticket.ticketNumber}
                     />
                   ))}
               </TableBody>
@@ -189,3 +191,20 @@ TicketTable.propTypes = {
 
 export default TicketTable;
 //fix user.user
+
+//line 137/Checkbox props: placeholder for onChange={handleChangeAll}
+/**
+ * <TicketItem
+                      key={ticket._id}
+                      id={ticket._id}
+                      ticketSummary={ticket.ticketSummary}
+                      ticketDescription={ticket.ticketDescription}
+                      date={ticket.date}
+                      handleSelectOne={handleSelectOne}
+                      selectedTickets={selectedTickets}
+                      projectId={projectId}
+                      ticketNumber={ticket.ticketNumber}
+                    />
+ * 
+ * 
+ */

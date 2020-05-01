@@ -29,6 +29,8 @@
 
 const mongoose = require ('mongoose');
 
+const shortid = require ('shortid');
+
 const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema ({
@@ -210,6 +212,11 @@ const ProjectSchema = new Schema ({
         type: Schema.Types.ObjectId,
         ref: 'users',
       },
+      ticketNumber: {
+        type: String,
+        uppercase: true,
+        default: shortid.generate,
+      },
       ticketSummary: {
         type: String,
         required: true,
@@ -275,7 +282,6 @@ const ProjectSchema = new Schema ({
       //     type: Number,
       //   },
       // },
-
     },
   ],
   date: {

@@ -3,14 +3,21 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {Checkbox, TableCell, TableRow, Typography} from '@material-ui/core';
+import {connect} from 'react-redux';
+import {
+  deleteTicket,
+  toggleTicketCompleted,
+} from '../../../../../../actions/ticket';
 import TicketModal from '../TicketModal';
 import moment from 'moment';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles (() => ({
   root: {},
 }));
 
-const TicketTableItem = props => {
+const TicketItem = props => {
   const {
     id,
     ticketSummary,
@@ -18,12 +25,19 @@ const TicketTableItem = props => {
     date,
     handleSelectOne,
     selectedTickets,
+    deleteTicket,
+    toggleTicketCompleted,
+    projectId,
+    ticketNumber,
     ...rest
   } = props;
 
   const [openModal, setOpenModal] = useState (false);
 
   //ticket: {_id, ticketDescription, name, avatar, user, date, isCompleted}
+
+  const deleteHandler = e => deleteTicket (projectId, id);
+  const toggleHandler = e => toggleTicketCompleted (projectId, id);
 
   const handleClickOpenModal = () => {
     setOpenModal (true);
@@ -47,12 +61,13 @@ const TicketTableItem = props => {
           color="primary"
           onChange={event => handleSelectOne (event, id)}
           value="true"
+          onClick={toggleHandler}
         />
       </TableCell>
       <TableCell>
         <div className={classes.nameContainer}>
           <Typography variant="body1">
-            Ticket ID goes here
+            {ticketNumber}
           </Typography>
         </div>
       </TableCell>
@@ -66,8 +81,12 @@ const TicketTableItem = props => {
       <TableCell>
         {moment (date).format ('DD/MM/YYYY')}
       </TableCell>
-      <TableCell onClick={handleClickOpenModal}>
-        Click here to pull down modal
+      <TableCell>
+
+        <AssignmentIcon onClick={handleClickOpenModal} />
+        
+        <DeleteIcon onClick={deleteHandler} />
+
       </TableCell>
       <TicketModal
         handleCloseModal={handleCloseModal}
@@ -81,7 +100,7 @@ const TicketTableItem = props => {
   );
 };
 
-TicketTableItem.propTypes = {
+TicketItem.propTypes = {
   className: PropTypes.string,
 };
 
@@ -89,8 +108,8 @@ TicketTableItem.propTypes = {
 //   auth: state.auth,
 // });
 
-// export default connect (null, {deleteTicket, toggleTicketCompleted}) (
-//   TicketItem
-// );
+export default connect (null, {deleteTicket, toggleTicketCompleted}) (
+  TicketItem
+);
 
-export default TicketTableItem;
+// export default TicketItem;

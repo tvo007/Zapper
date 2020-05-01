@@ -13,7 +13,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {addTicket} from '../../../../actions/ticket';
+import {addTicket} from '../../../../../../actions/ticket';
 
 const initialState = {
   ticketSummary: '',
@@ -66,11 +66,13 @@ const TicketForm = props => {
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter a ticket summary."
+                label="Enter a ticket description."
                 name="ticketDescription"
                 value={ticketDescription}
                 onChange={e => handleChange (e)}
                 variant="outlined"
+                multiline
+                rows={4}
                 required
               />
             </Grid>

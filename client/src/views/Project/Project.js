@@ -14,6 +14,7 @@ import {
   StoryForm,
   StoryItem,
   TicketTable,
+  Tickets,
 } from './components';
 
 const useStyles = makeStyles (theme => ({
@@ -33,9 +34,9 @@ const Project = ({getProject, project: {project, loading}, match}) => {
 
   const [projectFormToggle, setProjectFormToggle] = useState (false);
 
-  const [showTasksToggle, setShowTasksToggle] = useState (true);
+  const [showTasksToggle, setShowTasksToggle] = useState (false);
 
-  const [showStoriesToggle, setShowStoriesToggle] = useState (true);
+  const [showStoriesToggle, setShowStoriesToggle] = useState (false);
 
   const [showTicketsToggle, setShowTicketsToggle] = useState (false);
 
@@ -108,19 +109,7 @@ const Project = ({getProject, project: {project, loading}, match}) => {
               </Grid>
             : null}
           {showTicketsToggle
-            ? <Grid item lg={12} md={12} xl={12} xs={12}>
-                <TicketForm projectId={project._id} />
-                <div>
-                  {project.tickets.map (ticket => (
-                    <TicketItem
-                      key={ticket._id}
-                      ticket={ticket}
-                      projectId={project._id}
-                    />
-                  ))}
-                </div>
-                <TicketTable tickets={project.tickets} />
-              </Grid>
+            ? <Tickets projectId={project._id} tickets={project.tickets} />
             : null}
         </Grid>
       </div>;
