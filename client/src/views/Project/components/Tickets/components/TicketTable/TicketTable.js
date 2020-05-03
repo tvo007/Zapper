@@ -158,6 +158,7 @@ const TicketTable = props => {
                       selectedTickets={selectedTickets}
                       projectId={projectId}
                       ticketNumber={ticket.ticketNumber}
+                      subtasks={ticket.subtasks}
                     />
                   ))}
               </TableBody>

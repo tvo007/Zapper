@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {
   deleteTicket,
   toggleTicketCompleted,
+  editTicket,
 } from '../../../../../../actions/ticket';
 import TicketModal from '../TicketModal';
 import moment from 'moment';
@@ -23,12 +24,15 @@ const TicketItem = props => {
     ticketSummary,
     ticketDescription,
     date,
+    subtasks,
     handleSelectOne,
     selectedTickets,
     deleteTicket,
     toggleTicketCompleted,
     projectId,
     ticketNumber,
+    editTicket,
+
     ...rest
   } = props;
 
@@ -84,16 +88,21 @@ const TicketItem = props => {
       <TableCell>
 
         <AssignmentIcon onClick={handleClickOpenModal} />
-        
+
         <DeleteIcon onClick={deleteHandler} />
 
       </TableCell>
       <TicketModal
         handleCloseModal={handleCloseModal}
         openModal={openModal}
+        ticketNumber={ticketNumber}
         ticketSummary={ticketSummary}
         ticketDescription={ticketDescription}
         date={date}
+        id={id}
+        projectId={projectId}
+        editTicket={editTicket}
+        subtasks={subtasks}
       />
 
     </TableRow>
@@ -108,8 +117,10 @@ TicketItem.propTypes = {
 //   auth: state.auth,
 // });
 
-export default connect (null, {deleteTicket, toggleTicketCompleted}) (
-  TicketItem
-);
+export default connect (null, {
+  deleteTicket,
+  toggleTicketCompleted,
+  editTicket,
+}) (TicketItem);
 
 // export default TicketItem;

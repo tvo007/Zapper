@@ -20,9 +20,11 @@ import {
 } from '@material-ui/core';
 // import {connect} from 'react-redux';
 // import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
+import Subtasks from '../Subtasks';
 
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -35,7 +37,12 @@ const TicketModal = props => {
     openModal,
     ticketSummary,
     ticketDescription,
+    ticketNumber,
     date,
+    id,
+    projectId,
+    editTicket,
+    subtasks,
     // projectId,
     // ticket: {_id, ticketSummary, ticketDescription, isCompleted},
     // auth,
@@ -55,47 +62,132 @@ const TicketModal = props => {
   //   textDecoration: isCompleted ? 'line-through' : null,
   // };
 
+  const [formData, setFormData] = useState ({
+    ticketSummary,
+    ticketDescription,
+  });
+
+  const handleChange = e => {
+    setFormData ({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const onSubmit = e => {
+    e.preventDefault ();
+    editTicket (projectId, id, formData);
+    setFormData (formData);
+  };
+
   return (
     <Dialog
       {...rest}
       open={openModal}
       onClose={handleCloseModal}
-      aria-labelledby="form-dialog-title"
       fullWidth
       maxWidth="lg"
     >
-      <DialogTitle id="form-dialog-title">Ticket ID placeholder</DialogTitle>
-      <DialogContent>
-        <Card {...rest} className={clsx (classes.root, className)}>
-          <CardHeader title="TESTING" />
-        </Card>
-        <Typography>
-          Summary: {ticketSummary}
-        </Typography>
-        <Typography>
-          Description: {ticketDescription}
-        </Typography>
-        <Typography>
-          add cute form cards here
-        </Typography>
+      <DialogTitle id="form-dialog-title">Edit Ticket Details</DialogTitle>
+      <form onSubmit={onSubmit}>
+        <DialogContent>
+          <Card {...rest} className={clsx (classes.root, className)}>
+            <CardContent>
+              <Grid
+                container
+                spacing={1}
+                direction="column"
+                style={{margin: '1px'}}
+                alignItems="stretch"
+              >
+                <Grid item md={12} xs={6}>
+                  <Typography variant="h3">
+                    Ticket # {ticketNumber}
+                  </Typography>
+                </Grid>
+                <Grid item md={12} xs={6}>
+                  <Typography />
+                </Grid>
+                <Grid item md={12} xs={6}>
+                  <Typography variant="h3">
+                    Summary
+                  </Typography>
+                </Grid>
+                <Grid item md={12} xs={6}>
+                  <TextField
+                    fullWidth
+                    name="ticketSummary"
+                    value={formData.ticketSummary}
+                    onChange={e => handleChange (e)}
+                    variant="outlined"
+                  />
+                </Grid>
 
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Add Subtask"
-          type="text"
-          fullWidth
-          multiline
-          rows="4"
-        />
+                <Grid item md={12} xs={6}>
+                  <Typography variant="h3">
+                    Description
+                  </Typography>
+                </Grid>
+
+                <Grid item md={12} xs={6}>
+                  <TextField
+                    fullWidth
+                    name="ticketDescription"
+                    value={formData.ticketDescription}
+                    onChange={e => handleChange (e)}
+                    variant="outlined"
+                    multiline
+                    rows={3}
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleCloseModal} color="primary" type="submit">
+            Save
+          </Button>
+        </DialogActions>
+      </form>
+      <DialogTitle id="form-dialog-title">Subtasks</DialogTitle>
+      <DialogContent>
+        <Grid>
+          <Grid>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Add Subtask Summary"
+              type="text"
+              fullWidth
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Add Subtask Description"
+              type="text"
+              fullWidth
+              multiline
+              rows="4"
+            />
+          </Grid>
+          <Grid>
+            <Subtasks subtasks={subtasks} />
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseModal} color="primary">
+        <Button color="primary">
           Cancel
         </Button>
-        <Button onClick={handleCloseModal} color="primary">
-          Save
+        <Button color="primary" type="submit">
+          <AddIcon />
         </Button>
       </DialogActions>
     </Dialog>

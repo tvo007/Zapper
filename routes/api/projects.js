@@ -1114,8 +1114,6 @@ router.post (
 
       project.tickets.unshift (newTicket);
 
-      
-
       await project.save ();
 
       res.json (project.tickets);
@@ -1235,7 +1233,8 @@ router.put (
         isCompleted,
         users,
         ticketPriority,
-        // subtasks,
+        ticketNumber,
+        subtasks,
       } = ticket;
       let newTicket = {
         _id,
@@ -1247,8 +1246,9 @@ router.put (
         date,
         isCompleted,
         users,
-        taskPriority,
-        // subtasks,
+        ticketPriority,
+        ticketNumber,
+        subtasks,
         edited: {
           updated: true,
           date: Date.now (),
@@ -1262,6 +1262,72 @@ router.put (
       res.json (project.tickets);
     } catch (err) {
       res.status (500).send ('Server Error');
+    }
+  }
+);
+
+//add ticket subtask
+
+//story subtasks go here
+
+// @route    POST api/projects/stories/:id/:story_id
+// @desc     add subtasks under stories
+// @access   Private
+
+router.post (
+  '/tickets/:id/:ticket_id/subtasks',
+  [
+    auth,
+    [
+      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subtaskDescription', 'Subtask description is required')
+        .not ()
+        .isEmpty (),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult (req);
+    if (!errors.isEmpty ()) {
+      return res.status (400).json ({errors: errors.array ()});
+    }
+
+    try {
+      const user = await User.findById (req.user.id).select ('-password');
+      const project = await Project.findById (req.params.id);
+      // Pull out story
+      const ticket = project.tickets.find (
+        ticket => ticket.id === req.params.ticket_id
+      );
+
+      if (!ticket) {
+        return res.status (404).json ({msg: 'Ticket does not exist'});
+      }
+
+      // Check user
+      if (ticket.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const addIndex = project.tickets
+        .map (ticket => ticket.id)
+        .indexOf (req.params.ticket_id);
+
+      const newSubtask = {
+        subtaskSummary: req.body.subtaskSummary,
+        subtaskDescription: req.body.subtaskDescription,
+        name: user.name,
+        avatar: user.avatar,
+        user: req.user.id,
+      };
+
+      project.tickets[addIndex].subtasks.unshift (newSubtask);
+
+      await project.save ();
+
+      res.json (project.tickets);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
     }
   }
 );
