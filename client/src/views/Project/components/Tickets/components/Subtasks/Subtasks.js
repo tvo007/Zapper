@@ -3,6 +3,13 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {makeStyles} from '@material-ui/styles';
+import {connect} from 'react-redux';
+import {
+  addTicketSubtask,
+  editTicketSubtask,
+  deleteTicketSubtask,
+  toggleTicketSubtask,
+} from '../../../../../../actions/ticket';
 import {
   Card,
   CardActions,
@@ -18,6 +25,7 @@ import {
 } from '@material-ui/core';
 
 import SubtaskItem from '../Subtasks/components/SubtaskItem';
+import SubtaskForm from '../Subtasks/components/SubtaskForm';
 
 const useStyles = makeStyles (theme => ({
   root: {},
@@ -40,7 +48,24 @@ const useStyles = makeStyles (theme => ({
 }));
 
 const Subtasks = props => {
-  const {className, subtasks, projectId, ...rest} = props;
+  const {
+    className,
+    subtasks,
+    projectId,
+    addTicketSubtask,
+    deleteTicketSubtask,
+    editTicketSubtask,
+    toggleTicketSubtask,
+    ticketId,
+    ...rest
+  } = props;
+
+  const subtaskActions = {
+    addTicketSubtask,
+    deleteTicketSubtask,
+    editTicketSubtask,
+    toggleTicketSubtask,
+  };
 
   const classes = useStyles ();
 
@@ -91,63 +116,67 @@ const Subtasks = props => {
   };
 
   return (
-    <Card {...rest} className={clsx (classes.root, className)}>
-      <CardContent className={classes.content}>
-        <PerfectScrollbar>
-          <div className={classes.inner}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedItems.length === subtasks.length}
-                      color="primary"
-                      indeterminate={
-                        selectedItems.length > 0 &&
-                          selectedItems.length < subtasks.length
-                      }
-                    />
-                  </TableCell>
-                  <TableCell>Something???</TableCell>
-                  <TableCell>Summary</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Subtasks</TableCell>
-                  <TableCell>Date</TableCell>
-                  <TableCell>More Options</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {subtasks
-                  .slice (0, rowsPerPage)
-                  .map (subtask => (
-                    <SubtaskItem
-                      key={subtask._id}
-                      id={subtask._id}
-                      subtaskSummary={subtask.subtaskSummary}
-                      subtaskDescription={subtask.subtaskDescription}
-                      date={subtask.date}
-                      handleSelectOne={handleSelectOne}
-                      selectedItems={selectedItems}
-                      projectId={projectId}
-                    />
-                  ))}
-              </TableBody>
-            </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={subtasks.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
-    </Card>
+    <React.Fragment>
+      <SubtaskForm addTicketSubtask={subtaskActions.addTicketSubtask} projectId={projectId} ticketId={ticketId}/>
+      <Card {...rest} className={clsx (classes.root, className)}>
+        <CardContent className={classes.content}>
+          <PerfectScrollbar>
+            <div className={classes.inner}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={selectedItems.length === subtasks.length}
+                        color="primary"
+                        indeterminate={
+                          selectedItems.length > 0 &&
+                            selectedItems.length < subtasks.length
+                        }
+                      />
+                    </TableCell>
+                    <TableCell>Something???</TableCell>
+                    <TableCell>Summary</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>Subtasks</TableCell>
+                    <TableCell>Date</TableCell>
+                    <TableCell>More Options</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {subtasks
+                    .slice (0, rowsPerPage)
+                    .map (subtask => (
+                      <SubtaskItem
+                        key={subtask._id}
+                        id={subtask._id}
+                        subtaskSummary={subtask.subtaskSummary}
+                        subtaskDescription={subtask.subtaskDescription}
+                        date={subtask.date}
+                        handleSelectOne={handleSelectOne}
+                        selectedItems={selectedItems}
+                        projectId={projectId}
+                        subtaskActions = {subtaskActions}
+                      />
+                    ))}
+                </TableBody>
+              </Table>
+            </div>
+          </PerfectScrollbar>
+        </CardContent>
+        <CardActions className={classes.actions}>
+          <TablePagination
+            component="div"
+            count={subtasks.length}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
+        </CardActions>
+      </Card>
+    </React.Fragment>
   );
 };
 
@@ -156,4 +185,9 @@ Subtasks.propTypes = {
   subtasks: PropTypes.array.isRequired,
 };
 
-export default Subtasks;
+export default connect (null, {
+  addTicketSubtask,
+  deleteTicketSubtask,
+  editTicketSubtask,
+  toggleTicketSubtask,
+}) (Subtasks);

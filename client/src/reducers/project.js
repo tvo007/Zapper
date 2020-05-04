@@ -25,6 +25,10 @@ import {
   REMOVE_STORY_SUBTASK,
   TOGGLE_STORY_SUBTASK,
   EDIT_TICKET,
+  ADD_TICKET_SUBTASK,
+  REMOVE_TICKET_SUBTASK,
+  TOGGLE_TICKET_SUBTASK,
+  EDIT_TICKET_SUBTASK,
 } from '../actions/types';
 
 const initialState = {
@@ -298,6 +302,69 @@ export default function (state = initialState, action) {
           ...state.project,
           tickets: state.project.tickets.filter (
             ticket => ticket._id !== payload
+          ),
+        },
+        loading: false,
+      };
+
+    case ADD_TICKET_SUBTASK:
+    case EDIT_TICKET_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          tickets: state.project.tickets.map (
+            (ticket, index) =>
+              ticket._id === payload.ticketId
+                ? {...ticket, subtasks: payload.subtasks[index].subtasks}
+                : ticket
+          ),
+        },
+        loading: false,
+      };
+
+    case REMOVE_TICKET_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          tickets: state.project.tickets.map (
+            (ticket, index) =>
+              ticket._id === payload.ticketId
+                ? {
+                    ...ticket,
+                    subtasks: payload.subtasks[index].subtasks.filter (
+                      subtask => subtask._id !== payload
+                    ),
+                  }
+                : ticket
+          ),
+        },
+        loading: false,
+      };
+
+    case TOGGLE_TICKET_SUBTASK:
+      return {
+        ...state,
+        project: {
+          ...state.project,
+          tickets: state.project.tickets.map (
+            (ticket, index) =>
+              ticket._id === payload.ticketId
+                ? {
+                    ...ticket,
+                    subtasks: payload.subtasks[index].subtasks.map (
+                      (subtask, index) =>
+                        subtask._id === payload.subtaskId
+                          ? {
+                              ...subtask,
+                              isCompleted: payload.isCompleted[index]
+                                .isCompleted,
+                            }
+                          : subtask
+                    ),
+                  }
+                : ticket
           ),
         },
         loading: false,

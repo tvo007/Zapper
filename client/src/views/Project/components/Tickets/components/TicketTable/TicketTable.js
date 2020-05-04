@@ -150,7 +150,7 @@ const TicketTable = props => {
                   .map (ticket => (
                     <TicketItem
                       key={ticket._id}
-                      id={ticket._id}
+                      ticketId={ticket._id}
                       ticketSummary={ticket.ticketSummary}
                       ticketDescription={ticket.ticketDescription}
                       date={ticket.date}

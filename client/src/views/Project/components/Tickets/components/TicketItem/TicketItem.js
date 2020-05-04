@@ -20,7 +20,7 @@ const useStyles = makeStyles (() => ({
 
 const TicketItem = props => {
   const {
-    id,
+    ticketId,
     ticketSummary,
     ticketDescription,
     date,
@@ -40,8 +40,8 @@ const TicketItem = props => {
 
   //ticket: {_id, ticketDescription, name, avatar, user, date, isCompleted}
 
-  const deleteHandler = e => deleteTicket (projectId, id);
-  const toggleHandler = e => toggleTicketCompleted (projectId, id);
+  const deleteHandler = e => deleteTicket (projectId, ticketId);
+  const toggleHandler = e => toggleTicketCompleted (projectId, ticketId);
 
   const handleClickOpenModal = () => {
     setOpenModal (true);
@@ -57,13 +57,13 @@ const TicketItem = props => {
     <TableRow
       className={classes.tableRow}
       hover
-      selected={selectedTickets.indexOf (id) !== -1}
+      selected={selectedTickets.indexOf (ticketId) !== -1}
     >
       <TableCell padding="checkbox">
         <Checkbox
-          checked={selectedTickets.indexOf (id) !== -1}
+          checked={selectedTickets.indexOf (ticketId) !== -1}
           color="primary"
-          onChange={event => handleSelectOne (event, id)}
+          onChange={event => handleSelectOne (event, ticketId)}
           value="true"
           onClick={toggleHandler}
         />
@@ -99,7 +99,7 @@ const TicketItem = props => {
         ticketSummary={ticketSummary}
         ticketDescription={ticketDescription}
         date={date}
-        id={id}
+        ticketId={ticketId}
         projectId={projectId}
         editTicket={editTicket}
         subtasks={subtasks}

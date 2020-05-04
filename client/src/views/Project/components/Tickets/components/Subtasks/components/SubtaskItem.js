@@ -33,45 +33,45 @@ const SubtaskItem = props => {
   const classes = useStyles ();
 
   return (
-    <TableRow
-      className={classes.tableRow}
-      hover
-      selected={selectedItems.indexOf (id) !== -1}
-    >
-      <TableCell padding="checkbox">
-        <Checkbox
-          checked={selectedItems.indexOf (id) !== -1}
-          color="primary"
-          onChange={event => handleSelectOne (event, id)}
-          value="true"
-        />
-      </TableCell>
-      <TableCell>
-        <div className={classes.nameContainer}>
-          <Typography variant="body1">
-            Something goes here!!!
-          </Typography>
-        </div>
-      </TableCell>
-      <TableCell>{subtaskSummary}</TableCell>
-      <TableCell>
-        {subtaskDescription}
-      </TableCell>
-      <TableCell>
-        # of subtasks here
-      </TableCell>
-      <TableCell>
-        {moment (date).format ('DD/MM/YYYY')}
-      </TableCell>
-      <TableCell>
+      <TableRow
+        className={classes.tableRow}
+        hover
+        selected={selectedItems.indexOf (id) !== -1}
+      >
+        <TableCell padding="checkbox">
+          <Checkbox
+            checked={selectedItems.indexOf (id) !== -1}
+            color="primary"
+            onChange={event => handleSelectOne (event, id)}
+            value="true"
+          />
+        </TableCell>
+        <TableCell>
+          <div className={classes.nameContainer}>
+            <Typography variant="body1">
+              Something goes here!!!
+            </Typography>
+          </div>
+        </TableCell>
+        <TableCell>{subtaskSummary}</TableCell>
+        <TableCell>
+          {subtaskDescription}
+        </TableCell>
+        <TableCell>
+          # of subtasks here
+        </TableCell>
+        <TableCell>
+          {moment (date).format ('DD/MM/YYYY')}
+        </TableCell>
+        <TableCell>
 
-        <AssignmentIcon />
+          <AssignmentIcon />
 
-        <DeleteIcon />
+          <DeleteIcon />
 
-      </TableCell>
+        </TableCell>
 
-    </TableRow>
+      </TableRow>
   );
 };
 

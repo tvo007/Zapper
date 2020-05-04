@@ -24,7 +24,7 @@ import Subtasks from '../Subtasks';
 
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import AddIcon from '@material-ui/icons/Add';
+
 
 const useStyles = makeStyles (() => ({
   root: {},
@@ -39,7 +39,7 @@ const TicketModal = props => {
     ticketDescription,
     ticketNumber,
     date,
-    id,
+    ticketId,
     projectId,
     editTicket,
     subtasks,
@@ -76,7 +76,7 @@ const TicketModal = props => {
 
   const onSubmit = e => {
     e.preventDefault ();
-    editTicket (projectId, id, formData);
+    editTicket (projectId, ticketId, formData);
     setFormData (formData);
   };
 
@@ -157,38 +157,10 @@ const TicketModal = props => {
       <DialogTitle id="form-dialog-title">Subtasks</DialogTitle>
       <DialogContent>
         <Grid>
-          <Grid>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Add Subtask Summary"
-              type="text"
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Add Subtask Description"
-              type="text"
-              fullWidth
-              multiline
-              rows="4"
-            />
-          </Grid>
-          <Grid>
-            <Subtasks subtasks={subtasks} />
-          </Grid>
+          <Subtasks subtasks={subtasks} ticketId={ticketId} projectId={projectId}/>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button color="primary">
-          Cancel
-        </Button>
-        <Button color="primary" type="submit">
-          <AddIcon />
-        </Button>
       </DialogActions>
     </Dialog>
   );
