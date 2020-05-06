@@ -23,6 +23,7 @@ const TicketItem = props => {
     ticketId,
     ticketSummary,
     ticketDescription,
+    isCompleted,
     date,
     subtasks,
     handleSelectOne,
@@ -42,6 +43,8 @@ const TicketItem = props => {
 
   const deleteHandler = e => deleteTicket (projectId, ticketId);
   const toggleHandler = e => toggleTicketCompleted (projectId, ticketId);
+
+  const checkboxChecked = isCompleted ? true : false; //custom hook??
 
   const handleClickOpenModal = () => {
     setOpenModal (true);
@@ -65,6 +68,7 @@ const TicketItem = props => {
           color="primary"
           onChange={event => handleSelectOne (event, ticketId)}
           value="true"
+          checked={checkboxChecked}
           onClick={toggleHandler}
         />
       </TableCell>

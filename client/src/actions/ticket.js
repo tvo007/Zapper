@@ -170,7 +170,7 @@ export const editTicketSubtask = (
     };
 
     const res = await axios.put (
-      `/api/projects/stories/${projectId}/${ticketId}/${subtaskId}`,
+      `/api/projects/tickets/${projectId}/${ticketId}/${subtaskId}`,
       formData,
       config
     );
@@ -199,12 +199,12 @@ export const deleteTicketSubtask = (
     // const res =
 
     const res = await axios.delete (
-      `/api/projects/stories/${projectId}/${ticketId}/${subtaskId}`
+      `/api/projects/tickets/${projectId}/${ticketId}/${subtaskId}`
     );
 
     dispatch ({
       type: REMOVE_TICKET_SUBTASK,
-      payload: {ticketId, subTasks: res.data},
+      payload: {ticketId, subtasks: res.data},
     });
 
     dispatch (setAlert ('Subtask Removed', 'success'));
@@ -224,7 +224,7 @@ export const toggleTicketSubtask = (
 ) => async dispatch => {
   try {
     const res = await axios.put (
-      `/api/projects/stories/${projectId}/${ticketId}/${subtaskId}/isCompleted`
+      `/api/projects/tickets/${projectId}/${ticketId}/${subtaskId}/isCompleted`
     );
 
     dispatch ({

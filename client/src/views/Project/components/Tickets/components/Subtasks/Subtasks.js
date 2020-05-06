@@ -149,7 +149,7 @@ const Subtasks = props => {
                     .map (subtask => (
                       <SubtaskItem
                         key={subtask._id}
-                        id={subtask._id}
+                        subtaskId={subtask._id}
                         subtaskSummary={subtask.subtaskSummary}
                         subtaskDescription={subtask.subtaskDescription}
                         date={subtask.date}
@@ -157,6 +157,8 @@ const Subtasks = props => {
                         selectedItems={selectedItems}
                         projectId={projectId}
                         subtaskActions = {subtaskActions}
+                        isCompleted={subtask.isCompleted}
+                        ticketId={ticketId}
                       />
                     ))}
                 </TableBody>

@@ -153,6 +153,7 @@ const TicketTable = props => {
                       ticketId={ticket._id}
                       ticketSummary={ticket.ticketSummary}
                       ticketDescription={ticket.ticketDescription}
+                      isCompleted={ticket.isCompleted}
                       date={ticket.date}
                       handleSelectOne={handleSelectOne}
                       selectedTickets={selectedTickets}

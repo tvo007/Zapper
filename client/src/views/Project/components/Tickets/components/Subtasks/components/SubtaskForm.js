@@ -75,10 +75,13 @@ const SubtaskForm = props => {
           multiline
           rows="4"
         />
-        <Button color="primary" type="submit">
-          <AddIcon />
-        </Button>
+        <Grid container justify="flex-end">
+          <Button color="primary" type="submit">
+            <AddIcon />
+          </Button>
+        </Grid>
       </Grid>
+
     </form>
   );
 };
