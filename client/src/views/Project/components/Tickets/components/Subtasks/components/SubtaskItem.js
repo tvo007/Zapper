@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {
+  Button,
   Grid,
   Checkbox,
   TableCell,
@@ -82,12 +83,17 @@ const SubtaskItem = props => {
 
           <Grid
             container
-            direction="row"
+            alignItems="flex-start"
             justify="flex-end"
-            alignItems="flex-end"
+            direction="row"
           >
-            <EditIcon />
-            <DeleteIcon />
+            <Button variant="contained">
+              <EditIcon />
+            </Button>
+            <Button variant="contained">
+              <DeleteIcon />
+            </Button>
+
           </Grid>
         </Grid>
       </ListItem>
