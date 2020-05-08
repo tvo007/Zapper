@@ -25,7 +25,6 @@ import Subtasks from '../Subtasks';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
-
 const useStyles = makeStyles (() => ({
   root: {},
 }));
@@ -101,7 +100,7 @@ const TicketModal = props => {
                 alignItems="stretch"
               >
                 <Grid item md={12} xs={6}>
-                  <Typography variant="h3">
+                  <Typography variant="h4">
                     Ticket # {ticketNumber}
                   </Typography>
                 </Grid>
@@ -109,7 +108,7 @@ const TicketModal = props => {
                   <Typography />
                 </Grid>
                 <Grid item md={12} xs={6}>
-                  <Typography variant="h3">
+                  <Typography variant="h4">
                     Summary
                   </Typography>
                 </Grid>
@@ -124,7 +123,7 @@ const TicketModal = props => {
                 </Grid>
 
                 <Grid item md={12} xs={6}>
-                  <Typography variant="h3">
+                  <Typography variant="h4">
                     Description
                   </Typography>
                 </Grid>
@@ -153,15 +152,15 @@ const TicketModal = props => {
             Save
           </Button>
         </DialogActions>
+        <DialogTitle id="form-dialog-title">Subtasks</DialogTitle>
+        <DialogContent>
+          <Subtasks
+            subtasks={subtasks}
+            ticketId={ticketId}
+            projectId={projectId}
+          />
+        </DialogContent>
       </form>
-      <DialogTitle id="form-dialog-title">Subtasks</DialogTitle>
-      <DialogContent>
-        <Grid>
-          <Subtasks subtasks={subtasks} ticketId={ticketId} projectId={projectId}/>
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-      </DialogActions>
     </Dialog>
   );
 };

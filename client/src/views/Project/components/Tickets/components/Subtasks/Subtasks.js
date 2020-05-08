@@ -14,6 +14,11 @@ import {
   Card,
   CardActions,
   CardContent,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
   Checkbox,
   Table,
   TableBody,
@@ -69,114 +74,32 @@ const Subtasks = props => {
 
   const classes = useStyles ();
 
-  const [selectedItems, setSelectedItems] = useState ([]);
-  const [rowsPerPage, setRowsPerPage] = useState (10);
-  const [page, setPage] = useState (0);
-
-  const handleSelectAll = event => {
-    const {subtasks} = props;
-
-    let selectedItems;
-
-    if (event.target.checked) {
-      selectedItems = subtasks.map (subtask => subtask._id);
-    } else {
-      selectedItems = [];
-    }
-
-    setSelectedItems (selectedItems);
-  };
-
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedItems.indexOf (id);
-    let newSelectedItems = [];
-
-    if (selectedIndex === -1) {
-      newSelectedItems = newSelectedItems.concat (selectedItems, id);
-    } else if (selectedIndex === 0) {
-      newSelectedItems = newSelectedItems.concat (selectedItems.slice (1));
-    } else if (selectedIndex === selectedItems.length - 1) {
-      newSelectedItems = newSelectedItems.concat (selectedItems.slice (0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedItems = newSelectedItems.concat (
-        selectedItems.slice (0, selectedIndex),
-        selectedItems.slice (selectedIndex + 1)
-      );
-    }
-
-    setSelectedItems (newSelectedItems);
-  };
-
-  const handlePageChange = (event, page) => {
-    setPage (page);
-  };
-
-  const handleRowsPerPageChange = event => {
-    setRowsPerPage (event.target.value);
-  };
-
   return (
     <React.Fragment>
-      <SubtaskForm addTicketSubtask={subtaskActions.addTicketSubtask} projectId={projectId} ticketId={ticketId}/>
+      <SubtaskForm
+        addTicketSubtask={subtaskActions.addTicketSubtask}
+        projectId={projectId}
+        ticketId={ticketId}
+      />
       <Card {...rest} className={clsx (classes.root, className)}>
         <CardContent className={classes.content}>
-          <PerfectScrollbar>
-            <div className={classes.inner}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selectedItems.length === subtasks.length}
-                        color="primary"
-                        indeterminate={
-                          selectedItems.length > 0 &&
-                            selectedItems.length < subtasks.length
-                        }
-                      />
-                    </TableCell>
-                    <TableCell>Something???</TableCell>
-                    <TableCell>Summary</TableCell>
-                    <TableCell>Description</TableCell>
-                    <TableCell>Subtasks</TableCell>
-                    <TableCell>Date</TableCell>
-                    <TableCell>More Options</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {subtasks
-                    .slice (0, rowsPerPage)
-                    .map (subtask => (
-                      <SubtaskItem
-                        key={subtask._id}
-                        subtaskId={subtask._id}
-                        subtaskSummary={subtask.subtaskSummary}
-                        subtaskDescription={subtask.subtaskDescription}
-                        date={subtask.date}
-                        handleSelectOne={handleSelectOne}
-                        selectedItems={selectedItems}
-                        projectId={projectId}
-                        subtaskActions = {subtaskActions}
-                        isCompleted={subtask.isCompleted}
-                        ticketId={ticketId}
-                      />
-                    ))}
-                </TableBody>
-              </Table>
-            </div>
-          </PerfectScrollbar>
+          <List>
+            {subtasks.map (subtask => (
+              <SubtaskItem
+                key={subtask._id}
+                subtaskId={subtask._id}
+                subtaskSummary={subtask.subtaskSummary}
+                subtaskDescription={subtask.subtaskDescription}
+                date={subtask.date}
+                projectId={projectId}
+                subtaskActions={subtaskActions}
+                isCompleted={subtask.isCompleted}
+                ticketId={ticketId}
+              />
+            ))}
+          </List>
         </CardContent>
-        <CardActions className={classes.actions}>
-          <TablePagination
-            component="div"
-            count={subtasks.length}
-            onChangePage={handlePageChange}
-            onChangeRowsPerPage={handleRowsPerPageChange}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
-          />
-        </CardActions>
+        <CardActions className={classes.actions} />
       </Card>
     </React.Fragment>
   );
@@ -193,3 +116,27 @@ export default connect (null, {
   editTicketSubtask,
   toggleTicketSubtask,
 }) (Subtasks);
+
+/**
+ * Subtask Mapper
+ * 
+ * subtasks
+                    .slice (0, rowsPerPage)
+                    .map (subtask => (
+                      <SubtaskItem
+                        key={subtask._id}
+                        subtaskId={subtask._id}
+                        subtaskSummary={subtask.subtaskSummary}
+                        subtaskDescription={subtask.subtaskDescription}
+                        date={subtask.date}
+                        handleSelectOne={handleSelectOne}
+                        selectedItems={selectedItems}
+                        projectId={projectId}
+                        subtaskActions = {subtaskActions}
+                        isCompleted={subtask.isCompleted}
+                        ticketId={ticketId}
+                      />
+                    ))}
+ * 
+ * 
+ */
