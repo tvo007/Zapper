@@ -15,8 +15,8 @@ import {
   TableRow,
   TablePagination,
 } from '@material-ui/core';
-// import TicketModal from '../TicketModal';
-import TicketItem from '../TicketItem';
+import TaskItem from '../TaskItem';
+// import { TaskItem } from '../TaskItem';
 // import {getInitials} from 'helpers';
 // import {connect} from 'react-redux';
 // import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
@@ -41,17 +41,17 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-//tickets={project.tickets}
-//tickets: {ticket: user, ticketSummary, ticketDescription, name, avatar, date, isCompleted, users, ticketPriority }
-const TicketTable = props => {
+//tasks={project.tasks}
+//tasks: {ticket: user, tasksummary, ticketDescription, name, avatar, date, isCompleted, users, ticketPriority }
+const TaskTable = props => {
   const {
     className,
-    tickets,
+    tasks,
     projectId,
-    // tickets: {
+    // tasks: {
     //   ticket: _id,
     //   user,
-    //   ticketSummary,
+    //   tasksummary,
     //   ticketDescription,
     //   name,
     //   avatar,
@@ -66,46 +66,42 @@ const TicketTable = props => {
 
   const classes = useStyles ();
 
-  const [selectedTickets, setSelectedTickets] = useState ([]);
+  const [selectedTasks, setSelectedTasks] = useState ([]);
   const [rowsPerPage, setRowsPerPage] = useState (10);
   const [page, setPage] = useState (0);
 
   // const handleSelectAll = event => {
-  //   const {tickets} = props;
+  //   const {tasks} = props;
 
-  //   let selectedTickets;
+  //   let selectedtasks;
 
   //   if (event.target.checked) {
-  //     selectedTickets = tickets.map (ticket => ticket._id);
+  //     selectedtasks = tasks.map (ticket => ticket._id);
   //   } else {
-  //     selectedTickets = [];
+  //     selectedtasks = [];
   //   }
 
-  //   setSelectedTickets (selectedTickets);
+  //   setSelectedtasks (selectedtasks);
   // };
 
   const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedTickets.indexOf (id);
-    let newSelectedTickets = [];
+    const selectedIndex = selectedTasks.indexOf (id);
+    let newSelectedTasks = [];
 
     if (selectedIndex === -1) {
-      newSelectedTickets = newSelectedTickets.concat (selectedTickets, id);
+      newSelectedTasks = newSelectedTasks.concat (selectedTasks, id);
     } else if (selectedIndex === 0) {
-      newSelectedTickets = newSelectedTickets.concat (
-        selectedTickets.slice (1)
-      );
-    } else if (selectedIndex === selectedTickets.length - 1) {
-      newSelectedTickets = newSelectedTickets.concat (
-        selectedTickets.slice (0, -1)
-      );
+      newSelectedTasks = newSelectedTasks.concat (selectedTasks.slice (1));
+    } else if (selectedIndex === selectedTasks.length - 1) {
+      newSelectedTasks = newSelectedTasks.concat (selectedTasks.slice (0, -1));
     } else if (selectedIndex > 0) {
-      newSelectedTickets = newSelectedTickets.concat (
-        selectedTickets.slice (0, selectedIndex),
-        selectedTickets.slice (selectedIndex + 1)
+      newSelectedTasks = newSelectedTasks.concat (
+        selectedTasks.slice (0, selectedIndex),
+        selectedTasks.slice (selectedIndex + 1)
       );
     }
 
-    setSelectedTickets (newSelectedTickets);
+    setSelectedTasks (newSelectedTasks);
   };
 
   const handlePageChange = (event, page) => {
@@ -127,15 +123,15 @@ const TicketTable = props => {
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedTickets.length === tickets.length}
+                      checked={selectedTasks.length === tasks.length}
                       color="primary"
                       indeterminate={
-                        selectedTickets.length > 0 &&
-                          selectedTickets.length < tickets.length
+                        selectedTasks.length > 0 &&
+                          selectedTasks.length < tasks.length
                       }
                     />
                   </TableCell>
-                  <TableCell>Ticket #</TableCell>
+                  <TableCell>Task ID</TableCell>
                   <TableCell>Summary</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Subtasks</TableCell>
@@ -144,21 +140,21 @@ const TicketTable = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tickets
+                {tasks
                   .slice (0, rowsPerPage)
-                  .map (ticket => (
-                    <TicketItem
-                      key={ticket._id}
-                      ticketId={ticket._id}
-                      ticketSummary={ticket.ticketSummary}
-                      ticketDescription={ticket.ticketDescription}
-                      isCompleted={ticket.isCompleted}
-                      date={ticket.date}
+                  .map (task => (
+                    <TaskItem
+                      key={task._id}
+                      taskId={task._id}
+                      taskSummary={task.taskSummary}
+                      taskDescription={task.taskDescription}
+                      isCompleted={task.isCompleted}
+                      date={task.date}
                       handleSelectOne={handleSelectOne}
-                      selectedTickets={selectedTickets}
+                      selectedTasks={selectedTasks}
                       projectId={projectId}
-                      ticketNumber={ticket.ticketNumber}
-                      subtasks={ticket.subtasks}
+                      taskNumber={task.taskNumber}
+                      subtasks={task.subtasks}
                     />
                   ))}
               </TableBody>
@@ -169,7 +165,7 @@ const TicketTable = props => {
       <CardActions className={classes.actions}>
         <TablePagination
           component="div"
-          count={tickets.length}
+          count={tasks.length}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handleRowsPerPageChange}
           page={page}
@@ -181,16 +177,16 @@ const TicketTable = props => {
   );
 };
 
-TicketTable.propTypes = {
+TaskTable.propTypes = {
   className: PropTypes.string,
-  tickets: PropTypes.array.isRequired,
+  tasks: PropTypes.array.isRequired,
 };
 
 // export default connect (null, {deleteTicket, toggleTicketCompleted}) (
 //   TicketTable
 // );
 
-export default TicketTable;
+export default TaskTable;
 //fix user.user
 
 //line 137/Checkbox props: placeholder for onChange={handleChangeAll}
@@ -198,11 +194,11 @@ export default TicketTable;
  * <TicketItem
                       key={ticket._id}
                       id={ticket._id}
-                      ticketSummary={ticket.ticketSummary}
+                      tasksummary={ticket.tasksummary}
                       ticketDescription={ticket.ticketDescription}
                       date={ticket.date}
                       handleSelectOne={handleSelectOne}
-                      selectedTickets={selectedTickets}
+                      selectedtasks={selectedtasks}
                       projectId={projectId}
                       ticketNumber={ticket.ticketNumber}
                     />

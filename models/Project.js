@@ -88,18 +88,18 @@ const ProjectSchema = new Schema ({
       taskPriority: {
         type: Number,
       },
-      subTasks: [
+      subtasks: [
         {
           user: {
             type: Schema.Types.ObjectId,
             ref: 'users',
           },
-          subTaskSummary: {
+          subtaskSummary: {
             type: String,
             required: true,
           },
 
-          subTaskDescription: {
+          subtaskDescription: {
             type: String,
             required: true,
           },

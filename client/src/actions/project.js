@@ -229,7 +229,7 @@ export const toggleTaskCompleted = (projectId, taskId) => async dispatch => {
 //-------subtasks-------
 
 //add subtask
-export const addSubTask = (projectId, taskId, formData) => async dispatch => {
+export const addSubtask = (projectId, taskId, formData) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -237,14 +237,14 @@ export const addSubTask = (projectId, taskId, formData) => async dispatch => {
   };
   try {
     const res = await axios.post (
-      `/api/projects/tasks/${projectId}/${taskId}/subTasks`,
+      `/api/projects/tasks/${projectId}/${taskId}/subtasks`,
       formData,
       config
     );
 
     dispatch ({
       type: ADD_SUBTASK,
-      payload: {taskId, subTasks: res.data},
+      payload: {taskId, subtasks: res.data},
     });
 
     dispatch (setAlert ('Sub task Added', 'success'));
@@ -257,7 +257,7 @@ export const addSubTask = (projectId, taskId, formData) => async dispatch => {
 };
 
 //edit subtask
-export const editSubtask = (projectId, taskId, subTaskId, formData) => async dispatch => {
+export const editSubtask = (projectId, taskId, subtaskId, formData) => async dispatch => {
   try {
     const config = {
       headers: {
@@ -265,7 +265,7 @@ export const editSubtask = (projectId, taskId, subTaskId, formData) => async dis
       },
     };
 
-    const res = await axios.put (`/api/projects/tasks/${projectId}/${taskId}/${subTaskId}`, formData, config);
+    const res = await axios.put (`/api/projects/tasks/${projectId}/${taskId}/${subtaskId}`, formData, config);
 
     dispatch ({
       type: EDIT_SUBTASK,
@@ -282,21 +282,21 @@ export const editSubtask = (projectId, taskId, subTaskId, formData) => async dis
 };
 
 //delete subtasks
-export const deleteSubTask = (
+export const deleteSubtask = (
   projectId,
   taskId,
-  subTaskId
+  subtaskId
 ) => async dispatch => {
   try {
     // const res =
 
     const res = await axios.delete (
-      `/api/projects/tasks/${projectId}/${taskId}/${subTaskId}`
+      `/api/projects/tasks/${projectId}/${taskId}/${subtaskId}`
     );
 
     dispatch ({
       type: REMOVE_SUBTASK,
-      payload: {taskId, subTasks: res.data},
+      payload: {taskId, subtasks: res.data},
     });
 
     dispatch (setAlert ('Task Removed', 'success'));
@@ -309,19 +309,19 @@ export const deleteSubTask = (
 };
 
 //toggle subtask
-export const toggleSubTask = (
+export const toggleSubtask = (
   projectId,
   taskId,
-  subTaskId
+  subtaskId
 ) => async dispatch => {
   try {
     const res = await axios.put (
-      `/api/projects/tasks/${projectId}/${taskId}/${subTaskId}/isCompleted`
+      `/api/projects/tasks/${projectId}/${taskId}/${subtaskId}/isCompleted`
     );
 
     dispatch ({
       type: TOGGLE_SUBTASK,
-      payload: {taskId, subTasks: res.data},
+      payload: {taskId, subtasks: res.data},
     });
 
     //res.data returns project.tasks array

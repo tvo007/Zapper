@@ -20,7 +20,7 @@ const initialState = {
 // }));
 
 const SubtaskForm = props => {
-  const {projectId, ticketId, addTicketSubtask} = props;
+  const {projectId, taskId, addSubtask} = props;
 
   const [formData, setFormData] = useState (initialState);
 
@@ -35,7 +35,7 @@ const SubtaskForm = props => {
 
   const onSubmit = e => {
     e.preventDefault ();
-    addTicketSubtask (projectId, ticketId, formData);
+    addSubtask (projectId, taskId, formData);
     setFormData (initialState);
   };
 

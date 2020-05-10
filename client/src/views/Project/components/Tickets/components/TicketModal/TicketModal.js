@@ -7,8 +7,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardActions,
-  Divider,
   Grid,
   Button,
   Typography,
@@ -16,15 +14,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from '@material-ui/core';
-// import {connect} from 'react-redux';
-// import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
 import Subtasks from '../Subtasks';
-
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const useStyles = makeStyles (() => ({
   root: {},

@@ -19,11 +19,11 @@ const EditForm = props => {
   const {
     //className,
     projectId,
-    ticketId,
+    taskId,
     subtaskId,
     subtaskSummary,
     subtaskDescription,
-    editTicketSubtask,
+    editSubtask,
     editToggleHandler,
   } = props;
 
@@ -43,7 +43,7 @@ const EditForm = props => {
 
   const onSubmit = e => {
     e.preventDefault ();
-    editTicketSubtask (projectId, ticketId, subtaskId, formData);
+    editSubtask (projectId, taskId, subtaskId, formData);
     setFormData (formData);
     editToggleHandler ();
   };

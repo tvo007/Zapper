@@ -5,11 +5,11 @@ import {makeStyles} from '@material-ui/styles';
 import {Checkbox, TableCell, TableRow, Typography} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {
-  deleteTicket,
-  toggleTicketCompleted,
-  editTicket,
-} from '../../../../../../actions/ticket';
-import TicketModal from '../TicketModal';
+  deleteTask,
+  toggleTaskCompleted,
+  editTask,
+} from '../../../../../../actions/project';
+import TaskModal from '../TaskModal';
 import moment from 'moment';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -18,21 +18,21 @@ const useStyles = makeStyles (() => ({
   root: {},
 }));
 
-const TicketItem = props => {
+const TaskItem = props => {
   const {
-    ticketId,
-    ticketSummary,
-    ticketDescription,
+    taskId,
+    taskSummary,
+    taskDescription,
     isCompleted,
     date,
     subtasks,
     handleSelectOne,
-    selectedTickets,
-    deleteTicket,
-    toggleTicketCompleted,
+    selectedTasks,
+    deleteTask,
+    toggleTaskCompleted,
     projectId,
-    ticketNumber,
-    editTicket,
+    taskNumber,
+    editTask,
 
     //...rest
   } = props;
@@ -41,8 +41,8 @@ const TicketItem = props => {
 
   //ticket: {_id, ticketDescription, name, avatar, user, date, isCompleted}
 
-  const deleteHandler = e => deleteTicket (projectId, ticketId);
-  const toggleHandler = e => toggleTicketCompleted (projectId, ticketId);
+  const deleteHandler = e => deleteTask (projectId, taskId);
+  const toggleHandler = e => toggleTaskCompleted (projectId, taskId);
 
   const checkboxChecked = isCompleted ? true : false; //custom hook??
 
@@ -60,12 +60,12 @@ const TicketItem = props => {
     <TableRow
       className={classes.tableRow}
       hover
-      selected={selectedTickets.indexOf (ticketId) !== -1}
+      selected={selectedTasks.indexOf (taskId) !== -1}
     >
       <TableCell padding="checkbox">
         <Checkbox
           color="primary"
-          onChange={event => handleSelectOne (event, ticketId)}
+          onChange={event => handleSelectOne (event, taskId)}
           value="true"
           checked={checkboxChecked}
           onClick={toggleHandler}
@@ -74,13 +74,13 @@ const TicketItem = props => {
       <TableCell>
         <div className={classes.nameContainer}>
           <Typography variant="body1">
-            {ticketNumber}
+            {taskNumber}
           </Typography>
         </div>
       </TableCell>
-      <TableCell>{ticketSummary}</TableCell>
+      <TableCell>{taskSummary}</TableCell>
       <TableCell>
-        {ticketDescription}
+        {taskDescription}
       </TableCell>
       <TableCell>
         {subtasks.length}
@@ -95,16 +95,16 @@ const TicketItem = props => {
         <DeleteIcon onClick={deleteHandler} />
 
       </TableCell>
-      <TicketModal
+      <TaskModal
         handleCloseModal={handleCloseModal}
         openModal={openModal}
-        ticketNumber={ticketNumber}
-        ticketSummary={ticketSummary}
-        ticketDescription={ticketDescription}
+        taskNumber={taskNumber}
+        taskSummary={taskSummary}
+        taskDescription={taskDescription}
         date={date}
-        ticketId={ticketId}
+        taskId={taskId}
         projectId={projectId}
-        editTicket={editTicket}
+        editTask={editTask}
         subtasks={subtasks}
       />
 
@@ -112,7 +112,7 @@ const TicketItem = props => {
   );
 };
 
-TicketItem.propTypes = {
+TaskItem.propTypes = {
   className: PropTypes.string,
 };
 
@@ -121,9 +121,9 @@ TicketItem.propTypes = {
 // });
 
 export default connect (null, {
-  deleteTicket,
-  toggleTicketCompleted,
-  editTicket,
-}) (TicketItem);
+  deleteTask,
+  toggleTaskCompleted,
+  editTask,
+}) (TaskItem);
 
 // export default TicketItem;

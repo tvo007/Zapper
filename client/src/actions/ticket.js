@@ -142,7 +142,7 @@ export const addTicketSubtask = (
     );
 
     dispatch ({
-      type: EDIT_TICKET_SUBTASK,
+      type: ADD_TICKET_SUBTASK,
       payload: res.data,
     });
 

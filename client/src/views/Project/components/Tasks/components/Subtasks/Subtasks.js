@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {connect} from 'react-redux';
 import {
-  addTicketSubtask,
-  editTicketSubtask,
-  deleteTicketSubtask,
-  toggleTicketSubtask,
-} from '../../../../../../actions/ticket';
+  addSubtask,
+  editSubtask,
+  deleteSubtask,
+  toggleSubtask,
+} from '../../../../../../actions/project';
 import {
   Card,
   CardActions,
@@ -44,19 +44,19 @@ const Subtasks = props => {
     className,
     subtasks,
     projectId,
-    addTicketSubtask,
-    deleteTicketSubtask,
-    editTicketSubtask,
-    toggleTicketSubtask,
-    ticketId,
+    addSubtask,
+    deleteSubtask,
+    editSubtask,
+    toggleSubtask,
+    taskId,
     ...rest
   } = props;
 
   const subtaskActions = {
-    addTicketSubtask,
-    deleteTicketSubtask,
-    editTicketSubtask,
-    toggleTicketSubtask,
+    addSubtask,
+    deleteSubtask,
+    editSubtask,
+    toggleSubtask,
   };
 
   const classes = useStyles ();
@@ -64,9 +64,9 @@ const Subtasks = props => {
   return (
     <React.Fragment>
       <SubtaskForm
-        addTicketSubtask={subtaskActions.addTicketSubtask}
+        addSubtask={subtaskActions.addSubtask}
         projectId={projectId}
-        ticketId={ticketId}
+        taskId={taskId}
       />
       <Card {...rest} className={clsx (classes.root, className)}>
         <CardContent className={classes.content}>
@@ -81,7 +81,7 @@ const Subtasks = props => {
                 projectId={projectId}
                 subtaskActions={subtaskActions}
                 isCompleted={subtask.isCompleted}
-                ticketId={ticketId}
+                taskId={taskId}
               />
             ))}
           </List>
@@ -98,10 +98,10 @@ Subtasks.propTypes = {
 };
 
 export default connect (null, {
-  addTicketSubtask,
-  deleteTicketSubtask,
-  editTicketSubtask,
-  toggleTicketSubtask,
+  addSubtask,
+  deleteSubtask,
+  editSubtask,
+  toggleSubtask,
 }) (Subtasks);
 
 /**
@@ -121,7 +121,7 @@ export default connect (null, {
                         projectId={projectId}
                         subtaskActions = {subtaskActions}
                         isCompleted={subtask.isCompleted}
-                        ticketId={ticketId}
+                        taskId={taskId}
                       />
                     ))}
  * 

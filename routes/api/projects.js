@@ -355,12 +355,12 @@ router.put ('/tasks/:id/:task_id/isCompleted', auth, async (req, res) => {
 // @access   Private
 
 router.post (
-  '/tasks/:id/:task_id/subTasks',
+  '/tasks/:id/:task_id/subtasks',
   [
     auth,
     [
-      check ('subTaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subTaskDescription', 'Subtask description is required')
+      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subtaskDescription', 'Subtask description is required')
         .not ()
         .isEmpty (),
     ],
@@ -390,15 +390,15 @@ router.post (
         .map (task => task.id)
         .indexOf (req.params.task_id);
 
-      const newSubTask = {
-        subTaskSummary: req.body.subTaskSummary,
-        subTaskDescription: req.body.subTaskDescription,
+      const newSubtask = {
+        subtaskSummary: req.body.subtaskSummary,
+        subtaskDescription: req.body.subtaskDescription,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
       };
 
-      project.tasks[addIndex].subTasks.unshift (newSubTask);
+      project.tasks[addIndex].subtasks.unshift (newSubtask);
 
       await project.save ();
 
@@ -418,8 +418,8 @@ router.put (
   [
     auth,
     [
-      check ('subTaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subTaskDescription', 'Subtask description is required')
+      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subtaskDescription', 'Subtask description is required')
         .not ()
         .isEmpty (),
     ],
@@ -439,7 +439,7 @@ router.put (
         .map (task => task.id)
         .indexOf (req.params.task_id);
 
-      const subtask = project.tasks[taskIndex].subTasks.find (
+      const subtask = project.tasks[taskIndex].subtasks.find (
         subtask => subtask.id === req.params.subtask_id
       );
 
@@ -453,7 +453,7 @@ router.put (
         return res.status (401).json ({msg: 'User not authorized'});
       }
 
-      const {subTaskSummary, subTaskDescription} = req.body;
+      const {subtaskSummary, subtaskDescription} = req.body;
 
       const {
         _id,
@@ -466,11 +466,11 @@ router.put (
         taskPriority,
       } = subtask;
 
-      let newSubTask = {
+      let newSubtask = {
         _id,
         user,
-        subTaskSummary,
-        subTaskDescription,
+        subtaskSummary,
+        subtaskDescription,
         name,
         avatar,
         date,
@@ -483,11 +483,11 @@ router.put (
         },
       };
 
-      const editIndex = project.tasks[taskIndex].subTasks
+      const editIndex = project.tasks[taskIndex].subtasks
         .map (subtask => subtask.id)
         .indexOf (req.params.subtask_id);
 
-      project.tasks[taskIndex].subTasks.splice (editIndex, 1, newSubTask);
+      project.tasks[taskIndex].subtasks.splice (editIndex, 1, newSubtask);
       await project.save ();
       res.json (project.tasks);
     } catch (err) {
@@ -519,7 +519,7 @@ router.delete ('/tasks/:id/:task_id/:subtask_id', auth, async (req, res) => {
       .map (task => task.id)
       .indexOf (req.params.task_id);
 
-    const subtask = project.tasks[taskIndex].subTasks.find (
+    const subtask = project.tasks[taskIndex].subtasks.find (
       subtask => subtask.id === req.params.subtask_id
     );
 
@@ -534,11 +534,11 @@ router.delete ('/tasks/:id/:task_id/:subtask_id', auth, async (req, res) => {
     }
 
     // Get remove index
-    const removeIndex = project.tasks[taskIndex].subTasks
+    const removeIndex = project.tasks[taskIndex].subtasks
       .map (subtask => subtask.id)
       .indexOf (req.params.subtask_id);
 
-    project.tasks[taskIndex].subTasks.splice (removeIndex, 1);
+    project.tasks[taskIndex].subtasks.splice (removeIndex, 1);
 
     await project.save ();
 
@@ -577,7 +577,7 @@ router.put (
         .map (task => task.id)
         .indexOf (req.params.task_id);
 
-      const subtask = project.tasks[taskIndex].subTasks.find (
+      const subtask = project.tasks[taskIndex].subtasks.find (
         subtask => subtask.id === req.params.subtask_id
       );
 

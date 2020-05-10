@@ -97,7 +97,7 @@ export default function (state = initialState, action) {
               task._id === payload.taskId
                 ? {
                     ...task,
-                    subTasks: payload.subTasks[index].subTasks.map (
+                    subtasks: payload.subtasks[index].subtasks.map (
                       (subtask, index) =>
                         subtask._id === payload.subTaskId
                           ? {
@@ -131,7 +131,7 @@ export default function (state = initialState, action) {
           tasks: state.project.tasks.map (
             (task, index) =>
               task._id === payload.taskId
-                ? {...task, subTasks: payload.subTasks[index].subTasks}
+                ? {...task, subtasks: payload.subtasks[index].subtasks}
                 : task
           ),
         },
@@ -158,7 +158,7 @@ export default function (state = initialState, action) {
               task._id === payload.taskId
                 ? {
                     ...task,
-                    subTasks: payload.subTasks[index].subTasks.filter (
+                    subtasks: payload.subtasks[index].subtasks.filter (
                       subtask => subtask._id !== payload
                     ),
                   }

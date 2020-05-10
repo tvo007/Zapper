@@ -25,16 +25,16 @@ import EditIcon from '@material-ui/icons/Edit';
 const SubtaskItem = props => {
   const {
     subtaskId,
-    ticketId,
+    taskId,
     subtaskSummary,
     subtaskDescription,
     isCompleted,
     //date,
     projectId,
     subtaskActions: {
-      deleteTicketSubtask,
-      toggleTicketSubtask,
-      editTicketSubtask,
+      deleteSubtask,
+      toggleSubtask,
+      editSubtask,
     },
     //...rest
   } = props;
@@ -48,9 +48,9 @@ const SubtaskItem = props => {
   };
 
   const toggleHandler = e =>
-    toggleTicketSubtask (projectId, ticketId, subtaskId); //create custom hook??
+    toggleSubtask (projectId, taskId, subtaskId); //create custom hook??
   const deleteHandler = e =>
-    deleteTicketSubtask (projectId, ticketId, subtaskId);
+    deleteSubtask (projectId, taskId, subtaskId);
 
   const checkboxChecked = isCompleted ? true : false;
 
@@ -71,10 +71,10 @@ const SubtaskItem = props => {
             ? <EditForm
                 projectId={projectId}
                 subtaskId={subtaskId}
-                ticketId={ticketId}
+                taskId={taskId}
                 subtaskSummary={subtaskSummary}
                 subtaskDescription={subtaskDescription}
-                editTicketSubtask={editTicketSubtask}
+                editSubtask={editSubtask}
                 editToggleHandler={editToggleHandler}
 
               />

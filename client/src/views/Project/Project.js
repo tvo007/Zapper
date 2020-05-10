@@ -6,15 +6,11 @@ import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
 import {
-  TaskForm,
-  TaskItem,
-  TicketForm,
-  TicketItem,
   ProjectDetailsForm,
   StoryForm,
   StoryItem,
-  TicketTable,
   Tickets,
+  Tasks,
 } from './components';
 
 const useStyles = makeStyles (theme => ({
@@ -79,19 +75,7 @@ const Project = ({getProject, project: {project, loading}, match}) => {
             {showProjectForm}
           </Grid>
           {showTasksToggle
-            ? <Grid item lg={12} md={12} xl={12} xs={12}>
-                <TaskForm projectId={project._id} />
-                <div>
-                  {project.tasks.map (task => (
-                    <TaskItem
-                      key={task._id}
-                      task={task}
-                      projectId={project._id}
-                      taskId={task._id}
-                    />
-                  ))}
-                </div>
-              </Grid>
+            ? <Tasks projectId={project._id} tasks={project.tasks} />
             : null}
           {showStoriesToggle
             ? <Grid item lg={12} md={12} xl={12} xs={12}>
