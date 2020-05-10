@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
@@ -87,11 +88,15 @@ const TicketModal = props => {
       fullWidth
       maxWidth="lg"
     >
+      <PerfectScrollbar>
       <DialogTitle id="form-dialog-title">Edit Ticket Details</DialogTitle>
-      <form onSubmit={onSubmit}>
+      
         <DialogContent>
+        <form onSubmit={onSubmit}>
           <Card {...rest} className={clsx (classes.root, className)}>
+
             <CardContent>
+
               <Grid
                 container
                 spacing={1}
@@ -140,27 +145,34 @@ const TicketModal = props => {
                   />
                 </Grid>
               </Grid>
+
             </CardContent>
+
           </Card>
 
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleCloseModal} color="primary" type="submit">
-            Save
-          </Button>
-        </DialogActions>
-        <DialogTitle id="form-dialog-title">Subtasks</DialogTitle>
-        <DialogContent>
-          <Subtasks
-            subtasks={subtasks}
-            ticketId={ticketId}
-            projectId={projectId}
-          />
-        </DialogContent>
+        
       </form>
+      <DialogActions>
+        <Button onClick={handleCloseModal} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={handleCloseModal} color="primary" type="submit">
+          Save
+        </Button>
+      </DialogActions>
+      <Card {...rest} className={clsx (classes.root, className)}>
+      <CardHeader title="Subtasks"/>
+        <CardContent>
+        
+        <Subtasks
+          subtasks={subtasks}
+          ticketId={ticketId}
+          projectId={projectId}
+        />
+        </CardContent>
+      </Card>
+      </DialogContent>
+      </PerfectScrollbar>
     </Dialog>
   );
 };

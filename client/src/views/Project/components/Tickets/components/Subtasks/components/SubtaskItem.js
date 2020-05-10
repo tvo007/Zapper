@@ -15,6 +15,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core';
+import EditForm from './EditForm';
 // import {connect} from 'react-redux';
 // import {
 //   deleteTicket,
@@ -38,8 +39,6 @@ const SubtaskItem = props => {
     subtaskDescription,
     isCompleted,
     date,
-    handleSelectOne,
-    selectedItems,
     projectId,
     subtaskActions: {
       deleteTicketSubtask,
@@ -51,17 +50,24 @@ const SubtaskItem = props => {
 
   const classes = useStyles ();
 
+  const [editToggle, setEditToggle] = useState (false);
+
+  const editToggleHandler = () => {
+    setEditToggle (!editToggle);
+  };
+
   const toggleHandler = e =>
     toggleTicketSubtask (projectId, ticketId, subtaskId); //create custom hook??
   const deleteHandler = e =>
     deleteTicketSubtask (projectId, ticketId, subtaskId);
 
-  //const checkboxChecked = isCompleted ? true : false;
+  const checkboxChecked = isCompleted ? true : false;
+
   return (
     <React.Fragment>
       <ListItem key={subtaskId}>
         <ListItemIcon>
-          <Checkbox />
+          <Checkbox onClick={toggleHandler} checked={checkboxChecked} />
         </ListItemIcon>
         <Grid
           container
@@ -69,33 +75,50 @@ const SubtaskItem = props => {
           justify="space-evenly"
           alignItems="stretch"
         >
-          <ListItemText>
-            <Typography variant="h6">
-              Summary: {subtaskSummary}
-            </Typography>
-          </ListItemText>
 
-          <ListItemText>
-            <Typography>
-              Desc: {subtaskDescription}
-            </Typography>
-          </ListItemText>
+          {editToggle
+            ? <EditForm
+                projectId={projectId}
+                subtaskId={subtaskId}
+                ticketId={ticketId}
+                subtaskSummary={subtaskSummary}
+                subtaskDescription={subtaskDescription}
+                editTicketSubtask={editTicketSubtask}
+                editToggleHandler={editToggleHandler}
 
+              />
+            : <div>
+                <ListItemText>
+                  <Typography variant="h6">
+                    Summary: {subtaskSummary}
+                  </Typography>
+                </ListItemText>
+
+                <ListItemText>
+                  <Typography>
+                    Desc: {subtaskDescription}
+                  </Typography>
+                </ListItemText>
+              
           <Grid
             container
             alignItems="flex-start"
             justify="flex-end"
             direction="row"
           >
-            <Button variant="contained">
+            <Button variant="contained" onClick={editToggleHandler}>
               <EditIcon />
             </Button>
-            <Button variant="contained">
+            <Button variant="contained" onClick={deleteHandler}>
               <DeleteIcon />
             </Button>
 
           </Grid>
+          </div>
+          }
+
         </Grid>
+
       </ListItem>
       <Divider variant="middle" component="li" />
     </React.Fragment>

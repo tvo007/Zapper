@@ -84,7 +84,7 @@ const TicketItem = props => {
         {ticketDescription}
       </TableCell>
       <TableCell>
-        # of subtasks here
+        {subtasks.length}
       </TableCell>
       <TableCell>
         {moment (date).format ('DD/MM/YYYY')}

@@ -311,15 +311,7 @@ export default function (state = initialState, action) {
     case EDIT_TICKET_SUBTASK:
       return {
         ...state,
-        project: {
-          ...state.project,
-          tickets: state.project.tickets.map (
-            (ticket, index) =>
-              ticket._id === payload.ticketId
-                ? {...ticket, subtasks: payload.subtasks[index].subtasks}
-                : ticket
-          ),
-        },
+        project: {...state.project, tickets: payload},
         loading: false,
       };
 

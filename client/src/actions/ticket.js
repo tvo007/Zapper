@@ -142,8 +142,8 @@ export const addTicketSubtask = (
     );
 
     dispatch ({
-      type: ADD_TICKET_SUBTASK,
-      payload: {ticketId, subtasks: res.data},
+      type: EDIT_TICKET_SUBTASK,
+      payload: res.data,
     });
 
     dispatch (setAlert ('Subtask Added', 'success'));
