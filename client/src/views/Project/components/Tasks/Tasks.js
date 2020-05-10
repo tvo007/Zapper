@@ -16,7 +16,7 @@ const Tasks = props => {
 
 Tasks.propTypes = {
   projectId: PropTypes.string.isRequired,
-  tasks: PropTypes.object.isRequired,
+  tasks: PropTypes.array.isRequired,
 };
 
 export default Tasks;

@@ -217,9 +217,9 @@ export default function (state = initialState, action) {
               story._id === payload.storyId
                 ? {
                     ...story,
-                    subTasks: payload.subTasks[index].subTasks.map (
+                    subtasks: payload.subtasks[index].subtasks.map (
                       (subtask, index) =>
-                        subtask._id === payload.subTaskId
+                        subtask._id === payload.subtaskId
                           ? {
                               ...subtask,
                               isCompleted: payload.isCompleted[index]
@@ -242,7 +242,7 @@ export default function (state = initialState, action) {
           stories: state.project.stories.map (
             (story, index) =>
               story._id === payload.storyId
-                ? {...story, subTasks: payload.subTasks[index].subTasks}
+                ? {...story, subtasks: payload.subtasks[index].subtasks}
                 : story
           ),
         },
@@ -259,7 +259,7 @@ export default function (state = initialState, action) {
               story._id === payload.storyId
                 ? {
                     ...story,
-                    subTasks: payload.subTasks[index].subTasks.filter (
+                    subtasks: payload.subtasks[index].subtasks.filter (
                       subtask => subtask._id !== payload
                     ),
                   }

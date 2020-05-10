@@ -13,25 +13,25 @@ import {
   TextField,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {addTask} from '../../../../../../actions/project';
+import {addStory} from '../../../../../../actions/story';
 
 const initialState = {
-  taskSummary: '',
-  taskDescription: '',
+  storySummary: '',
+  storyDescription: '',
 };
 
 const useStyles = makeStyles (() => ({
   root: {},
 }));
 
-const TaskForm = props => {
-  const {className, projectId, addTask, ...rest} = props;
+const StoryForm = props => {
+  const {className, projectId, addStory, ...rest} = props;
 
   const classes = useStyles ();
 
   const [formData, setFormData] = useState (initialState);
 
-  const {taskSummary, taskDescription} = formData;
+  const {storySummary, storyDescription} = formData;
 
   const handleChange = e => {
     setFormData ({
@@ -42,22 +42,22 @@ const TaskForm = props => {
 
   const onSubmit = e => {
     e.preventDefault ();
-    addTask (projectId, formData);
+    addStory (projectId, formData);
     setFormData (initialState);
   };
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
       <form autoComplete="off" onSubmit={onSubmit}>
-        <CardHeader title="Tasks" />
+        <CardHeader title="Stories" />
         <CardContent>
           <Grid container spacing={3}>
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter a task summary."
-                name="taskSummary"
-                value={taskSummary}
+                label="Enter a story summary."
+                name="storySummary"
+                value={storySummary}
                 onChange={e => handleChange (e)}
                 variant="outlined"
                 required
@@ -66,9 +66,9 @@ const TaskForm = props => {
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter a task description."
-                name="taskDescription"
-                value={taskDescription}
+                label="Enter a story description."
+                name="storyDescription"
+                value={storyDescription}
                 onChange={e => handleChange (e)}
                 variant="outlined"
                 multiline
@@ -81,7 +81,7 @@ const TaskForm = props => {
         <Divider />
         <CardActions>
           <Button color="primary" variant="contained" type="submit">
-            Create Task
+            Create Story
           </Button>
         </CardActions>
       </form>
@@ -89,9 +89,9 @@ const TaskForm = props => {
   );
 };
 
-TaskForm.propTypes = {
+StoryForm.propTypes = {
   className: PropTypes.string,
-  addTask: PropTypes.func.isRequired,
+  addStory: PropTypes.func.isRequired,
 };
 
-export default connect (null, {addTask}) (TaskForm);
+export default connect (null, {addStory}) (StoryForm);

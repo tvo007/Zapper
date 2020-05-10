@@ -16,7 +16,7 @@ const Tickets = props => {
 
 Tickets.propTypes = {
   projectId: PropTypes.string.isRequired,
-  tickets: PropTypes.object.isRequired,
+  tickets: PropTypes.array.isRequired,
 };
 
 export default Tickets;

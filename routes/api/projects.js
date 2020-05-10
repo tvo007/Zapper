@@ -690,7 +690,7 @@ router.put (
         isCompleted,
         users,
         storyPriority,
-        subTasks,
+        subtasks,
       } = story;
       let newStory = {
         _id,
@@ -703,7 +703,7 @@ router.put (
         isCompleted,
         users,
         storyPriority,
-        subTasks,
+        subtasks,
         edited: {
           updated: true,
           date: Date.now (),
@@ -799,12 +799,12 @@ router.put ('/stories/:id/:story_id/isCompleted', auth, async (req, res) => {
 // @access   Private
 
 router.post (
-  '/stories/:id/:story_id/subTasks',
+  '/stories/:id/:story_id/subtasks',
   [
     auth,
     [
-      check ('subTaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subTaskDescription', 'Subtask description is required')
+      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subtaskDescription', 'Subtask description is required')
         .not ()
         .isEmpty (),
     ],
@@ -836,15 +836,15 @@ router.post (
         .map (story => story.id)
         .indexOf (req.params.story_id);
 
-      const newSubTask = {
-        subTaskSummary: req.body.subTaskSummary,
-        subTaskDescription: req.body.subTaskDescription,
+      const newSubtask = {
+        subtaskSummary: req.body.subtaskSummary,
+        subtaskDescription: req.body.subtaskDescription,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
       };
 
-      project.stories[addIndex].subTasks.unshift (newSubTask);
+      project.stories[addIndex].subtasks.unshift (newSubtask);
 
       await project.save ();
 
@@ -864,8 +864,8 @@ router.put (
   [
     auth,
     [
-      check ('subTaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subTaskDescription', 'Subtask description is required')
+      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      check ('subtaskDescription', 'Subtask description is required')
         .not ()
         .isEmpty (),
     ],
@@ -887,7 +887,7 @@ router.put (
         .map (story => story.id)
         .indexOf (req.params.story_id);
 
-      const subtask = project.stories[storyIndex].subTasks.find (
+      const subtask = project.stories[storyIndex].subtasks.find (
         subtask => subtask.id === req.params.subtask_id
       );
 
@@ -901,7 +901,7 @@ router.put (
         return res.status (401).json ({msg: 'User not authorized'});
       }
 
-      const {subTaskSummary, subTaskDescription} = req.body;
+      const {subtaskSummary, subtaskDescription} = req.body;
 
       const {
         _id,
@@ -917,8 +917,8 @@ router.put (
       let newSubTask = {
         _id,
         user,
-        subTaskSummary,
-        subTaskDescription,
+        subtaskSummary,
+        subtaskDescription,
         name,
         avatar,
         date,
@@ -931,11 +931,11 @@ router.put (
         },
       };
 
-      const editIndex = project.stories[storyIndex].subTasks
+      const editIndex = project.stories[storyIndex].subtasks
         .map (subtask => subtask.id)
         .indexOf (req.params.subtask_id);
 
-      project.stories[storyIndex].subTasks.splice (editIndex, 1, newSubTask);
+      project.stories[storyIndex].subtasks.splice (editIndex, 1, newSubTask);
       await project.save ();
       res.json (project.stories);
     } catch (err) {
@@ -970,7 +970,7 @@ router.delete ('/stories/:id/:story_id/:subtask_id', auth, async (req, res) => {
       .map (story => story.id)
       .indexOf (req.params.story_id);
 
-    const subtask = project.stories[storyIndex].subTasks.find (
+    const subtask = project.stories[storyIndex].subtasks.find (
       subtask => subtask.id === req.params.subtask_id
     );
 
@@ -985,11 +985,11 @@ router.delete ('/stories/:id/:story_id/:subtask_id', auth, async (req, res) => {
     }
 
     // Get remove index
-    const removeIndex = project.stories[storyIndex].subTasks
+    const removeIndex = project.stories[storyIndex].subtasks
       .map (subtask => subtask.id)
       .indexOf (req.params.subtask_id);
 
-    project.stories[storyIndex].subTasks.splice (removeIndex, 1);
+    project.stories[storyIndex].subtasks.splice (removeIndex, 1);
 
     await project.save ();
 
@@ -1030,7 +1030,7 @@ router.put (
         .map (story => story.id)
         .indexOf (req.params.story_id);
 
-      const subtask = project.stories[storyIndex].subTasks.find (
+      const subtask = project.stories[storyIndex].subtasks.find (
         subtask => subtask.id === req.params.subtask_id
       );
 

@@ -129,14 +129,14 @@ export const addStorySubtask = (
   };
   try {
     const res = await axios.post (
-      `/api/projects/stories/${projectId}/${storyId}/subTasks`,
+      `/api/projects/stories/${projectId}/${storyId}/subtasks`,
       formData,
       config
     );
 
     dispatch ({
       type: ADD_STORY_SUBTASK,
-      payload: {storyId, subTasks: res.data},
+      payload: {storyId, subtasks: res.data},
     });
 
     dispatch (setAlert ('Sub task Added', 'success'));
@@ -152,7 +152,7 @@ export const addStorySubtask = (
 export const editStorySubtask = (
   projectId,
   storyId,
-  subTaskId,
+  subtaskId,
   formData
 ) => async dispatch => {
   try {
@@ -163,7 +163,7 @@ export const editStorySubtask = (
     };
 
     const res = await axios.put (
-      `/api/projects/stories/${projectId}/${storyId}/${subTaskId}`,
+      `/api/projects/stories/${projectId}/${storyId}/${subtaskId}`,
       formData,
       config
     );
@@ -186,18 +186,18 @@ export const editStorySubtask = (
 export const deleteStorySubtask = (
   projectId,
   storyId,
-  subTaskId
+  subtaskId
 ) => async dispatch => {
   try {
     // const res =
 
     const res = await axios.delete (
-      `/api/projects/stories/${projectId}/${storyId}/${subTaskId}`
+      `/api/projects/stories/${projectId}/${storyId}/${subtaskId}`
     );
 
     dispatch ({
       type: REMOVE_STORY_SUBTASK,
-      payload: {storyId, subTasks: res.data},
+      payload: {storyId, subtasks: res.data},
     });
 
     dispatch (setAlert ('Subtask Removed', 'success'));
@@ -213,16 +213,16 @@ export const deleteStorySubtask = (
 export const toggleStorySubtask = (
   projectId,
   storyId,
-  subTaskId
+  subtaskId
 ) => async dispatch => {
   try {
     const res = await axios.put (
-      `/api/projects/stories/${projectId}/${storyId}/${subTaskId}/isCompleted`
+      `/api/projects/stories/${projectId}/${storyId}/${subtaskId}/isCompleted`
     );
 
     dispatch ({
       type: TOGGLE_STORY_SUBTASK,
-      payload: {storyId, subTasks: res.data},
+      payload: {storyId, subtasks: res.data},
     });
 
     //res.data returns project.tasks array

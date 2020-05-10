@@ -7,8 +7,7 @@ import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
 import {
   ProjectDetailsForm,
-  StoryForm,
-  StoryItem,
+  Stories,
   Tickets,
   Tasks,
 } from './components';
@@ -78,19 +77,7 @@ const Project = ({getProject, project: {project, loading}, match}) => {
             ? <Tasks projectId={project._id} tasks={project.tasks} />
             : null}
           {showStoriesToggle
-            ? <Grid item lg={12} md={12} xl={12} xs={12}>
-                <StoryForm projectId={project._id} />
-                <div>
-                  {project.stories.map (story => (
-                    <StoryItem
-                      key={story._id}
-                      story={story}
-                      projectId={project._id}
-                      storyId={story._id}
-                    />
-                  ))}
-                </div>
-              </Grid>
+            ? <Stories projectId={project._id} stories={project.stories} />
             : null}
           {showTicketsToggle
             ? <Tickets projectId={project._id} tickets={project.tickets} />
