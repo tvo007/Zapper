@@ -186,6 +186,9 @@ router.post (
       check ('taskDescription', 'Task description is required')
         .not ()
         .isEmpty (),
+        check ('taskType', 'Task type is required.')
+        .not ()
+        .isEmpty (),
     ],
   ],
   async (req, res) => {
