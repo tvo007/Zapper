@@ -201,7 +201,7 @@ router.post (
       const newTask = {
         taskSummary: req.body.taskSummary,
         taskDescription: req.body.taskDescription,
-        // taskType: req.body,taskType,
+        taskType: req.body.taskType,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
@@ -254,7 +254,7 @@ router.put (
         users,
         taskPriority,
         subtasks,
-        // taskType
+        taskType,
       } = task;
       let newTask = {
         _id,
@@ -268,7 +268,7 @@ router.put (
         users,
         taskPriority,
         subtasks,
-        // taskType,
+        taskType,
         edited: {
           updated: true,
           date: Date.now (),

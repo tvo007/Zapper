@@ -18,6 +18,7 @@ import {addTask} from '../../../../../../actions/project';
 const initialState = {
   taskSummary: '',
   taskDescription: '',
+  taskType: '',
 };
 
 const useStyles = makeStyles (() => ({
@@ -31,7 +32,7 @@ const TaskForm = props => {
 
   const [formData, setFormData] = useState (initialState);
 
-  const {taskSummary, taskDescription} = formData;
+  const {taskSummary, taskDescription, taskType} = formData;
 
   const handleChange = e => {
     setFormData ({
@@ -73,6 +74,17 @@ const TaskForm = props => {
                 variant="outlined"
                 multiline
                 rows={4}
+                required
+              />
+            </Grid>
+            <Grid item md={12} xs={12}>
+              <TextField
+                fullWidth
+                label="Task Type testing"
+                name="taskType"
+                value={taskType}
+                onChange={e => handleChange (e)}
+                variant="outlined"
                 required
               />
             </Grid>
