@@ -11,6 +11,11 @@ import {
   Grid,
   Button,
   TextField,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
 import {addTask} from '../../../../../../actions/project';
@@ -18,7 +23,7 @@ import {addTask} from '../../../../../../actions/project';
 const initialState = {
   taskSummary: '',
   taskDescription: '',
-  taskType: '',
+  taskType: 'Task',
 };
 
 const useStyles = makeStyles (() => ({
@@ -78,15 +83,33 @@ const TaskForm = props => {
               />
             </Grid>
             <Grid item md={12} xs={12}>
-              <TextField
-                fullWidth
-                label="Task Type testing"
-                name="taskType"
-                value={taskType}
-                onChange={e => handleChange (e)}
-                variant="outlined"
-                required
-              />
+              <FormControl component="fieldset" required>
+                <FormLabel component="legend">Task Type</FormLabel>
+                <RadioGroup
+                  aria-label="Task Type"
+                  name="taskType"
+                  value={taskType}
+                  onChange={handleChange}
+                >
+                  <Grid container>
+                    <FormControlLabel
+                      value="Task"
+                      control={<Radio />}
+                      label="Task"
+                    />
+                    <FormControlLabel
+                      value="Story"
+                      control={<Radio />}
+                      label="Story"
+                    />
+                    <FormControlLabel
+                      value="Ticket"
+                      control={<Radio />}
+                      label="Ticket"
+                    />
+                  </Grid>
+                </RadioGroup>
+              </FormControl>
             </Grid>
           </Grid>
         </CardContent>
