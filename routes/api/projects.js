@@ -201,6 +201,7 @@ router.post (
       const newTask = {
         taskSummary: req.body.taskSummary,
         taskDescription: req.body.taskDescription,
+        // taskType: req.body,taskType,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
@@ -252,7 +253,8 @@ router.put (
         isCompleted,
         users,
         taskPriority,
-        subTasks,
+        subtasks,
+        // taskType
       } = task;
       let newTask = {
         _id,
@@ -265,7 +267,8 @@ router.put (
         isCompleted,
         users,
         taskPriority,
-        subTasks,
+        subtasks,
+        // taskType,
         edited: {
           updated: true,
           date: Date.now (),
@@ -1420,55 +1423,61 @@ router.put (
 // @route    DELETE api/projects/tickets/:id/:ticket_id/:subtask_id
 // @desc     Delete subtask by id
 // @access   Private
-router.delete ('/tickets/:id/:ticket_id/:subtask_id', auth, async (req, res) => {
-  try {
-    const project = await Project.findById (req.params.id);
+router.delete (
+  '/tickets/:id/:ticket_id/:subtask_id',
+  auth,
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.id);
 
-    const ticket = project.tickets.find (ticket => ticket.id === req.params.ticket_id);
+      const ticket = project.tickets.find (
+        ticket => ticket.id === req.params.ticket_id
+      );
 
-    // Make sure task exists
-    if (!ticket) {
-      return res.status (404).json ({msg: 'Task does not exist'});
+      // Make sure task exists
+      if (!ticket) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      // Check user
+      if (ticket.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const ticketIndex = project.tickets
+        .map (ticket => ticket.id)
+        .indexOf (req.params.ticket_id);
+
+      const subtask = project.tickets[ticketIndex].subtasks.find (
+        subtask => subtask.id === req.params.subtask_id
+      );
+
+      // Make sure subtask exists
+      if (!subtask) {
+        return res.status (404).json ({msg: 'Subtask does not exist'});
+      }
+
+      // Check user
+      if (subtask.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      // Get remove index
+      const removeIndex = project.tickets[ticketIndex].subtasks
+        .map (subtask => subtask.id)
+        .indexOf (req.params.subtask_id);
+
+      project.tickets[ticketIndex].subtasks.splice (removeIndex, 1);
+
+      await project.save ();
+
+      res.json (project.tickets);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
     }
-
-    // Check user
-    if (ticket.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    const ticketIndex = project.tickets
-      .map (ticket => ticket.id)
-      .indexOf (req.params.ticket_id);
-
-    const subtask = project.tickets[ticketIndex].subtasks.find (
-      subtask => subtask.id === req.params.subtask_id
-    );
-
-    // Make sure subtask exists
-    if (!subtask) {
-      return res.status (404).json ({msg: 'Subtask does not exist'});
-    }
-
-    // Check user
-    if (subtask.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    // Get remove index
-    const removeIndex = project.tickets[ticketIndex].subtasks
-      .map (subtask => subtask.id)
-      .indexOf (req.params.subtask_id);
-
-    project.tickets[ticketIndex].subtasks.splice (removeIndex, 1);
-
-    await project.save ();
-
-    res.json (project.tickets);
-  } catch (err) {
-    console.error (err.message);
-    res.status (500).send ('Server Error');
   }
-});
+);
 
 //@route put api/projects/tickets/:id/:ticket_id/:subtask_id/isCompleted
 //desc: toggle subtask for complettion
@@ -1525,7 +1534,5 @@ router.put (
     }
   }
 );
-
-
 
 module.exports = router;

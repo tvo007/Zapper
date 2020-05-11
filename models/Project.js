@@ -88,6 +88,9 @@ const ProjectSchema = new Schema ({
       taskPriority: {
         type: Number,
       },
+      // taskType: {
+      //   type: String,
+      // },
       subtasks: [
         {
           user: {
