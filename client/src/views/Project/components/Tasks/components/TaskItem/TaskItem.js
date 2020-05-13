@@ -33,7 +33,7 @@ const TaskItem = props => {
     projectId,
     taskNumber,
     editTask,
-
+    taskType,
     //...rest
   } = props;
 
@@ -74,7 +74,7 @@ const TaskItem = props => {
       <TableCell>
         <div className={classes.nameContainer}>
           <Typography variant="body1">
-            {taskNumber}
+            {taskType}
           </Typography>
         </div>
       </TableCell>
