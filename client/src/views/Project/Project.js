@@ -5,10 +5,7 @@ import {Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
-import {
-  ProjectDetailsForm,
-  Tasks,
-} from './components';
+import {ProjectDetailsForm, Tasks} from './components';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -27,17 +24,9 @@ const Project = ({getProject, project: {project, loading}, match}) => {
 
   const [projectFormToggle, setProjectFormToggle] = useState (false);
 
-  const [showTasksToggle, setShowTasksToggle] = useState (false);
-
-
   const handleProjectFormToggle = () => {
     setProjectFormToggle (!projectFormToggle);
   };
-
-  const handleShowTasks = () => {
-    setShowTasksToggle (!showTasksToggle);
-  };
-
 
   const showProjectForm = projectFormToggle
     ? <ProjectDetailsForm
@@ -55,13 +44,12 @@ const Project = ({getProject, project: {project, loading}, match}) => {
             <ProjectDetails
               project={project}
               handleProjectFormToggle={handleProjectFormToggle}
-              handleShowTasks={handleShowTasks}
             />
             {showProjectForm}
           </Grid>
-          {showTasksToggle
-            ? <Tasks projectId={project._id} tasks={project.tasks} />
-            : null}
+
+          <Tasks projectId={project._id} tasks={project.tasks} />
+
         </Grid>
       </div>;
 };

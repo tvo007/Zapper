@@ -44,7 +44,6 @@ const ProjectDetails = props => {
     project: {title, name, description, tasks},
     className,
     handleProjectFormToggle,
-    handleShowTasks,
     ...rest
   } = props;
 
@@ -128,14 +127,6 @@ const ProjectDetails = props => {
           onClick={handleProjectFormToggle}
         >
           <EditIcon />
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          type="button"
-          onClick={handleShowTasks}
-        >
-          View Tasks
         </Button>
       </CardActions>
       <Grid container justify="flex-start" spacing={3}>
