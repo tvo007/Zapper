@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {connect} from 'react-redux';
-import {addTask} from '../../../../../../actions/project';
+import {addTask} from '../../../../../../actions/task';
 import {UniqueForm} from './UniqueForm';
 
 const initialState = {

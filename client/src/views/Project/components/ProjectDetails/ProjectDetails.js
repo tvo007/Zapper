@@ -16,6 +16,7 @@ import {
 //import GetAppIcon from '@material-ui/icons/GetApp';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles (theme => ({
@@ -40,12 +41,10 @@ const useStyles = makeStyles (theme => ({
 
 const ProjectDetails = props => {
   const {
-    project: {title, name, description, tasks, tickets},
+    project: {title, name, description, tasks},
     className,
     handleProjectFormToggle,
     handleShowTasks,
-    handleShowTickets,
-    handleShowStories,
     ...rest
   } = props;
 
@@ -64,6 +63,22 @@ const ProjectDetails = props => {
    */
 
   const classes = useStyles ();
+
+  const task = 'Task';
+  const story = 'Story';
+  const ticket = 'Ticket';
+
+  const taskTypeCounter = taskType =>
+    tasks
+      .map (task => {
+        return task;
+      })
+      .filter (task => {
+        if (task.taskType === taskType) {
+          return task;
+        } return null
+      }).length;
+
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
@@ -122,37 +137,26 @@ const ProjectDetails = props => {
         >
           View Tasks
         </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          type="button"
-          onClick={handleShowStories}
-        >
-          View Stories
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-          type="button"
-          onClick={handleShowTickets}
-        >
-          View Tickets
-        </Button>
       </CardActions>
-      <Grid container justify="flex-start">
+      <Grid container justify="flex-start" spacing={3}>
         <Grid className={classes.statsItem} item>
           <Typography display="inline" variant="body2">
             <AssignmentLateIcon className={classes.statsIcon} />
-            {tasks.length} Tasks
+            {taskTypeCounter (task)} Tasks
+          </Typography>
+        </Grid>
+        <Grid className={classes.statsItem} item>
+          <Typography display="inline" variant="body2">
+            <MenuBookIcon className={classes.statsIcon} />
+            {taskTypeCounter (story)} Stories
           </Typography>
         </Grid>
         <Grid className={classes.statsItem} item>
           <Typography display="inline" variant="body2">
             <BugReportIcon className={classes.statsIcon} />
-            {tickets.length} Tickets
+            {taskTypeCounter (ticket)} Tickets
           </Typography>
         </Grid>
-
       </Grid>
 
     </Card>

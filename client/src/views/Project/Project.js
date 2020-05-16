@@ -7,8 +7,6 @@ import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
 import {
   ProjectDetailsForm,
-  Stories,
-  Tickets,
   Tasks,
 } from './components';
 
@@ -31,9 +29,6 @@ const Project = ({getProject, project: {project, loading}, match}) => {
 
   const [showTasksToggle, setShowTasksToggle] = useState (false);
 
-  const [showStoriesToggle, setShowStoriesToggle] = useState (false);
-
-  const [showTicketsToggle, setShowTicketsToggle] = useState (false);
 
   const handleProjectFormToggle = () => {
     setProjectFormToggle (!projectFormToggle);
@@ -43,13 +38,6 @@ const Project = ({getProject, project: {project, loading}, match}) => {
     setShowTasksToggle (!showTasksToggle);
   };
 
-  const handleShowStories = () => {
-    setShowStoriesToggle (!showStoriesToggle);
-  };
-
-  const handleShowTickets = () => {
-    setShowTicketsToggle (!showTicketsToggle);
-  };
 
   const showProjectForm = projectFormToggle
     ? <ProjectDetailsForm
@@ -68,19 +56,11 @@ const Project = ({getProject, project: {project, loading}, match}) => {
               project={project}
               handleProjectFormToggle={handleProjectFormToggle}
               handleShowTasks={handleShowTasks}
-              handleShowTickets={handleShowTickets}
-              handleShowStories={handleShowStories}
             />
             {showProjectForm}
           </Grid>
           {showTasksToggle
             ? <Tasks projectId={project._id} tasks={project.tasks} />
-            : null}
-          {showStoriesToggle
-            ? <Stories projectId={project._id} stories={project.stories} />
-            : null}
-          {showTicketsToggle
-            ? <Tickets projectId={project._id} tickets={project.tickets} />
             : null}
         </Grid>
       </div>;

@@ -8,7 +8,7 @@ import {
   editSubtask,
   deleteSubtask,
   toggleSubtask,
-} from '../../../../../../actions/project';
+} from '../../../../../../actions/task';
 import {
   Card,
   CardActions,

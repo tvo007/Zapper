@@ -8,7 +8,7 @@ import {
   deleteTask,
   toggleTaskCompleted,
   editTask,
-} from '../../../../../../actions/project';
+} from '../../../../../../actions/task';
 import TaskModal from '../TaskModal';
 import moment from 'moment';
 import AssignmentIcon from '@material-ui/icons/Assignment';

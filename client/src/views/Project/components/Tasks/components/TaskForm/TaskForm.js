@@ -18,7 +18,7 @@ import {
   FormControlLabel,
 } from '@material-ui/core';
 import {connect} from 'react-redux';
-import {addTask} from '../../../../../../actions/project';
+import {addTask} from '../../../../../../actions/task';
 
 const initialState = {
   taskSummary: '',

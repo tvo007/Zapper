@@ -15,6 +15,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  CardActions,
 } from '@material-ui/core';
 import Subtasks from '../Subtasks';
 
@@ -139,18 +140,24 @@ const TaskModal = props => {
                 </Grid>
 
               </CardContent>
-
+              <CardActions>
+                <Grid container justify="flex-end">
+                  <Button onClick={handleCloseModal} color="primary">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={handleCloseModal}
+                    color="primary"
+                    type="submit"
+                  >
+                    Save
+                  </Button>
+                </Grid>
+              </CardActions>
             </Card>
 
           </form>
-          <DialogActions>
-            <Button onClick={handleCloseModal} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleCloseModal} color="primary" type="submit">
-              Save
-            </Button>
-          </DialogActions>
+          <DialogActions />
           <Card {...rest} className={clsx (classes.root, className)}>
             <CardHeader title="Subtasks" />
             <CardContent>
