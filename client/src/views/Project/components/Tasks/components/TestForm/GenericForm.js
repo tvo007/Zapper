@@ -17,54 +17,43 @@ import {
   Radio,
   FormControlLabel,
 } from '@material-ui/core';
-import {connect} from 'react-redux';
-import {addTask} from '../../../../../../actions/project';
-
-const initialState = {
-  taskSummary: '',
-  taskDescription: '',
-  taskType: 'Task',
-};
 
 const useStyles = makeStyles (() => ({
   root: {},
 }));
 
-const TaskForm = props => {
-  const {className, projectId, addTask, ...rest} = props;
-
+const GenericForm = ({
+  title,
+  label1,
+  name1,
+  label2,
+  name2,
+  name3,
+  input1,
+  input2,
+  input3,
+  handleChange,
+  onSubmit,
+  className,
+  derp,
+  ...rest
+  
+}) => {
   const classes = useStyles ();
-
-  const [formData, setFormData] = useState (initialState);
-
-  const {taskSummary, taskDescription, taskType} = formData;
-
-  const handleChange = e => {
-    setFormData ({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const onSubmit = e =>  {
-    e.preventDefault ();
-    addTask (projectId, formData);
-    setFormData (initialState);
-  };
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
       <form autoComplete="off" onSubmit={onSubmit}>
-        <CardHeader title="Tasks" />
+        <CardHeader title={title} />
         <CardContent>
           <Grid container spacing={3}>
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter a task summary."
-                name="taskSummary"
-                value={taskSummary}
-                onChange={e => handleChange (e)}
+                label={label1}
+                name={name1}
+                value={input1}
+                onChange={handleChange}
                 variant="outlined"
                 required
               />
@@ -72,10 +61,10 @@ const TaskForm = props => {
             <Grid item md={12} xs={12}>
               <TextField
                 fullWidth
-                label="Enter a task description."
-                name="taskDescription"
-                value={taskDescription}
-                onChange={e => handleChange (e)}
+                label={label2}
+                name={name2}
+                value={input2}
+                onChange={handleChange}
                 variant="outlined"
                 multiline
                 rows={4}
@@ -87,8 +76,8 @@ const TaskForm = props => {
                 <FormLabel component="legend">Task Type</FormLabel>
                 <RadioGroup
                   aria-label="Task Type"
-                  name="taskType"
-                  value={taskType}
+                  name={name3}
+                  value={input3}
                   onChange={handleChange}
                 >
                   <Grid container>
@@ -124,9 +113,4 @@ const TaskForm = props => {
   );
 };
 
-TaskForm.propTypes = {
-  className: PropTypes.string,
-  addTask: PropTypes.func.isRequired,
-};
-
-export default connect (null, {addTask}) (TaskForm);
+export default GenericForm;

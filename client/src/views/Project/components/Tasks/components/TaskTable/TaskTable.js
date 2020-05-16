@@ -82,39 +82,17 @@ const TaskTable = props => {
 
   const ticketView = ticketFilter ? 'Ticket' : null;
 
-
   const taskFilterHandle = () => {
-    
-    if (taskFilter) {
-      setStoryFilter (false);
-      setTicketFilter (false);
-    }
-
     setTaskFilter (!taskFilter);
   };
 
   const storyFilterHandle = () => {
-    
-    if (storyFilter) {
-      setTaskFilter (false);
-      setTicketFilter (false);
-    }
-
     setStoryFilter (!storyFilter);
   };
   const ticketFilterHandle = () => {
-    
-    if (ticketFilter) {
-      setStoryFilter (false);
-      setTaskFilter (false);
-    }
-
     setTicketFilter (!ticketFilter);
   };
 
-  
-
-  
   // const handleSelectAll = event => {
   //   const {tasks} = props;
 
@@ -157,6 +135,29 @@ const TaskTable = props => {
     setRowsPerPage (event.target.value);
   };
 
+  const displayTasks = viewType =>
+    tasks.slice (0, rowsPerPage).map (task => {
+      if (task.taskType === viewType) {
+        return (
+          <TaskItem
+            key={task._id}
+            taskId={task._id}
+            taskSummary={task.taskSummary}
+            taskDescription={task.taskDescription}
+            isCompleted={task.isCompleted}
+            date={task.date}
+            handleSelectOne={handleSelectOne}
+            selectedTasks={selectedTasks}
+            projectId={projectId}
+            taskNumber={task.taskNumber}
+            subtasks={task.subtasks}
+            taskType={task.taskType}
+          />
+        );
+      }
+      return null;
+    });
+
   /**testing functions for the modal drop down */
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
@@ -190,7 +191,55 @@ const TaskTable = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tasks.slice (0, rowsPerPage).map (task => {
+                {displayTasks (taskView)}
+                {displayTasks (storyView)}
+                {displayTasks (ticketView)}
+              </TableBody>
+            </Table>
+          </div>
+        </PerfectScrollbar>
+      </CardContent>
+      <CardActions className={classes.actions}>
+        <TablePagination
+          component="div"
+          count={tasks.length}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowsPerPageChange}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[5, 10, 25]}
+        />
+      </CardActions>
+    </Card>
+  );
+};
+
+TaskTable.propTypes = {
+  className: PropTypes.string,
+  tasks: PropTypes.array.isRequired,
+};
+
+// export default connect (null, {deleteTicket, toggleTicketCompleted}) (
+//   TicketTable
+// );
+
+export default TaskTable;
+//fix user.user
+
+//line 137/Checkbox props: placeholder for onChange={handleChangeAll}
+/**
+ * <TicketItem
+                      key={ticket._id}
+                      id={ticket._id}
+                      tasksummary={ticket.tasksummary}
+                      ticketDescription={ticket.ticketDescription}
+                      date={ticket.date}
+                      handleSelectOne={handleSelectOne}
+                      selectedtasks={selectedtasks}
+                      projectId={projectId}
+                      ticketNumber={ticket.ticketNumber}
+                    />
+ * {tasks.slice (0, rowsPerPage).map (task => {
                   if (task.taskType === taskView) {
                     return (
                       <TaskItem
@@ -244,51 +293,14 @@ const TaskTable = props => {
                     );
                   }
                 })}
-              </TableBody>
-            </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={tasks.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
-    </Card>
-  );
-};
 
-TaskTable.propTypes = {
-  className: PropTypes.string,
-  tasks: PropTypes.array.isRequired,
-};
 
-// export default connect (null, {deleteTicket, toggleTicketCompleted}) (
-//   TicketTable
-// );
 
-export default TaskTable;
-//fix user.user
 
-//line 137/Checkbox props: placeholder for onChange={handleChangeAll}
-/**
- * <TicketItem
-                      key={ticket._id}
-                      id={ticket._id}
-                      tasksummary={ticket.tasksummary}
-                      ticketDescription={ticket.ticketDescription}
-                      date={ticket.date}
-                      handleSelectOne={handleSelectOne}
-                      selectedtasks={selectedtasks}
-                      projectId={projectId}
-                      ticketNumber={ticket.ticketNumber}
-                    />
- * 
+
+
+
+
+
  * 
  */
