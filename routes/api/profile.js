@@ -4,7 +4,7 @@ const config = require ('config');
 const router = express.Router ();
 const auth = require ('../../middleware/auth');
 const {check, validationResult} = require ('express-validator');
-const normalize = require('normalize-url');
+const normalize = require ('normalize-url');
 const Profile = require ('../../models/Profile');
 const User = require ('../../models/User');
 const Post = require ('../../models/Post');
@@ -80,7 +80,7 @@ router.post (
         : skills.split (',').map (skill => ' ' + skill.trim ()),
       status,
       githubusername,
-      avatar
+      avatar,
     };
 
     // const socialfields = {youtube, twitter, instagram, linkedin, facebook};

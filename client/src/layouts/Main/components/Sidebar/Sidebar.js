@@ -57,7 +57,7 @@ const Sidebar = props => {
     [getCurrentProfile]
   );
 
-  const authIdRoute = `/profile/${_id}`;
+  //const authIdRoute = `/profile/${_id}`;
   const classes = useStyles ();
 
   const pages = [
@@ -88,7 +88,7 @@ const Sidebar = props => {
     },
     {
       title: 'Account',
-      href: authIdRoute,
+      href: '/profile/me',
       icon: <AccountBoxIcon />,
     },
     {
