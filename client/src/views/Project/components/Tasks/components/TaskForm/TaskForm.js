@@ -2,23 +2,10 @@ import React, {useState} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Divider,
-  Grid,
-  Button,
-  TextField,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
-} from '@material-ui/core';
+import {Card, CardActions, Button} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {addTask} from '../../../../../../actions/task';
+import ModalForm from '../../../../../../components/Modals/ModalForm';
 
 const initialState = {
   taskSummary: '',
@@ -35,6 +22,20 @@ const TaskForm = props => {
 
   const classes = useStyles ();
 
+  //modal state
+
+  const [openModal, setOpenModal] = useState (false);
+
+  const handleClickOpenModal = () => {
+    setOpenModal (true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal (false);
+  };
+
+  //form state
+
   const [formData, setFormData] = useState (initialState);
 
   const {taskSummary, taskDescription, taskType} = formData;
@@ -46,14 +47,66 @@ const TaskForm = props => {
     });
   };
 
-  const onSubmit = e =>  {
+  const onSubmit = e => {
     e.preventDefault ();
     addTask (projectId, formData);
     setFormData (initialState);
+    handleCloseModal ();
   };
+
+  //radio state
+  const hasRadio = true;
+
+  //generic modal
+
+  const showForm = openModal
+    ? <ModalForm
+        genericTitle="Task"
+        title1="Summary"
+        title2="Description"
+        formLabel1="Enter a task summary."
+        formName1="taskSummary"
+        formValue1={taskSummary}
+        formLabel2="Enter a task description."
+        formName2="taskDescription"
+        formValue2={taskDescription}
+        formLabel3="Enter a task summary."
+        formName3="taskType"
+        formValue3={taskType}
+        handleChange={handleChange}
+        onSubmit={onSubmit}
+        openModal={openModal}
+        handleCloseModal={handleCloseModal}
+        hasRadio={hasRadio}
+      />
+    : null;
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
+      {showForm}
+      <CardActions>
+        <Button
+          color="primary"
+          variant="contained"
+          type="button"
+          onClick={handleClickOpenModal}
+        >
+          Add Task
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
+
+TaskForm.propTypes = {
+  className: PropTypes.string,
+  addTask: PropTypes.func.isRequired,
+};
+
+export default connect (null, {addTask}) (TaskForm);
+
+/**
+ * <Card {...rest} className={clsx (classes.root, className)}>
       <form autoComplete="off" onSubmit={onSubmit}>
         <CardHeader title="Tasks" />
         <CardContent>
@@ -121,12 +174,5 @@ const TaskForm = props => {
         </CardActions>
       </form>
     </Card>
-  );
-};
-
-TaskForm.propTypes = {
-  className: PropTypes.string,
-  addTask: PropTypes.func.isRequired,
-};
-
-export default connect (null, {addTask}) (TaskForm);
+ * 
+ */

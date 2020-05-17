@@ -16,6 +16,11 @@ import {
   DialogContent,
   DialogTitle,
   CardActions,
+  FormControl,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from '@material-ui/core';
 
 const useStyles = makeStyles (() => ({
@@ -29,24 +34,54 @@ const ModalForm = props => {
     title1,
     title2,
     title3,
-    label1,
-    name1,
-    label2,
-    name2,
-    name3,
-    input1,
-    input2,
-    input3,
+    formLabel1,
+    formLabel2,
+    formLabel3,
+    formName1,
+    formName2,
+    formName3,
+    formValue1,
+    formValue2,
+    formValue3,
     handleChange,
     onSubmit,
     openModal,
     handleCloseModal,
+    hasRadio,
     ...rest
   } = props;
 
   //ticket: {_id, taskDescription, name, avatar, user, date, isCompleted}
 
   const classes = useStyles ();
+
+  const showTaskTypeRadio = hasRadio
+    ? <Grid item md={12} xs={12}>
+        <FormControl component="fieldset" required>
+          <FormLabel component="legend">Task Type</FormLabel>
+          <RadioGroup
+            aria-label="Task Type"
+            name={formName3}
+            value={formValue3}
+            onChange={handleChange}
+          >
+            <Grid container>
+              <FormControlLabel value="Task" control={<Radio />} label="Task" />
+              <FormControlLabel
+                value="Story"
+                control={<Radio />}
+                label="Story"
+              />
+              <FormControlLabel
+                value="Ticket"
+                control={<Radio />}
+                label="Ticket"
+              />
+            </Grid>
+          </RadioGroup>
+        </FormControl>
+      </Grid>
+    : null;
 
   return (
     <Dialog
@@ -58,11 +93,9 @@ const ModalForm = props => {
     >
       <PerfectScrollbar>
         <DialogTitle id="form-dialog-title">{genericTitle} Form</DialogTitle>
-
         <DialogContent>
           <form onSubmit={onSubmit}>
             <Card {...rest} className={clsx (classes.root, className)}>
-              <CardHeader title={title1} />
               <CardContent>
                 <Grid
                   container
@@ -71,30 +104,67 @@ const ModalForm = props => {
                   style={{margin: '1px'}}
                   alignItems="stretch"
                 >
-                  <Grid item md={12} xs={6}>
-                    <TextField
-                      fullWidth
-                      label={label1}
-                      name={name1}
-                      value={input1}
-                      onChange={handleChange}
-                      variant="outlined"
-                      multiline
-                      rows={3}
-                    />
+                  <Grid
+                    item
+                    container
+                    direction="column"
+                    spacing={2}
+                    md={12}
+                    xs={6}
+                  >
+                    <Grid item>
+                      <Typography variant="h3">
+                        {title1}:
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        label={formLabel1}
+                        name={formName1}
+                        value={formValue1}
+                        onChange={handleChange}
+                        variant="outlined"
+                        multiline
+                        rows={3}
+                      />
+                    </Grid>
                   </Grid>
+                  <Grid
+                    item
+                    container
+                    direction="column"
+                    md={12}
+                    xs={6}
+                    spacing={2}
+                  >
+                    <Grid item>
+                      <Typography variant="h3">
+                        {title2}:
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        label={formLabel2}
+                        name={formName2}
+                        value={formValue2}
+                        onChange={handleChange}
+                        variant="outlined"
+                        multiline
+                        rows={3}
+                      />
+                    </Grid>
+                  </Grid>
+                  {showTaskTypeRadio}
                 </Grid>
-
               </CardContent>
               <CardActions>
                 <Grid container justify="flex-end">
                   <Button onClick={handleCloseModal} color="primary">
                     Cancel
                   </Button>
-                  <Button
-                    color="primary"
-                    type="submit"
-                  >
+                  <Button color="primary" type="submit">
                     Save
                   </Button>
                 </Grid>
@@ -125,7 +195,6 @@ ModalForm.propTypes = {
 // );
 
 export default ModalForm;
-
 
 /**
  * 
