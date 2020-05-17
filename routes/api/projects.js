@@ -115,7 +115,7 @@ router.put (
         .json ({errors: [{msg: 'Invalid Credentials; User not authorized'}]});
     } else {
       const {description} = req.body; // only value that should change
-      const {name, avatar, title, user, tasks, tickets, date} = originalProject; // all other values should remain the same
+      const {name, avatar, title, user, tasks, date} = originalProject; // all other values should remain the same
       let newProject = {
         description,
         name,
@@ -123,7 +123,6 @@ router.put (
         user,
         title,
         tasks,
-        tickets,
         date,
         edited: {
           // added to create updated post feature

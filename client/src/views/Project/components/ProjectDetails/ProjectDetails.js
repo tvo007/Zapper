@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {Grid} from '@material-ui/core';
@@ -14,6 +14,7 @@ import {
   Button,
 } from '@material-ui/core';
 //import GetAppIcon from '@material-ui/icons/GetApp';
+import ProjectDetailsForm from '../ProjectDetailsForm';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
@@ -41,9 +42,8 @@ const useStyles = makeStyles (theme => ({
 
 const ProjectDetails = props => {
   const {
-    project: {title, name, description, tasks},
+    project: {title, name, description, tasks, _id},
     className,
-    handleProjectFormToggle,
     ...rest
   } = props;
 
@@ -63,6 +63,26 @@ const ProjectDetails = props => {
 
   const classes = useStyles ();
 
+  const [openModal, setOpenModal] = useState (false);
+
+  const handleClickOpenModal = () => {
+    setOpenModal (true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal (false);
+  };
+
+  const showProjectForm = openModal
+    ? <ProjectDetailsForm
+        projectId={_id}
+        description={description}
+        title={title}
+        openModal={openModal}
+        handleCloseModal={handleCloseModal}
+      />
+    : null;
+
   const task = 'Task';
   const story = 'Story';
   const ticket = 'Ticket';
@@ -75,80 +95,91 @@ const ProjectDetails = props => {
       .filter (task => {
         if (task.taskType === taskType) {
           return task;
-        } return null
+        }
+        return null;
       }).length;
-
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
+      {showProjectForm}
       <CardContent>
         <div className={classes.details}>
-          <div>
-            <Typography gutterBottom variant="h2">
-              {title}
-            </Typography>
-            <Typography
-              className={classes.locationText}
-              color="textSecondary"
-              variant="body1"
-            >
-              Project Lead: {name}
-            </Typography>
-            <Typography
-              className={classes.dateText}
-              color="textSecondary"
-              variant="body1"
-            >
-              Project Members: {name}
-            </Typography>
-            <Typography
-              className={classes.dateText}
-              color="textSecondary"
-              variant="body1"
-            >
-              Description: {description}
-            </Typography>
-            <Typography
-              className={classes.dateText}
-              color="textSecondary"
-              variant="body1"
-            >
-              Readme: Add a readme section that can be edited here!
-            </Typography>
-          </div>
+          <Grid container direction="column">
+
+            <Grid container justify="space-between" direction="row">
+
+              <Typography variant="h2">
+                {title}
+              </Typography>
+              <CardActions>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  type="button"
+                  onClick={handleClickOpenModal}
+                  size="small"
+                >
+                  <EditIcon />
+                </Button>
+
+              </CardActions>
+            </Grid>
+            <Grid>
+              <Typography
+                className={classes.locationText}
+                color="textSecondary"
+                variant="body1"
+              >
+                Project Lead: {name}
+              </Typography>
+              <Typography
+                className={classes.dateText}
+                color="textSecondary"
+                variant="body1"
+              >
+                Project Members: {name}
+              </Typography>
+              <Typography
+                className={classes.dateText}
+                color="textSecondary"
+                variant="body1"
+              >
+                Description: {description}
+              </Typography>
+              <Typography
+                className={classes.dateText}
+                color="textSecondary"
+                variant="body1"
+              >
+                Readme: Add a readme section that can be edited here!
+              </Typography>
+            </Grid>
+          </Grid>
         </div>
       </CardContent>
       <Divider />
-      <CardActions>
-        <Button
-          color="primary"
-          variant="contained"
-          type="button"
-          onClick={handleProjectFormToggle}
-        >
-          <EditIcon />
-        </Button>
-      </CardActions>
-      <Grid container justify="flex-start" spacing={3}>
-        <Grid className={classes.statsItem} item>
-          <Typography display="inline" variant="body2">
-            <AssignmentLateIcon className={classes.statsIcon} />
-            {taskTypeCounter (task)} Tasks
-          </Typography>
+      <CardContent>
+        <Grid container justify="flex-start" spacing={3}>
+          <Grid className={classes.statsItem} item>
+            <Typography display="inline" variant="body2">
+              <AssignmentLateIcon className={classes.statsIcon} />
+              {taskTypeCounter (task)} Tasks
+            </Typography>
+          </Grid>
+          <Grid className={classes.statsItem} item>
+            <Typography display="inline" variant="body2">
+              <MenuBookIcon className={classes.statsIcon} />
+              {taskTypeCounter (story)} Stories
+            </Typography>
+          </Grid>
+          <Grid className={classes.statsItem} item>
+            <Typography display="inline" variant="body2">
+              <BugReportIcon className={classes.statsIcon} />
+              {taskTypeCounter (ticket)} Tickets
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid className={classes.statsItem} item>
-          <Typography display="inline" variant="body2">
-            <MenuBookIcon className={classes.statsIcon} />
-            {taskTypeCounter (story)} Stories
-          </Typography>
-        </Grid>
-        <Grid className={classes.statsItem} item>
-          <Typography display="inline" variant="body2">
-            <BugReportIcon className={classes.statsIcon} />
-            {taskTypeCounter (ticket)} Tickets
-          </Typography>
-        </Grid>
-      </Grid>
+      </CardContent>
 
     </Card>
   );

@@ -22,18 +22,8 @@ const Project = ({getProject, project: {project, loading}, match}) => {
   );
   const classes = useStyles ();
 
-  const [projectFormToggle, setProjectFormToggle] = useState (false);
+  
 
-  const handleProjectFormToggle = () => {
-    setProjectFormToggle (!projectFormToggle);
-  };
-
-  const showProjectForm = projectFormToggle
-    ? <ProjectDetailsForm
-        projectId={project._id}
-        projectDescription={project.description}
-      />
-    : null;
 
   return loading || project === null
     ? <div>LOADING!</div>
@@ -43,9 +33,7 @@ const Project = ({getProject, project: {project, loading}, match}) => {
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <ProjectDetails
               project={project}
-              handleProjectFormToggle={handleProjectFormToggle}
             />
-            {showProjectForm}
           </Grid>
 
           <Tasks projectId={project._id} tasks={project.tasks} />

@@ -2,7 +2,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import GenericForm from './GenericForm';
 
-const mapDispatchToProps = ({taskSummary, taskDescription, taskType}) => {
+const mapDispatchToProps = () => {
     return {
       title: 'Tasks',
       label1: 'Enter a task summary.',
