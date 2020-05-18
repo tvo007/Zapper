@@ -12,7 +12,7 @@ import {
 //get projects
 export const getProjects = () => async dispatch => {
   try {
-    const res = await api.get ('/api/projects');
+    const res = await api.get ('/projects');
 
     dispatch ({
       type: GET_PROJECTS,
@@ -28,16 +28,11 @@ export const getProjects = () => async dispatch => {
 
 //add project
 export const addProject = formData => async dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
 
   try {
     // const res =
 
-    const res = await api.post (`/api/projects`, formData, config);
+    const res = await api.post (`/projects`, formData);
 
     dispatch ({
       type: ADD_PROJECT,
@@ -55,16 +50,11 @@ export const addProject = formData => async dispatch => {
 
 //EDIT PROJECT
 export const editProject = (id, formData) => async dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
 
   try {
     // const res =
 
-    const res = await api.put (`/api/projects/${id}`, formData, config);
+    const res = await api.put (`/projects/${id}`, formData);
 
     dispatch ({
       type: EDIT_PROJECT,
@@ -85,7 +75,7 @@ export const deleteProject = id => async dispatch => {
   try {
     // const res =
 
-    await api.delete (`/api/projects/${id}`);
+    await api.delete (`/projects/${id}`);
 
     dispatch ({
       type: DELETE_PROJECT,
@@ -104,7 +94,7 @@ export const deleteProject = id => async dispatch => {
 //gets single project
 export const getProject = id => async dispatch => {
   try {
-    const res = await api.get (`/api/projects/${id}`);
+    const res = await api.get (`/projects/${id}`);
 
     dispatch ({
       type: GET_PROJECT,
