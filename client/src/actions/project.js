@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../utils/api';
 import {setAlert} from './alert';
 import {
   GET_PROJECTS,
@@ -12,7 +12,7 @@ import {
 //get projects
 export const getProjects = () => async dispatch => {
   try {
-    const res = await axios.get ('/api/projects');
+    const res = await api.get ('/api/projects');
 
     dispatch ({
       type: GET_PROJECTS,
@@ -37,7 +37,7 @@ export const addProject = formData => async dispatch => {
   try {
     // const res =
 
-    const res = await axios.post (`/api/projects`, formData, config);
+    const res = await api.post (`/api/projects`, formData, config);
 
     dispatch ({
       type: ADD_PROJECT,
@@ -64,7 +64,7 @@ export const editProject = (id, formData) => async dispatch => {
   try {
     // const res =
 
-    const res = await axios.put (`/api/projects/${id}`, formData, config);
+    const res = await api.put (`/api/projects/${id}`, formData, config);
 
     dispatch ({
       type: EDIT_PROJECT,
@@ -85,7 +85,7 @@ export const deleteProject = id => async dispatch => {
   try {
     // const res =
 
-    await axios.delete (`/api/projects/${id}`);
+    await api.delete (`/api/projects/${id}`);
 
     dispatch ({
       type: DELETE_PROJECT,
@@ -104,7 +104,7 @@ export const deleteProject = id => async dispatch => {
 //gets single project
 export const getProject = id => async dispatch => {
   try {
-    const res = await axios.get (`/api/projects/${id}`);
+    const res = await api.get (`/api/projects/${id}`);
 
     dispatch ({
       type: GET_PROJECT,

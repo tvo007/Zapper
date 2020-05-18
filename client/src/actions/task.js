@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../utils/api';
 import {setAlert} from './alert';
 import {
   PROJECT_ERROR,
@@ -22,7 +22,7 @@ export const addTask = (projectId, formData) => async dispatch => {
       },
     };
     try {
-      const res = await axios.post (
+      const res = await api.post (
         `/api/projects/tasks/${projectId}`,
         formData,
         config
@@ -51,7 +51,7 @@ export const addTask = (projectId, formData) => async dispatch => {
         },
       };
   
-      const res = await axios.put (`/api/projects/tasks/${projectId}/${taskId}`, formData, config);
+      const res = await api.put (`/api/projects/tasks/${projectId}/${taskId}`, formData, config);
   
       dispatch ({
         type: EDIT_TASK,
@@ -72,7 +72,7 @@ export const addTask = (projectId, formData) => async dispatch => {
     try {
       // const res =
   
-      await axios.delete (`/api/projects/tasks/${projectId}/${taskId}`);
+      await api.delete (`/api/projects/tasks/${projectId}/${taskId}`);
   
       dispatch ({
         type: REMOVE_TASK,
@@ -91,7 +91,7 @@ export const addTask = (projectId, formData) => async dispatch => {
   //toggle task completed
   export const toggleTaskCompleted = (projectId, taskId) => async dispatch => {
     try {
-      const res = await axios.put (
+      const res = await api.put (
         `/api/projects/tasks/${projectId}/${taskId}/isCompleted`
       );
   
@@ -122,7 +122,7 @@ export const addTask = (projectId, formData) => async dispatch => {
       },
     };
     try {
-      const res = await axios.post (
+      const res = await api.post (
         `/api/projects/tasks/${projectId}/${taskId}/subtasks`,
         formData,
         config
@@ -151,7 +151,7 @@ export const addTask = (projectId, formData) => async dispatch => {
         },
       };
   
-      const res = await axios.put (`/api/projects/tasks/${projectId}/${taskId}/${subtaskId}`, formData, config);
+      const res = await api.put (`/api/projects/tasks/${projectId}/${taskId}/${subtaskId}`, formData, config);
   
       dispatch ({
         type: EDIT_SUBTASK,
@@ -176,7 +176,7 @@ export const addTask = (projectId, formData) => async dispatch => {
     try {
       // const res =
   
-      const res = await axios.delete (
+      const res = await api.delete (
         `/api/projects/tasks/${projectId}/${taskId}/${subtaskId}`
       );
   
@@ -201,7 +201,7 @@ export const addTask = (projectId, formData) => async dispatch => {
     subtaskId
   ) => async dispatch => {
     try {
-      const res = await axios.put (
+      const res = await api.put (
         `/api/projects/tasks/${projectId}/${taskId}/${subtaskId}/isCompleted`
       );
   
