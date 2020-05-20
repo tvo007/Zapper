@@ -54,6 +54,8 @@ const TaskForm = props => {
     handleCloseModal ();
   };
 
+  //second form state
+  const hasSecondForm = true;
   //radio state
   const hasRadio = true;
 
@@ -77,6 +79,7 @@ const TaskForm = props => {
         onSubmit={onSubmit}
         openModal={openModal}
         handleCloseModal={handleCloseModal}
+        hasSecondForm={hasSecondForm}
         hasRadio={hasRadio}
       />
     : null;

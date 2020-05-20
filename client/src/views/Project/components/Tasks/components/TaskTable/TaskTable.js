@@ -17,6 +17,7 @@ import {
   Grid,
   Button,
 } from '@material-ui/core';
+import TableTemplate from '../../../../../../components/Tables/TableTemplate';
 import TaskItem from '../TaskItem';
 // import { TaskItem } from '../TaskItem';
 // import {getInitials} from 'helpers';
@@ -72,26 +73,12 @@ const TaskTable = props => {
   const [rowsPerPage, setRowsPerPage] = useState (10);
   const [page, setPage] = useState (0);
 
-  const [taskFilter, setTaskFilter] = useState (false);
-  const [storyFilter, setStoryFilter] = useState (false);
-  const [ticketFilter, setTicketFilter] = useState (false);
 
-  const taskView = taskFilter ? 'Task' : null;
+  const taskView = 'Task' 
 
-  const storyView = storyFilter ? 'Story' : null;
+  const storyView =   'Story' 
 
-  const ticketView = ticketFilter ? 'Ticket' : null;
-
-  const taskFilterHandle = () => {
-    setTaskFilter (!taskFilter);
-  };
-
-  const storyFilterHandle = () => {
-    setStoryFilter (!storyFilter);
-  };
-  const ticketFilterHandle = () => {
-    setTicketFilter (!ticketFilter);
-  };
+  const ticketView = 'Ticket'
 
   // const handleSelectAll = event => {
   //   const {tasks} = props;
@@ -160,7 +147,87 @@ const TaskTable = props => {
 
   /**testing functions for the modal drop down */
   return (
-    <Card {...rest} className={clsx (classes.root, className)}>
+    <React.Fragment>
+      <TableTemplate
+        selectedItems={selectedTasks}
+        items={tasks}
+        handlePageChange={handlePageChange}
+        handleRowsPerPageChange={handleRowsPerPageChange}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        classes={classes}
+        className={className}
+      >
+        {displayTasks (taskView)}
+      </TableTemplate>
+      <TableTemplate
+        selectedItems={selectedTasks}
+        items={tasks}
+        handlePageChange={handlePageChange}
+        handleRowsPerPageChange={handleRowsPerPageChange}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        classes={classes}
+        className={className}
+      >
+        {displayTasks (storyView)}
+      </TableTemplate>
+      <TableTemplate
+        selectedItems={selectedTasks}
+        items={tasks}
+        handlePageChange={handlePageChange}
+        handleRowsPerPageChange={handleRowsPerPageChange}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        classes={classes}
+        className={className}
+      >
+        {displayTasks (ticketView)}
+      </TableTemplate>
+    </React.Fragment>
+  );
+};
+
+TaskTable.propTypes = {
+  className: PropTypes.string,
+  tasks: PropTypes.array.isRequired,
+};
+
+// export default connect (null, {deleteTicket, toggleTicketCompleted}) (
+//   TicketTable
+// );
+
+export default TaskTable;
+//fix user.user
+
+//line 137/Checkbox props: placeholder for onChange={handleChangeAll}
+/**
+ * 
+ * 
+ * const [taskFilter, setTaskFilter] = useState (false);
+  const [storyFilter, setStoryFilter] = useState (false);
+  const [ticketFilter, setTicketFilter] = useState (false);
+
+  const taskView = taskFilter ? 'Task' : null;
+
+  const storyView = storyFilter ? 'Story' : null;
+
+  const ticketView = ticketFilter ? 'Ticket' : null;
+
+  const taskFilterHandle = () => {
+    setTaskFilter (!taskFilter);
+  };
+
+  const storyFilterHandle = () => {
+    setStoryFilter (!storyFilter);
+  };
+  const ticketFilterHandle = () => {
+    setTicketFilter (!ticketFilter);
+  };
+
+ *
+
+<Card {...rest} className={clsx (classes.root, className)}>
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <Grid>
@@ -211,93 +278,6 @@ const TaskTable = props => {
         />
       </CardActions>
     </Card>
-  );
-};
-
-TaskTable.propTypes = {
-  className: PropTypes.string,
-  tasks: PropTypes.array.isRequired,
-};
-
-// export default connect (null, {deleteTicket, toggleTicketCompleted}) (
-//   TicketTable
-// );
-
-export default TaskTable;
-//fix user.user
-
-//line 137/Checkbox props: placeholder for onChange={handleChangeAll}
-/**
- * <TicketItem
-                      key={ticket._id}
-                      id={ticket._id}
-                      tasksummary={ticket.tasksummary}
-                      ticketDescription={ticket.ticketDescription}
-                      date={ticket.date}
-                      handleSelectOne={handleSelectOne}
-                      selectedtasks={selectedtasks}
-                      projectId={projectId}
-                      ticketNumber={ticket.ticketNumber}
-                    />
- * {tasks.slice (0, rowsPerPage).map (task => {
-                  if (task.taskType === taskView) {
-                    return (
-                      <TaskItem
-                        key={task._id}
-                        taskId={task._id}
-                        taskSummary={task.taskSummary}
-                        taskDescription={task.taskDescription}
-                        isCompleted={task.isCompleted}
-                        date={task.date}
-                        handleSelectOne={handleSelectOne}
-                        selectedTasks={selectedTasks}
-                        projectId={projectId}
-                        taskNumber={task.taskNumber}
-                        subtasks={task.subtasks}
-                        taskType={task.taskType}
-                      />
-                    );
-                  } else if (task.taskType === storyView) {
-                    return (
-                      <TaskItem
-                        key={task._id}
-                        taskId={task._id}
-                        taskSummary={task.taskSummary}
-                        taskDescription={task.taskDescription}
-                        isCompleted={task.isCompleted}
-                        date={task.date}
-                        handleSelectOne={handleSelectOne}
-                        selectedTasks={selectedTasks}
-                        projectId={projectId}
-                        taskNumber={task.taskNumber}
-                        subtasks={task.subtasks}
-                        taskType={task.taskType}
-                      />
-                    );
-                  } else if (task.taskType === ticketView) {
-                    return (
-                      <TaskItem
-                        key={task._id}
-                        taskId={task._id}
-                        taskSummary={task.taskSummary}
-                        taskDescription={task.taskDescription}
-                        isCompleted={task.isCompleted}
-                        date={task.date}
-                        handleSelectOne={handleSelectOne}
-                        selectedTasks={selectedTasks}
-                        projectId={projectId}
-                        taskNumber={task.taskNumber}
-                        subtasks={task.subtasks}
-                        taskType={task.taskType}
-                      />
-                    );
-                  }
-                })}
-
-
-
-
-
 
 
 

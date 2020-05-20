@@ -1,29 +1,8 @@
 import React, {useState} from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/styles';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Divider,
-  Grid,
-  Button,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@material-ui/core';
-//import ModalForm from '../../../../components/Modals/ModalForm';
+import ModalForm from '../../../../components/Modals/ModalForm';
 import {connect} from 'react-redux';
 import {editProject} from '../../../../actions/project';
-
-const useStyles = makeStyles (() => ({
-  root: {},
-}));
 
 const ProjectDetailsForm = props => {
   const {
@@ -51,8 +30,6 @@ const ProjectDetailsForm = props => {
     },
    */
 
-  const classes = useStyles ();
-
   const [formData, setFormData] = useState ({description});
 
   const handleChange = e => {
@@ -62,18 +39,6 @@ const ProjectDetailsForm = props => {
     });
   };
 
-  // const handleChange = e => {
-  //   setDescription (e.target.value);
-  // };
-
-  // const handleChange = e => {
-  //   setFormData (e.target.value);
-  // };
-
-  // const genericTitle = 'Project';
-  // const name1 = 'projectDescription';
-  // const label1 = 'Enter project description.';
-
   const onSubmit = e => {
     e.preventDefault ();
     editProject (projectId, formData);
@@ -81,63 +46,24 @@ const ProjectDetailsForm = props => {
     handleCloseModal ();
   };
 
+  const hasSecondForm = false;
+
+  const hasRadio = false;
+
   return (
-    <Dialog
-      {...rest}
-      open={openModal}
-      onClose={handleCloseModal}
-      fullWidth
-      maxWidth="lg"
-    >
-      <PerfectScrollbar>
-        <DialogTitle id="form-dialog-title">Edit Project Info</DialogTitle>
-
-        <DialogContent>
-          <form onSubmit={onSubmit}>
-            <Card {...rest} className={clsx (classes.root, className)}>
-              <CardHeader title={title} />
-              <CardContent>
-                <Grid
-                  container
-                  spacing={1}
-                  direction="column"
-                  style={{margin: '1px'}}
-                  alignItems="stretch"
-                >
-                  <Grid item md={12} xs={6}>
-                    <TextField
-                      fullWidth
-                      label="Enter a project description."
-                      name="description"
-                      value={formData.description}
-                      onChange={handleChange}
-                      variant="outlined"
-                      multiline
-                      rows={3}
-                    />
-                  </Grid>
-                </Grid>
-
-              </CardContent>
-              <CardActions>
-                <Grid container justify="flex-end">
-                  <Button
-                    type="button"
-                    onClick={handleCloseModal}
-                    color="primary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button color="primary" type="submit">
-                    Save
-                  </Button>
-                </Grid>
-              </CardActions>
-            </Card>
-          </form>
-        </DialogContent>
-      </PerfectScrollbar>
-    </Dialog>
+    <ModalForm
+      genericTitle="Edit Project"
+      title1="Project Description"
+      formLabel1="Enter a project description"
+      formName1="description"
+      formValue1={formData.description}
+      handleChange={handleChange}
+      onSubmit={onSubmit}
+      openModal={openModal}
+      handleCloseModal={handleCloseModal}
+      hasSecondForm={hasSecondForm}
+      hasRadio={hasRadio}
+    />
   );
 };
 
@@ -147,40 +73,3 @@ ProjectDetailsForm.propTypes = {
 };
 
 export default connect (null, {editProject}) (ProjectDetailsForm);
-
-/**
- * return (
-    <Card className={clsx (classes.root, className)}>
-      <form autoComplete="off" onSubmit={onSubmit}>
-        <CardHeader title="Project Details Form" />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={12} xs={12}>
-              <TextField
-                fullWidth
-                label="Enter project details."
-                name="description"
-                value={description}
-                onChange={e => setDescription (e.target.value)}
-                variant="outlined"
-                required
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button color="primary" variant="contained" type="submit">
-            Update Project Details
-          </Button>
-        </CardActions>
-      </form>
-    </Card>
-  );
-};
- * 
- * 
- * 
- * 
- * 
- */
