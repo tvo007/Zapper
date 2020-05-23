@@ -2,7 +2,6 @@ import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import {makeStyles} from '@material-ui/styles';
 import {
   Card,
   CardActions,
@@ -18,6 +17,7 @@ import {
 
 const TableTemplate = props => {
   const {
+    taskType,
     selectedItems,
     items,
     handlePageChange,
@@ -48,7 +48,7 @@ const TableTemplate = props => {
                       }
                     />
                   </TableCell>
-                  <TableCell>Task Type</TableCell>
+                    <TableCell>{taskType} ID</TableCell>
                   <TableCell>Summary</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Subtasks</TableCell>

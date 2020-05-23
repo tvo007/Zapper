@@ -196,6 +196,16 @@ router.post (
       const user = await User.findById (req.user.id).select ('-password');
       const project = await Project.findById (req.params.id);
 
+      const addToId = taskType => {
+        if (taskType === 'Task') {
+          return 'TS' + shortid.generate ();
+        } else if (taskType === 'Story') {
+          return 'ST' + shortid.generate ();
+        } else if (taskType === 'Ticket') {
+          return 'TX' + shortid.generate ();
+        }
+      };
+
       const newTask = {
         taskSummary: req.body.taskSummary,
         taskDescription: req.body.taskDescription,
@@ -203,6 +213,7 @@ router.post (
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
+        taskNumber: addToId (req.body.taskType),
       };
 
       project.tasks.unshift (newTask);
@@ -604,7 +615,5 @@ router.put (
     }
   }
 );
-
-
 
 module.exports = router;

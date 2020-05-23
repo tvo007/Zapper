@@ -21,6 +21,7 @@ const useStyles = makeStyles (() => ({
 const TaskItem = props => {
   const {
     taskId,
+    shortId,
     taskSummary,
     taskDescription,
     isCompleted,
@@ -74,7 +75,7 @@ const TaskItem = props => {
       <TableCell>
         <div className={classes.nameContainer}>
           <Typography variant="body1">
-            {taskType}
+            {shortId}
           </Typography>
         </div>
       </TableCell>

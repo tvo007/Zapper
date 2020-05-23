@@ -86,7 +86,7 @@ const TaskForm = props => {
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
-      {showForm}
+      {showForm} 
       <CardActions>
         <Button
           color="primary"

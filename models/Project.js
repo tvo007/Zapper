@@ -92,11 +92,10 @@ const ProjectSchema = new Schema ({
         type: String,
       },
 
-      // taskNumber: {
-      //   type: String,
-      //   uppercase: true,
-      //   default: shortid.generate,
-      // },
+      taskNumber: {
+        type: String,
+        uppercase: true,
+      },
       subtasks: [
         {
           user: {

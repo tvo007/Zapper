@@ -1,28 +1,10 @@
 import React, {useState} from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import {makeStyles} from '@material-ui/styles';
-import {
-  Card,
-  CardActions,
-  CardContent,
-  Checkbox,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TablePagination,
-  Grid,
-  Button,
-} from '@material-ui/core';
+import {Button, AppBar, Tabs, Tab, TabPanel, Grid} from '@material-ui/core';
+
 import TableTemplate from '../../../../../../components/Tables/TableTemplate';
 import TaskItem from '../TaskItem';
-// import { TaskItem } from '../TaskItem';
-// import {getInitials} from 'helpers';
-// import {connect} from 'react-redux';
-// import {deleteTicket, toggleTicketCompleted} from '../../../../actions/ticket';
 
 const useStyles = makeStyles (theme => ({
   root: {},
@@ -44,55 +26,31 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-//tasks={project.tasks}
-//tasks: {ticket: user, tasksummary, ticketDescription, name, avatar, date, isCompleted, users, ticketPriority }
 const TaskTable = props => {
-  const {
-    className,
-    tasks,
-    projectId,
-    // tasks: {
-    //   ticket: _id,
-    //   user,
-    //   tasksummary,
-    //   ticketDescription,
-    //   name,
-    //   avatar,
-    //   date,
-    //   isCompleted,
-    //   users,
-    //   ticketPriority,
-    // },
-
-    ...rest
-  } = props;
+  const {className, tasks, projectId} = props;
 
   const classes = useStyles ();
 
   const [selectedTasks, setSelectedTasks] = useState ([]);
+
+  // const [showTasks, setShowTasks] = useState (false);
+  // const [showStories, setShowStories] = useState (false);
+  // const [showTickets, setShowTickets] = useState (false);
+
+  const [value, setValue] = React.useState (0); //mui tab state
+
+  const handleChange = (event, newValue) => {
+    setValue (newValue);
+  };
+
   const [rowsPerPage, setRowsPerPage] = useState (10);
   const [page, setPage] = useState (0);
 
+  const taskView = 'Task';
 
-  const taskView = 'Task' 
+  const storyView = 'Story';
 
-  const storyView =   'Story' 
-
-  const ticketView = 'Ticket'
-
-  // const handleSelectAll = event => {
-  //   const {tasks} = props;
-
-  //   let selectedtasks;
-
-  //   if (event.target.checked) {
-  //     selectedtasks = tasks.map (ticket => ticket._id);
-  //   } else {
-  //     selectedtasks = [];
-  //   }
-
-  //   setSelectedtasks (selectedtasks);
-  // };
+  const ticketView = 'Ticket';
 
   const handleSelectOne = (event, id) => {
     const selectedIndex = selectedTasks.indexOf (id);
@@ -122,6 +80,21 @@ const TaskTable = props => {
     setRowsPerPage (event.target.value);
   };
 
+  // const handleShowTasks = e => {
+  //   e.preventDefault ();
+  //   setShowTasks (!showTasks);
+  // };
+
+  // const handleShowStories = e => {
+  //   e.preventDefault ();
+  //   setShowStories (!showStories);
+  // };
+
+  // const handleShowTickets = e => {
+  //   e.preventDefault ();
+  //   setShowTickets (!showTickets);
+  // };
+
   const displayTasks = viewType =>
     tasks.slice (0, rowsPerPage).map (task => {
       if (task.taskType === viewType) {
@@ -129,6 +102,7 @@ const TaskTable = props => {
           <TaskItem
             key={task._id}
             taskId={task._id}
+            shortId={task.taskNumber}
             taskSummary={task.taskSummary}
             taskDescription={task.taskDescription}
             isCompleted={task.isCompleted}
@@ -145,45 +119,66 @@ const TaskTable = props => {
       return null;
     });
 
-  /**testing functions for the modal drop down */
   return (
     <React.Fragment>
-      <TableTemplate
-        selectedItems={selectedTasks}
-        items={tasks}
-        handlePageChange={handlePageChange}
-        handleRowsPerPageChange={handleRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        classes={classes}
-        className={className}
-      >
-        {displayTasks (taskView)}
-      </TableTemplate>
-      <TableTemplate
-        selectedItems={selectedTasks}
-        items={tasks}
-        handlePageChange={handlePageChange}
-        handleRowsPerPageChange={handleRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        classes={classes}
-        className={className}
-      >
-        {displayTasks (storyView)}
-      </TableTemplate>
-      <TableTemplate
-        selectedItems={selectedTasks}
-        items={tasks}
-        handlePageChange={handlePageChange}
-        handleRowsPerPageChange={handleRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        classes={classes}
-        className={className}
-      >
-        {displayTasks (ticketView)}
-      </TableTemplate>
+      <AppBar position="static">
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="Tasks" />
+          <Tab label="Stories" />
+          <Tab label="Tickets" />
+        </Tabs>
+      </AppBar>
+      <Grid>
+        {value === 0
+          ? <TableTemplate
+              taskType="Task"
+              selectedItems={selectedTasks}
+              items={tasks}
+              handlePageChange={handlePageChange}
+              handleRowsPerPageChange={handleRowsPerPageChange}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              classes={classes}
+              className={className}
+            >
+              {displayTasks (taskView)}
+            </TableTemplate>
+          : null}
+      </Grid>
+      <Grid>
+        {value === 1
+          ? <TableTemplate
+            taskType="Story"
+              selectedItems={selectedTasks}
+              items={tasks}
+              handlePageChange={handlePageChange}
+              handleRowsPerPageChange={handleRowsPerPageChange}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              classes={classes}
+              className={className}
+            >
+              {displayTasks (storyView)}
+            </TableTemplate>
+          : null}
+      </Grid>
+      <Grid>
+        {value === 2
+          ? <TableTemplate
+          taskType="Ticket"
+              selectedItems={selectedTasks}
+              items={tasks}
+              handlePageChange={handlePageChange}
+              handleRowsPerPageChange={handleRowsPerPageChange}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              classes={classes}
+              className={className}
+            >
+              {displayTasks (ticketView)}
+            </TableTemplate>
+          : null}
+      </Grid>
     </React.Fragment>
   );
 };
@@ -193,15 +188,26 @@ TaskTable.propTypes = {
   tasks: PropTypes.array.isRequired,
 };
 
-// export default connect (null, {deleteTicket, toggleTicketCompleted}) (
-//   TicketTable
-// );
-
 export default TaskTable;
 //fix user.user
 
 //line 137/Checkbox props: placeholder for onChange={handleChangeAll}
 /**
+ * 
+ * 
+ * const handleSelectAll = event => {
+    const {tasks} = props;
+
+    let selectedtasks;
+
+    if (event.target.checked) {
+      selectedtasks = tasks.map (ticket => ticket._id);
+    } else {
+      selectedtasks = [];
+    }
+
+    setSelectedtasks (selectedtasks);
+  };
  * 
  * 
  * const [taskFilter, setTaskFilter] = useState (false);
