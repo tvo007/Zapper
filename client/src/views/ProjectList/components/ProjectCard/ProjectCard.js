@@ -52,7 +52,7 @@ const ProjectCard = props => {
     product,
     auth,
     deleteProject,
-    project: {_id, title, name, description, tasks, tickets},
+    project: {_id, title, name, description, tasks},
     showActions,
     ...rest
   } = props;
@@ -72,6 +72,22 @@ const ProjectCard = props => {
    */
 
   const classes = useStyles ();
+
+  const task = 'Task';
+  const story = 'Story';
+  const ticket = 'Ticket';
+
+  const taskTypeCounter = taskType =>
+    tasks
+      .map (task => {
+        return task;
+      })
+      .filter (task => {
+        if (task.taskType === taskType) {
+          return task;
+        }
+        return null;
+      }).length;
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
@@ -103,13 +119,19 @@ const ProjectCard = props => {
             <Grid className={classes.statsItem} item>
               <AssignmentLateIcon className={classes.statsIcon} />
               <Typography display="inline" variant="body2">
-                {tasks.length} Tasks
+                {taskTypeCounter (task)} Tasks
               </Typography>
             </Grid>
             <Grid className={classes.statsItem} item>
-              <BugReportIcon className={classes.statsIcon} />
+              <AssignmentLateIcon className={classes.statsIcon} />
               <Typography display="inline" variant="body2">
-                {tickets.length} Tickets
+                {taskTypeCounter (story)} Stories
+              </Typography>
+            </Grid>
+            <Grid className={classes.statsItem} item>
+              <AssignmentLateIcon className={classes.statsIcon} />
+              <Typography display="inline" variant="body2">
+                {taskTypeCounter (ticket)} Tickets
               </Typography>
             </Grid>
           </Grid>

@@ -41,15 +41,7 @@ const AccountProfile = props => {
     ...rest
   } = props;
 
-  const classes = useStyles ();
-
-  const user = {
-    name: 'Shen Zhi',
-    city: 'Los Angeles',
-    country: 'USA',
-    timezone: 'GTM-7',
-    avatar: '/images/avatars/avatar_11.png',
-  };
+  const classes = useStyles ()
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
@@ -71,7 +63,7 @@ const AccountProfile = props => {
               color="textSecondary"
               variant="body1"
             >
-              {moment ().format ('hh:mm A')} ({user.timezone})
+              {/*    */}
             </Typography>
           </div>
           <Avatar className={classes.avatar} src={profile.avatar} />
