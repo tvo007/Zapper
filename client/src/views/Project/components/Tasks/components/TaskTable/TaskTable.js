@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
-import {Button, AppBar, Tabs, Tab, TabPanel, Grid} from '@material-ui/core';
+import {AppBar, Tabs, Tab, Grid} from '@material-ui/core';
 
 import TableTemplate from '../../../../../../components/Tables/TableTemplate';
 import TaskItem from '../TaskItem';
@@ -80,21 +80,6 @@ const TaskTable = props => {
     setRowsPerPage (event.target.value);
   };
 
-  // const handleShowTasks = e => {
-  //   e.preventDefault ();
-  //   setShowTasks (!showTasks);
-  // };
-
-  // const handleShowStories = e => {
-  //   e.preventDefault ();
-  //   setShowStories (!showStories);
-  // };
-
-  // const handleShowTickets = e => {
-  //   e.preventDefault ();
-  //   setShowTickets (!showTickets);
-  // };
-
   const displayTasks = viewType =>
     tasks.slice (0, rowsPerPage).map (task => {
       if (task.taskType === viewType) {
@@ -148,7 +133,7 @@ const TaskTable = props => {
       <Grid>
         {value === 1
           ? <TableTemplate
-            taskType="Story"
+              taskType="Story"
               selectedItems={selectedTasks}
               items={tasks}
               handlePageChange={handlePageChange}
@@ -165,7 +150,7 @@ const TaskTable = props => {
       <Grid>
         {value === 2
           ? <TableTemplate
-          taskType="Ticket"
+              taskType="Ticket"
               selectedItems={selectedTasks}
               items={tasks}
               handlePageChange={handlePageChange}
