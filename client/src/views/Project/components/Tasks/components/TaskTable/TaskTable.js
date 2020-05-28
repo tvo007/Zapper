@@ -98,6 +98,7 @@ const TaskTable = props => {
             taskNumber={task.taskNumber}
             subtasks={task.subtasks}
             taskType={task.taskType}
+            user={task.user}
           />
         );
       }

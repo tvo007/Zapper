@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 //import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
-import ItemTemplate from '../../../../../../components/Tables/ItemTemplate'
+import ItemTemplate from '../../../../../../components/Tables/ItemTemplate';
 import {connect} from 'react-redux';
 import {
   deleteTask,
@@ -32,6 +32,8 @@ const TaskItem = props => {
     taskNumber,
     editTask,
     taskType,
+    auth,
+    user,
     //...rest
   } = props;
 
@@ -54,27 +56,29 @@ const TaskItem = props => {
 
   return (
     <ItemTemplate
-    taskId={taskId}
-    shortId={shortId}
-    taskSummary={taskSummary}
-    taskDescription={taskDescription}
-    isCompleted={isCompleted}
-    date={date}
-    subtasks={subtasks}
-    handleSelectOne={handleSelectOne}
-    selectedTasks={selectedTasks}
-    deleteTask={deleteTask}
-    toggleTaskCompleted={toggleTaskCompleted}
-    projectId={projectId}
-    taskNumber={taskNumber}
-    editTask={editTask}
-    taskType={taskType}
-    checkboxChecked={checkboxChecked}
-    toggleHandler={toggleHandler}
-    handleClickOpenModal={handleClickOpenModal}
-    deleteHandler={deleteHandler}
+      taskId={taskId}
+      shortId={shortId}
+      taskSummary={taskSummary}
+      taskDescription={taskDescription}
+      isCompleted={isCompleted}
+      date={date}
+      subtasks={subtasks}
+      handleSelectOne={handleSelectOne}
+      selectedTasks={selectedTasks}
+      deleteTask={deleteTask}
+      toggleTaskCompleted={toggleTaskCompleted}
+      projectId={projectId}
+      taskNumber={taskNumber}
+      editTask={editTask}
+      taskType={taskType}
+      checkboxChecked={checkboxChecked}
+      toggleHandler={toggleHandler}
+      handleClickOpenModal={handleClickOpenModal}
+      deleteHandler={deleteHandler}
+      auth={auth}
+      user={user}
     >
-      <TaskModal 
+      <TaskModal
         handleCloseModal={handleCloseModal}
         openModal={openModal}
         taskNumber={taskNumber}
@@ -85,12 +89,11 @@ const TaskItem = props => {
         projectId={projectId}
         editTask={editTask}
         subtasks={subtasks}
-      
+        auth={auth}
+        user={user}
       />
 
     </ItemTemplate>
-      
-    
   );
 };
 
@@ -98,18 +101,17 @@ TaskItem.propTypes = {
   className: PropTypes.string,
 };
 
-// const mapStateToProps = state => ({
-//   auth: state.auth,
-// });
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
 
-export default connect (null, {
+export default connect (mapStateToProps, {
   deleteTask,
   toggleTaskCompleted,
   editTask,
 }) (TaskItem);
 
 // export default TicketItem;
-
 
 /**
  * import React, {useState} from 'react';

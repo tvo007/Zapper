@@ -18,7 +18,7 @@ const useStyles = makeStyles (() => ({
 }));
 
 const TaskForm = props => {
-  const {className, projectId, addTask, ...rest} = props;
+  const {auth, user, className, projectId, addTask, ...rest} = props;
 
   const classes = useStyles ();
 
@@ -86,16 +86,21 @@ const TaskForm = props => {
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
-      {showForm} 
+      {showForm}
       <CardActions>
-        <Button
-          color="primary"
-          variant="contained"
-          type="button"
-          onClick={handleClickOpenModal}
-        >
-          Add Task
-        </Button>
+
+        {
+          !auth.loading &&
+          user === auth.user._id &&
+          <Button
+            color="primary"
+            variant="contained"
+            type="button"
+            onClick={handleClickOpenModal}
+          >
+            Add Task
+          </Button>
+        }
       </CardActions>
     </Card>
   );
@@ -106,7 +111,11 @@ TaskForm.propTypes = {
   addTask: PropTypes.func.isRequired,
 };
 
-export default connect (null, {addTask}) (TaskForm);
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect (mapStateToProps, {addTask}) (TaskForm);
 
 /**
  * <Card {...rest} className={clsx (classes.root, className)}>

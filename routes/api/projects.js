@@ -196,6 +196,15 @@ router.post (
       const user = await User.findById (req.user.id).select ('-password');
       const project = await Project.findById (req.params.id);
 
+      //check if correct project
+      if (!project) {
+        return res.status (404).json ({msg: 'Project not found'});
+      }
+      //check user
+      if (project.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized.'});
+      }
+
       const addToId = taskType => {
         if (taskType === 'Task') {
           return 'TS' + shortid.generate ();

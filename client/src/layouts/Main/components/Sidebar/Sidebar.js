@@ -61,11 +61,11 @@ const Sidebar = props => {
   const classes = useStyles ();
 
   const pages = [
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-      icon: <DashboardIcon />,
-    },
+    // {
+    //   title: 'Dashboard',
+    //   href: '/dashboard',
+    //   icon: <DashboardIcon />,
+    // },
     {
       title: 'Users',
       href: '/users',
@@ -76,26 +76,26 @@ const Sidebar = props => {
       href: '/projects',
       icon: <ShoppingBasketIcon />,
     },
-    {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />,
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />,
-    },
+    // {
+    //   title: 'Typography',
+    //   href: '/typography',
+    //   icon: <TextFieldsIcon />,
+    // },
+    // {
+    //   title: 'Icons',
+    //   href: '/icons',
+    //   icon: <ImageIcon />,
+    // },
     {
       title: 'Account',
       href: '/profile/me',
       icon: <AccountBoxIcon />,
     },
-    {
-      title: 'Settings',
-      href: '/settings',
-      icon: <SettingsIcon />,
-    },
+    // {
+    //   title: 'Settings',
+    //   href: '/settings',
+    //   icon: <SettingsIcon />,
+    // },
   ];
 
   return (

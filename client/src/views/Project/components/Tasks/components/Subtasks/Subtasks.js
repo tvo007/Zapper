@@ -9,12 +9,7 @@ import {
   deleteSubtask,
   toggleSubtask,
 } from '../../../../../../actions/task';
-import {
-  Card,
-  CardActions,
-  CardContent,
-  List,
-} from '@material-ui/core';
+import {Card, CardActions, CardContent, List} from '@material-ui/core';
 
 import SubtaskItem from '../Subtasks/components/SubtaskItem';
 import SubtaskForm from '../Subtasks/components/SubtaskForm';
@@ -49,6 +44,8 @@ const Subtasks = props => {
     editSubtask,
     toggleSubtask,
     taskId,
+    user,
+    auth,
     ...rest
   } = props;
 
@@ -63,11 +60,14 @@ const Subtasks = props => {
 
   return (
     <React.Fragment>
-      <SubtaskForm
-        addSubtask={subtaskActions.addSubtask}
-        projectId={projectId}
-        taskId={taskId}
-      />
+      {!auth.loading &&
+          user === auth.user._id &&
+        <SubtaskForm
+          addSubtask={subtaskActions.addSubtask}
+          projectId={projectId}
+          taskId={taskId}
+        />
+      }
       <Card {...rest} className={clsx (classes.root, className)}>
         <CardContent className={classes.content}>
           <List>
@@ -82,6 +82,8 @@ const Subtasks = props => {
                 subtaskActions={subtaskActions}
                 isCompleted={subtask.isCompleted}
                 taskId={taskId}
+                user={user}
+                auth={auth}
               />
             ))}
           </List>
@@ -97,7 +99,11 @@ Subtasks.propTypes = {
   subtasks: PropTypes.array.isRequired,
 };
 
-export default connect (null, {
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect (mapStateToProps, {
   addSubtask,
   deleteSubtask,
   editSubtask,

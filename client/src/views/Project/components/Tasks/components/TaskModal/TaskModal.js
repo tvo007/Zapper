@@ -36,6 +36,8 @@ const TaskModal = props => {
     projectId,
     editTask,
     subtasks,
+    user,
+    auth,
     // projectId,
     // ticket: {_id, taskSummary, taskDescription, isCompleted},
     // auth,
@@ -141,18 +143,24 @@ const TaskModal = props => {
 
               </CardContent>
               <CardActions>
-                <Grid container justify="flex-end">
-                  <Button onClick={handleCloseModal} color="primary">
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleCloseModal}
-                    color="primary"
-                    type="submit"
-                  >
-                    Save
-                  </Button>
-                </Grid>
+                {!auth.loading && user === auth.user._id
+                  ? <Grid container justify="flex-end">
+                      <Button onClick={handleCloseModal} color="primary">
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleCloseModal}
+                        color="primary"
+                        type="submit"
+                      >
+                        Save
+                      </Button>
+                    </Grid>
+                  : <Grid container justify="flex-end">
+                      <Button onClick={handleCloseModal} color="primary">
+                        Cancel
+                      </Button>
+                    </Grid>}
               </CardActions>
             </Card>
 
@@ -166,6 +174,7 @@ const TaskModal = props => {
                 subtasks={subtasks}
                 taskId={taskId}
                 projectId={projectId}
+                user={user}
               />
             </CardContent>
           </Card>

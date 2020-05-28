@@ -2,7 +2,7 @@ import React from 'react';
 //import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
-import {Checkbox, TableCell, TableRow, Typography,  } from '@material-ui/core';
+import {Checkbox, TableCell, TableRow, Typography} from '@material-ui/core';
 import moment from 'moment';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -33,7 +33,8 @@ const ItemTemplate = props => {
     handleClickOpenModal,
     deleteHandler,
     children,
-
+    user,
+    auth,
     //...rest
   } = props;
 
@@ -71,14 +72,18 @@ const ItemTemplate = props => {
       <TableCell>
         {moment (date).format ('DD/MM/YYYY')}
       </TableCell>
-      <TableCell>
 
-        <AssignmentIcon onClick={handleClickOpenModal} />
+      {!auth.loading && user === auth.user._id
+        ? <TableCell>
 
-        <DeleteIcon onClick={deleteHandler} />
+            <AssignmentIcon onClick={handleClickOpenModal} />
+            <DeleteIcon onClick={deleteHandler} />
 
-      </TableCell>
-      
+          </TableCell>
+        : <TableCell>
+            <AssignmentIcon onClick={handleClickOpenModal} />
+          </TableCell>}
+
       {children}
 
     </TableRow>
@@ -93,10 +98,9 @@ ItemTemplate.propTypes = {
 //   auth: state.auth,
 // });
 
-export default ItemTemplate
+export default ItemTemplate;
 
 // export default TicketItem;
-
 
 /**
  * <TaskModal

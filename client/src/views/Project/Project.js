@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
-import {ProjectDetails} from './components';
-import {ProjectDetailsForm, Tasks} from './components';
+
+import {ProjectDetails, Tasks} from './components';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const Project = ({getProject, project: {project, loading}, match}) => {
+const Project = ({auth, getProject, project: {project, loading}, match}) => {
   useEffect (
     () => {
       getProject (match.params.id);
@@ -33,10 +33,11 @@ const Project = ({getProject, project: {project, loading}, match}) => {
           <Grid item lg={12} md={12} xl={12} xs={12}>
             <ProjectDetails
               project={project}
+              auth={auth}
             />
           </Grid>
 
-          <Tasks projectId={project._id} tasks={project.tasks} />
+          <Tasks projectId={project._id} tasks={project.tasks} user={project.user} />
 
         </Grid>
       </div>;
@@ -49,6 +50,7 @@ Project.propTypes = {
 
 const mapStateToProps = state => ({
   project: state.project,
+  auth: state.auth,
 });
 
 export default connect (mapStateToProps, {getProject}) (Project);

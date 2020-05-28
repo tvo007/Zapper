@@ -42,7 +42,8 @@ const useStyles = makeStyles (theme => ({
 
 const ProjectDetails = props => {
   const {
-    project: {title, name, description, tasks, _id},
+    project: {title, name, description, tasks, _id, user},
+    auth,
     className,
     ...rest
   } = props;
@@ -112,6 +113,8 @@ const ProjectDetails = props => {
                 {title}
               </Typography>
               <CardActions>
+              {!auth.loading &&
+              user === auth.user._id &&
                 <Button
                   color="primary"
                   variant="contained"
@@ -120,7 +123,7 @@ const ProjectDetails = props => {
                   size="small"
                 >
                   <EditIcon />
-                </Button>
+                </Button>}
 
               </CardActions>
             </Grid>
