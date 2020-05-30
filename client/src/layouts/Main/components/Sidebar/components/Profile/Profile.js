@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link as RouterLink} from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
-import {Avatar, Typography} from '@material-ui/core';
+import {Avatar, Typography, Button} from '@material-ui/core';
+import UpdateProfileForm
+  from '../../../../../../components/Forms/UpdateProfileForm';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -24,15 +26,38 @@ const useStyles = makeStyles (theme => ({
 const Profile = ({className, profile: {profile, loading}}) => {
   const classes = useStyles ();
 
+  const [openModal, setOpenModal] = useState (false);
+
+  const handleClickOpenModal = () => {
+    setOpenModal (true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal (false);
+  };
+
+  const showUpdateProfileForm = openModal
+    ? <UpdateProfileForm
+        profile={profile}
+        openModal={openModal}
+        handleCloseModal={handleCloseModal}
+      />
+    : null;
+
   return profile === null || loading
-    ? <div>LOADING!</div>
+    ? <Button>
+        {showUpdateProfileForm}
+        <Typography onClick={handleClickOpenModal}>
+          Click here to update your avatar and account info.
+        </Typography>
+      </Button>
     : <div className={clsx (classes.root, className)}>
         <Avatar
           alt="Person"
           className={classes.avatar}
           component={RouterLink}
           src={profile.avatar}
-          to="/settings"
+          to="/profile/me"
         />
         <Typography className={classes.name} variant="h4">
           {profile.user.name}

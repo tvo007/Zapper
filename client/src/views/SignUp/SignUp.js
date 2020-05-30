@@ -142,7 +142,13 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const SignUp = ({setAlert, register, isAuthenticated, history}) => {
+const SignUp = ({
+  setAlert,
+  register,
+  isAuthenticated,
+  history,
+  createProfile,
+}) => {
   const classes = useStyles ();
 
   const [formState, setFormState] = useState ({
@@ -181,7 +187,7 @@ const SignUp = ({setAlert, register, isAuthenticated, history}) => {
   };
 
   if (isAuthenticated) {
-    return <Redirect to="dashboard" />;
+    return <Redirect to="/profile" />;
   }
 
   return (

@@ -28,7 +28,7 @@ const initialState = {
   bio: '',
   githubusername: '',
   status: '',
-  avatar: '',
+  avatar: 'https://img.icons8.com/material-sharp/50/000000/user.png',
 };
 
 const AccountDetails = props => {
