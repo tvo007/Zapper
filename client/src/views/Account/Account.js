@@ -55,7 +55,7 @@ const mapStateToProps = state => ({
 
 export default connect (mapStateToProps, {getCurrentProfile}) (Account);
 
-{
+
   /* 
   const Account = ({
   getProfileById,
@@ -79,4 +79,4 @@ export default connect (mapStateToProps, {getCurrentProfile}) (Account);
   
   
   */
-}
+

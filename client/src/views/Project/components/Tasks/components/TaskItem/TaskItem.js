@@ -11,9 +11,9 @@ import {
 } from '../../../../../../actions/task';
 import TaskModal from '../TaskModal/TaskModal';
 
-const useStyles = makeStyles (() => ({
-  root: {},
-}));
+// const useStyles = makeStyles (() => ({
+//   root: {},
+// }));
 
 const TaskItem = props => {
   const {
@@ -52,7 +52,7 @@ const TaskItem = props => {
     setOpenModal (false);
   };
 
-  const classes = useStyles ();
+  // const classes = useStyles ();
 
   return (
     <ItemTemplate

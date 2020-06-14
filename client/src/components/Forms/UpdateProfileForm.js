@@ -35,7 +35,7 @@ const UpdateProfileForm = props => {
   const {
     className,
     createProfile,
-    profile,
+    // profile,
     history,
     openModal,
     handleCloseModal,

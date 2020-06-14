@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/styles';
+// import {makeStyles} from '@material-ui/styles';
 import {connect} from 'react-redux';
 import {addTask} from '../../../../../../actions/task';
 import {UniqueForm} from './UniqueForm';
@@ -12,18 +12,18 @@ const initialState = {
   taskType: 'Task',
 };
 
-const useStyles = makeStyles (() => ({
-  root: {},
-}));
+// const useStyles = makeStyles (() => ({
+//   root: {},
+// }));
 
 const TestForm = props => {
-  const {className, projectId, addTask, ...rest} = props;
+  const { projectId, addTask} = props;
 
-  const classes = useStyles ();
+  // const classes = useStyles ();
 
   const [formData, setFormData] = useState (initialState);
 
-  const {taskSummary, taskDescription, taskType} = formData;
+  // const {taskSummary, taskDescription, taskType} = formData;
 
   const handleChange = e => {
     setFormData ({

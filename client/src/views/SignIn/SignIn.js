@@ -154,15 +154,14 @@ const SignIn = ({login, isAuthenticated}) => {
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
               <Typography className={classes.quoteText} variant="h1">
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                they sold out High Life.
+                With teamwork, the sky's the limit.
               </Typography>
               <div className={classes.person}>
                 <Typography className={classes.name} variant="body1">
-                  Takamaru Ayako
+                  Tim Vo
                 </Typography>
                 <Typography className={classes.bio} variant="body2">
-                  Manager at inVision
+                  Janitor at FYB
                 </Typography>
               </div>
             </div>

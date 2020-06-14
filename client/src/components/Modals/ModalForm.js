@@ -5,14 +5,12 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
-  CardHeader,
   CardContent,
   Grid,
   Button,
   Typography,
   TextField,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   CardActions,
