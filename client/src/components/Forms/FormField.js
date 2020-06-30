@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Grid, Typography, TextField} from '@material-ui/core';
+import {Grid, TextField} from '@material-ui/core';
 
 const FormField = props => {
   const {formLabel, formName, formValue, onChange} = props;
@@ -20,6 +20,12 @@ const FormField = props => {
   );
 };
 
-FormField.propTypes = {};
+FormField.propTypes = {
+    formLabel: PropTypes.string.isRequired,
+    formName: PropTypes.string.isRequired,
+    formValue: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+
+};
 
 export default FormField;
