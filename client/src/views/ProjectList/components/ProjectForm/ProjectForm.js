@@ -1,46 +1,12 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import {makeStyles} from '@material-ui/styles';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Divider,
-  Grid,
-  Button,
-  TextField,
-} from '@material-ui/core';
+import Form from '../../../../components/Forms/Form'
+import FormField from '../../../../components/Forms/FormField'
 import {connect} from 'react-redux';
 import {addProject} from '../../../../actions/project';
 
-const useStyles = makeStyles (theme => ({
-  root: {},
-  row: {
-    height: '42px',
-    display: 'flex-start',
-    alignItems: 'center',
-    marginTop: theme.spacing (1),
-  },
-  spacer: {
-    flexGrow: 1,
-  },
-  importButton: {
-    marginRight: theme.spacing (1),
-  },
-  exportButton: {
-    marginRight: theme.spacing (1),
-  },
-  searchInput: {
-    marginRight: theme.spacing (1),
-  },
-}));
-
 const ProjectForm = props => {
-  const {className, addProject, ...rest} = props;
-
-  const classes = useStyles ();
+  const {className, addProject} = props;
 
   const [formData, setFormData] = useState ({
     title: '',
@@ -58,47 +24,24 @@ const ProjectForm = props => {
   };
 
   return (
-    <Card {...rest} className={clsx (classes.root, className)}>
-      <form autoComplete="off" onSubmit={e => onSubmit (e)}>
-        <CardHeader title="Create a Project" />
-        <Divider />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Title"
-                margin="dense"
-                name="title"
-                value={title}
-                onChange={e => onChange (e)}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Description"
-                margin="dense"
-                name="description"
-                value={description}
-                onChange={e => onChange (e)}
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <div className={classes.row}>
-            <span className={classes.spacer} />
-            <Button color="primary" variant="contained" type="submit">
-              Create new project
-            </Button>
-          </div>
-        </CardActions>
-      </form>
-    </Card>
+    <Form
+      formTitle="Create new Project"
+      onSubmit={onSubmit}
+    >
+      <FormField
+      formLabel="Enter a project title."
+      formName="title"
+      formValue={title}
+      onChange={onChange}
+      />
+      <FormField
+      formLabel="Enter a project description."
+      formName="description"
+      formValue={description}
+      onChange={onChange}
+      />
+    </Form>
+    
   );
 };
 
