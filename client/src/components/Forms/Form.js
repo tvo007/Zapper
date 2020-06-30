@@ -22,15 +22,15 @@ const Form = props => {
     formTitle,
     onSubmit,
     children,
+    submitButtonText,
     ...rest
   } = props;
 
   const classes = useStyles ();
 
   return (
-    
-      <Card {...rest} className={clsx (classes.root, className)}>
-          <form autoComplete="off" onSubmit={onSubmit}>
+    <Card {...rest} className={clsx (classes.root, className)}>
+      <form autoComplete="off" onSubmit={onSubmit}>
         <CardHeader title={formTitle} />
         <Divider />
         <CardContent>
@@ -43,14 +43,13 @@ const Form = props => {
           <div className={classes.row}>
             <span className={classes.spacer} />
             <Button color="primary" variant="contained" type="submit">
-              Create new project
+              {submitButtonText}
             </Button>
           </div>
 
         </CardActions>
-        </form>
-      </Card>
-    
+      </form>
+    </Card>
   );
 };
 
@@ -58,7 +57,8 @@ Form.propTypes = {
   className: PropTypes.string,
   formTitle: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  
+  submitButtonText: PropTypes.string.isRequired,
+
   // projectId: PropTypes.string.isRequired,
   // ticket: PropTypes.object.isRequired,
   // // auth: PropTypes.object.isRequired,

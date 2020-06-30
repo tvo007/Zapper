@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Grid, TextField} from '@material-ui/core';
 
 const FormField = props => {
-  const {formLabel, formName, formValue, onChange} = props;
+  const {formLabel, formName, formValue, onChange, isRequired } = props;
   return (
     <Grid item md={6} xs={12}>
 
@@ -15,6 +15,7 @@ const FormField = props => {
         value={formValue}
         onChange={onChange}
         variant="outlined"
+        required={isRequired}
       />
     </Grid>
   );
@@ -25,6 +26,7 @@ FormField.propTypes = {
     formName: PropTypes.string.isRequired,
     formValue: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    isRequired: PropTypes.bool.isRequired,
 
 };
 

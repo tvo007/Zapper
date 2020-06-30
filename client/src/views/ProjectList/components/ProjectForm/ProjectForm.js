@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Form from '../../../../components/Forms/Form'
-import FormField from '../../../../components/Forms/FormField'
+import Form from '../../../../components/Forms/Form';
+import FormField from '../../../../components/Forms/FormField';
 import {connect} from 'react-redux';
 import {addProject} from '../../../../actions/project';
 
@@ -24,24 +24,22 @@ const ProjectForm = props => {
   };
 
   return (
-    <Form
-      formTitle="Create new Project"
-      onSubmit={onSubmit}
-    >
+    <Form formTitle="Create new Project" submitButtonText="Create Project" onSubmit={onSubmit}>
       <FormField
-      formLabel="Enter a project title."
-      formName="title"
-      formValue={title}
-      onChange={onChange}
+        formLabel="Enter a project title."
+        formName="title"
+        formValue={title}
+        onChange={onChange}
+        isRequired={true}
       />
       <FormField
-      formLabel="Enter a project description."
-      formName="description"
-      formValue={description}
-      onChange={onChange}
+        formLabel="Enter a project description."
+        formName="description"
+        formValue={description}
+        onChange={onChange}
+        isRequired={true}
       />
     </Form>
-    
   );
 };
 
