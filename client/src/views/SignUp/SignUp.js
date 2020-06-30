@@ -187,7 +187,7 @@ const SignUp = ({
   };
 
   if (isAuthenticated) {
-    return <Redirect to="/profile" />;
+    return <Redirect to="/profile/me" />;
   }
 
   return (
