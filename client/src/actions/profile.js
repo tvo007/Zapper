@@ -3,6 +3,7 @@ import api from '../utils/api';
 import {setAlert} from './alert';
 
 import {
+  USER_LOADED,
   GET_PROFILE,
   GET_PROFILES,
   PROFILE_ERROR,
@@ -21,6 +22,7 @@ export const getCurrentProfile = () => async dispatch => {
       type: GET_PROFILE,
       payload: res.data
     });
+    
   } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
@@ -96,6 +98,8 @@ export const createProfile = (
       type: GET_PROFILE,
       payload: res.data,
     });
+
+
 
     dispatch (
       setAlert (edit ? 'Profile Updated' : 'Profile Created', 'success')

@@ -43,7 +43,6 @@ const Sidebar = props => {
     variant,
     onClose,
     className,
-    auth: {user: _id},
     getCurrentProfile,
     profile,
   } = props;

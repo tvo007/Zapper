@@ -52,6 +52,9 @@ const AccountDetails = props => {
     avatar,
   } = formData;
 
+
+
+
   const onChange = e => {
     setFormData ({
       ...formData,
@@ -111,7 +114,7 @@ const AccountDetails = props => {
       <FormField
         formLabel="Your skills"
         formName="skills"
-        formValue={skills}
+        formValue={skills.toString()}
         onChange={onChange}
         isRequired={false}
       />
@@ -125,6 +128,8 @@ const AccountDetails = props => {
     </Form>
   );
 };
+
+//skills is an array...
 
 AccountDetails.propTypes = {
   className: PropTypes.string,

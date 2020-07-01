@@ -68,18 +68,15 @@ const AccountProfile = props => {
           </div>
           <Avatar className={classes.avatar} src={profile.avatar} />
         </div>
-        <div className={classes.progress}>
-          <Typography variant="body1">Profile Completeness: 70%</Typography>
-          <LinearProgress value={70} variant="determinate" />
-        </div>
       </CardContent>
       <Divider />
-      <CardActions>
-        <Button className={classes.uploadButton} color="primary" variant="text">
-          Upload picture
-        </Button>
-        <Button variant="text">Remove picture</Button>
-      </CardActions>
+      <CardContent>
+        <Typography>
+          {profile.bio}
+        </Typography>
+      </CardContent>
+      
+      
     </Card>
   );
 };

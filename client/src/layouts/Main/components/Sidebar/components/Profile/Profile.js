@@ -62,7 +62,7 @@ const Profile = ({className, profile: {profile, loading}}) => {
         <Typography className={classes.name} variant="h4">
           {profile.user.name}
         </Typography>
-        <Typography variant="body2">{profile.bio}</Typography>
+        <Typography variant="body2">{profile.status}</Typography>
       </div>;
 };
 
