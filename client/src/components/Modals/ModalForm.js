@@ -54,46 +54,42 @@ const ModalForm = props => {
 
   const classes = useStyles ();
 
-  const showSecondForm = hasSecondForm ? 
-  <Grid
-  item
-  container
-  direction="column"
-  md={12}
-  xs={6}
-  spacing={2}
->
-  <Grid item>
-    <Typography variant="h3">
-      {title2}:
-    </Typography>
-  </Grid>
-  <Grid item>
-    <TextField
-      fullWidth
-      label={formLabel2}
-      name={formName2}
-      value={formValue2}
-      onChange={handleChange}
-      variant="outlined"
-      multiline
-      rows={3}
-    />
-  </Grid>
-</Grid>: null;
+  const showSecondForm = hasSecondForm
+    ? <Grid item container direction="column" md={12} xs={6} spacing={2}>
+        <Grid item>
+          <Typography variant="h3">
+            {title2}:
+          </Typography>
+        </Grid>
+        <Grid item>
+          <TextField
+            fullWidth
+            label={formLabel2}
+            name={formName2}
+            value={formValue2}
+            onChange={handleChange}
+            variant="outlined"
+            multiline
+            rows={3}
+            required={true}
+          />
+        </Grid>
+      </Grid>
+    : null;
 
   const showTaskTypeRadio = hasRadio
     ? <Grid item md={12} xs={12}>
-        <FormControl component="fieldset" required>
+        <FormControl component="fieldset">
           <FormLabel component="legend">Task Type</FormLabel>
           <RadioGroup
             aria-label="Task Type"
             name={formName3}
             value={formValue3}
             onChange={handleChange}
+            
           >
             <Grid container>
-              <FormControlLabel value="Task" control={<Radio />} label="Task" />
+              <FormControlLabel value="Task" control={<Radio required={true}/>} label="Task" />
               <FormControlLabel
                 value="Story"
                 control={<Radio />}
@@ -101,7 +97,7 @@ const ModalForm = props => {
               />
               <FormControlLabel
                 value="Ticket"
-                control={<Radio />}
+                control={<Radio/>}
                 label="Ticket"
               />
             </Grid>
@@ -154,6 +150,7 @@ const ModalForm = props => {
                         variant="outlined"
                         multiline
                         rows={3}
+                        required={true}
                       />
                     </Grid>
                   </Grid>

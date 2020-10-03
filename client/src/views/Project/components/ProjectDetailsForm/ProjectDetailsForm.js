@@ -7,13 +7,12 @@ import {editProject} from '../../../../actions/project';
 const ProjectDetailsForm = props => {
   const {
     projectId,
-    className,
+    // className,
     editProject,
     openModal,
     description,
     handleCloseModal,
-    title,
-    ...rest
+    // ...rest
   } = props;
 
   /**

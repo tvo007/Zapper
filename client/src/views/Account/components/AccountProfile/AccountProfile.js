@@ -5,13 +5,12 @@ import clsx from 'clsx';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
-  CardActions,
   CardContent,
   Avatar,
   Typography,
   Divider,
-  Button,
-  LinearProgress,
+  // Button,
+  // LinearProgress,
 } from '@material-ui/core';
 
 const useStyles = makeStyles (theme => ({

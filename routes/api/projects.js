@@ -274,6 +274,7 @@ router.put (
         taskPriority,
         subtasks,
         taskType,
+        taskNumber,
       } = task;
       let newTask = {
         _id,
@@ -288,6 +289,7 @@ router.put (
         taskPriority,
         subtasks,
         taskType,
+        taskNumber,
         edited: {
           updated: true,
           date: Date.now (),
@@ -440,10 +442,10 @@ router.put (
   [
     auth,
     [
-      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subtaskDescription', 'Subtask description is required')
-        .not ()
-        .isEmpty (),
+      // check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      // check ('subtaskDescription', 'Subtask description is required')
+      //   .not ()
+      //   .isEmpty (),
     ],
   ],
   async (req, res) => {
@@ -475,11 +477,13 @@ router.put (
         return res.status (401).json ({msg: 'User not authorized'});
       }
 
-      const {subtaskSummary, subtaskDescription} = req.body;
+      // const {subtaskSummary, subtaskDescription} = req.body;
 
       const {
         _id,
         user,
+        subtaskSummary,
+        subtaskDescription,
         name,
         avatar,
         date,
@@ -491,8 +495,12 @@ router.put (
       let newSubtask = {
         _id,
         user,
-        subtaskSummary,
-        subtaskDescription,
+        subtaskSummary: req.body.subtaskSummary === ''
+          ? subtaskSummary
+          : req.body.subtaskSummary,
+        subtaskDescription: req.body.subtaskDescription === ''
+          ? subtaskDescription
+          : req.body.subtaskDescription,
         name,
         avatar,
         date,

@@ -56,7 +56,7 @@ const Form = props => {
 Form.propTypes = {
   className: PropTypes.string,
   formTitle: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
   submitButtonText: PropTypes.string.isRequired,
 
   // projectId: PropTypes.string.isRequired,

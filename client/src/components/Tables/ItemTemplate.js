@@ -30,7 +30,7 @@ const ItemTemplate = props => {
     // taskType,
     checkboxChecked,
     toggleHandler,
-    handleClickOpenModal,
+    handleOpenModal,
     deleteHandler,
     children,
     user,
@@ -76,12 +76,12 @@ const ItemTemplate = props => {
       {!auth.loading && user === auth.user._id
         ? <TableCell>
 
-            <AssignmentIcon onClick={handleClickOpenModal} />
+            <AssignmentIcon onClick={handleOpenModal} />
             <DeleteIcon onClick={deleteHandler} />
 
           </TableCell>
         : <TableCell>
-            <AssignmentIcon onClick={handleClickOpenModal} />
+            <AssignmentIcon onClick={handleOpenModal} />
           </TableCell>}
 
       {children}

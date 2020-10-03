@@ -6,6 +6,8 @@ import {Card, CardActions, Button} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {addTask} from '../../../../../../actions/task';
 import ModalForm from '../../../../../../components/Modals/ModalForm';
+import {useDispatch, useSelector} from 'react-redux'
+
 
 const initialState = {
   taskSummary: '',
@@ -19,6 +21,8 @@ const useStyles = makeStyles (() => ({
 
 const TaskForm = props => {
   const {auth, user, className, projectId, addTask, ...rest} = props;
+
+
 
   const classes = useStyles ();
 
