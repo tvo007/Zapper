@@ -3,10 +3,6 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {useSelector, connect} from 'react-redux'
-import {
-  addSubtask,
-  editSubtask,
-} from '../../actions/task';
 import {Card, CardActions, CardContent, List} from '@material-ui/core';
 
 import SubtaskItem from '../Subtasks/components/SubtaskItem';
@@ -36,11 +32,7 @@ const Subtasks = props => {
   const {
     className,
     subtasks,
-    projectId,
-    addSubtask,
-    
-    editSubtask,
-    
+    projectId, 
     taskId,
     user,
     ...rest
@@ -57,7 +49,6 @@ const Subtasks = props => {
       {!auth.loading &&
         user === auth.user._id &&
         <SubtaskForm
-          addSubtask={addSubtask}
           projectId={projectId}
           taskId={taskId}
         />}
@@ -91,10 +82,7 @@ Subtasks.propTypes = {
   subtasks: PropTypes.array.isRequired,
 };
 
-export default connect (null, {
-  addSubtask,
-  editSubtask,
-}) (Subtasks);
+export default Subtasks
 
 /**
  * Subtask Mapper
