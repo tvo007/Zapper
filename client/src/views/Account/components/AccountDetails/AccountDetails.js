@@ -1,24 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {withRouter} from 'react-router-dom';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/styles';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Divider,
-  Grid,
-  Button,
-  TextField,
-} from '@material-ui/core';
 import {connect} from 'react-redux';
 import {createProfile, getCurrentProfile} from '../../../../actions/profile';
-
-const useStyles = makeStyles (() => ({
-  root: {},
-}));
+import Form from '../../../../components/Forms/Form';
+import FormField from '../../../../components/Forms/FormField';
 
 const initialState = {
   company: '',
@@ -28,19 +14,16 @@ const initialState = {
   bio: '',
   githubusername: '',
   status: '',
-  avatar: '',
+  avatar: 'https://img.icons8.com/material-sharp/50/000000/user.png',
 };
 
 const AccountDetails = props => {
   const {
-    className,
     profile: {profile, loading},
     createProfile,
     getCurrentProfile,
     history,
   } = props;
-
-  const classes = useStyles ();
 
   const [formData, setFormData] = useState (initialState);
 
@@ -67,10 +50,12 @@ const AccountDetails = props => {
     bio,
     status,
     avatar,
-    ...rest
   } = formData;
 
-  const handleChange = e => {
+
+
+
+  const onChange = e => {
     setFormData ({
       ...formData,
       [e.target.name]: e.target.value,
@@ -83,114 +68,68 @@ const AccountDetails = props => {
   };
 
   return (
-    <Card {...rest} className={clsx (classes.root, className)}>
-      <form autoComplete="off" onSubmit={e => onSubmit (e)}>
-        <CardHeader title="Profile" />
-        <Divider />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Location"
-                margin="dense"
-                name="location"
-                onChange={e => handleChange (e)}
-                value={location}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Avatar"
-                margin="dense"
-                name="avatar"
-                onChange={e => handleChange (e)}
-                value={avatar}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Status"
-                margin="dense"
-                name="status"
-                onChange={e => handleChange (e)}
-                value={status}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Company"
-                margin="dense"
-                name="company"
-                onChange={e => handleChange (e)}
-                value={company}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Website"
-                margin="dense"
-                name="website"
-                onChange={e => handleChange (e)}
-                value={website}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Github Username"
-                margin="dense"
-                name="githubusername"
-                onChange={e => handleChange (e)}
-                type="text"
-                value={githubusername}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Skills"
-                margin="dense"
-                name="skills"
-                onChange={e => handleChange (e)}
-                type="text"
-                value={skills}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Bio"
-                margin="dense"
-                name="bio"
-                onChange={e => handleChange (e)}
-                value={bio}
-                variant="outlined"
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button color="primary" variant="contained" type="submit">
-            Save details
-          </Button>
-        </CardActions>
-      </form>
-    </Card>
+    <Form formTitle="Your Profile" submitButtonText="Update Profile" onSubmit={onSubmit}>
+      <FormField
+        formLabel="Location"
+        formName="location"
+        formValue={location}
+        onChange={onChange}
+        isRequired={false}
+      />
+      <FormField
+        formLabel="Avatar"
+        formName="avatar"
+        formValue={avatar}
+        onChange={onChange}
+        isRequired={false}
+      />
+      <FormField
+        formLabel="Status"
+        formName="status"
+        formValue={status}
+        onChange={onChange}
+        isRequired={false}
+      />
+      <FormField
+        formLabel="Company"
+        formName="company"
+        formValue={company}
+        onChange={onChange}
+        isRequired={false}
+      />
+      <FormField
+        formLabel="Website"
+        formName="website"
+        formValue={website}
+        onChange={onChange}
+        isRequired={false}
+      />
+      <FormField
+        formLabel="Github username"
+        formName="githubusername"
+        formValue={githubusername}
+        onChange={onChange}
+        isRequired={false}
+      />
+      <FormField
+        formLabel="Your skills"
+        formName="skills"
+        formValue={skills.toString()}
+        onChange={onChange}
+        isRequired={false}
+      />
+      <FormField
+        formLabel="Bio"
+        formName="bio"
+        formValue={bio}
+        onChange={onChange}
+        isRequired={false}
+      />
+    </Form>
   );
 };
+
+//skills is an array...
 
 AccountDetails.propTypes = {
   className: PropTypes.string,
@@ -206,3 +145,4 @@ const mapStateToProps = state => ({
 export default connect (mapStateToProps, {createProfile, getCurrentProfile}) (
   withRouter (AccountDetails)
 );
+

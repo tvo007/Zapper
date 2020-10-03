@@ -141,12 +141,12 @@ const UsersTable = props => {
                       <div className={classes.nameContainer}>
                         <Avatar
                           className={classes.avatar}
-                          src={profile.user.avatar}
+                          src={profile.avatar}
                         >
                           {getInitials (profile.user.name)}
                         </Avatar>
                         <Typography variant="body1">
-                          {profile.user.name}
+                          {profile.name}
                         </Typography>
                       </div>
                     </TableCell>

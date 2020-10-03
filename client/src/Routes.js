@@ -21,7 +21,7 @@ import {
 import {connect} from 'react-redux';
 
 const Routes = ({auth: {user: _id}}) => {
-  const authIdRoute = `/profile/${_id}`;
+  //const authIdRoute = `/profile/${_id}`;
 
   return (
     <Switch>
@@ -80,7 +80,7 @@ const Routes = ({auth: {user: _id}}) => {
         component={AccountView}
         exact
         layout={MainLayout}
-        path={authIdRoute}
+        path="/profile/me"
       />
       <PrivateRouteWithLayout
         component={SettingsView}

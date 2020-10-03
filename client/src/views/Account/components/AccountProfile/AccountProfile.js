@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import moment from 'moment';
+// import moment from 'moment';
 import {makeStyles} from '@material-ui/styles';
 import {
   Card,
-  CardActions,
   CardContent,
   Avatar,
   Typography,
   Divider,
-  Button,
-  LinearProgress,
+  // Button,
+  // LinearProgress,
 } from '@material-ui/core';
 
 const useStyles = makeStyles (theme => ({
@@ -41,15 +40,7 @@ const AccountProfile = props => {
     ...rest
   } = props;
 
-  const classes = useStyles ();
-
-  const user = {
-    name: 'Shen Zhi',
-    city: 'Los Angeles',
-    country: 'USA',
-    timezone: 'GTM-7',
-    avatar: '/images/avatars/avatar_11.png',
-  };
+  const classes = useStyles ()
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
@@ -71,23 +62,20 @@ const AccountProfile = props => {
               color="textSecondary"
               variant="body1"
             >
-              {moment ().format ('hh:mm A')} ({user.timezone})
+              {/*    */}
             </Typography>
           </div>
           <Avatar className={classes.avatar} src={profile.avatar} />
         </div>
-        <div className={classes.progress}>
-          <Typography variant="body1">Profile Completeness: 70%</Typography>
-          <LinearProgress value={70} variant="determinate" />
-        </div>
       </CardContent>
       <Divider />
-      <CardActions>
-        <Button className={classes.uploadButton} color="primary" variant="text">
-          Upload picture
-        </Button>
-        <Button variant="text">Remove picture</Button>
-      </CardActions>
+      <CardContent>
+        <Typography>
+          {profile.bio}
+        </Typography>
+      </CardContent>
+      
+      
     </Card>
   );
 };

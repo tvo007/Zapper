@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {Grid} from '@material-ui/core';
 import {connect} from 'react-redux';
-import {getProfileById} from '../../actions/profile';
+import { getCurrentProfile} from '../../actions/profile';
 import {AccountProfile, AccountDetails} from './components';
 
 const useStyles = makeStyles (theme => ({
@@ -13,23 +13,23 @@ const useStyles = makeStyles (theme => ({
 }));
 
 const Account = ({
-  getProfileById,
+  getCurrentProfile,
   profile: {profile, loading},
-  auth: {user},
-  match
 }) => {
   useEffect (
     () => {
-      getProfileById (user._id);
+      getCurrentProfile();
     },
-    [getProfileById, user._id]
+    [getCurrentProfile]
   );
   const classes = useStyles ();
 
   return (
     <div className={classes.root}>
       {profile === null || loading
-        ? <div>LOADING!</div>
+        ? <Grid item lg={8} md={6} xl={8} xs={12}>
+            <AccountDetails profile={profile} />
+          </Grid>
         : <Grid container spacing={4}>
             <Grid item lg={4} md={6} xl={4} xs={12}>
               <AccountProfile profile={profile} />
@@ -43,14 +43,40 @@ const Account = ({
 };
 
 Account.propTypes = {
-  getProfileById: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
   profile: PropTypes.object,
   auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
 });
 
-export default connect (mapStateToProps, {getProfileById}) (Account);
+export default connect (mapStateToProps, {getCurrentProfile}) (Account);
+
+
+  /* 
+  const Account = ({
+  getProfileById,
+  getCurrentProfile,
+  profile: {profile, loading},
+  auth,
+  match,
+})
+  
+  
+  <AccountProfile profile={profile} /> 
+  
+  useEffect (
+    () => {
+      getProfileById (match.params._id);
+    },
+    [getProfileById, match.params._id]
+  );
+  
+  
+  
+  
+  */
+

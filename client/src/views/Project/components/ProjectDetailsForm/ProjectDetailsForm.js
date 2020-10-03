@@ -1,26 +1,19 @@
 import React, {useState} from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {makeStyles} from '@material-ui/styles';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Divider,
-  Grid,
-  Button,
-  TextField,
-} from '@material-ui/core';
+import ModalForm from '../../../../components/Modals/ModalForm';
 import {connect} from 'react-redux';
 import {editProject} from '../../../../actions/project';
 
-const useStyles = makeStyles (() => ({
-  root: {},
-}));
-
 const ProjectDetailsForm = props => {
-  const {projectId, className, editProject, projectDescription} = props;
+  const {
+    projectId,
+    // className,
+    editProject,
+    openModal,
+    description,
+    handleCloseModal,
+    // ...rest
+  } = props;
 
   /**
    * project: {
@@ -36,46 +29,40 @@ const ProjectDetailsForm = props => {
     },
    */
 
-  const classes = useStyles ();
+  const [formData, setFormData] = useState ({description});
 
-  const [description, setDescription] = useState (projectDescription);
-
-  // const handleChange = e => {
-  //   setTaskDescription (e.target.value);
-  // };
+  const handleChange = e => {
+    setFormData ({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const onSubmit = e => {
     e.preventDefault ();
-    editProject (projectId, {description});
+    editProject (projectId, formData);
+    setFormData (description);
+    handleCloseModal ();
   };
 
+  const hasSecondForm = false;
+
+  const hasRadio = false;
+
   return (
-    <Card className={clsx (classes.root, className)}>
-      <form autoComplete="off" onSubmit={onSubmit}>
-        <CardHeader title="Project Details Form" />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={12} xs={12}>
-              <TextField
-                fullWidth
-                label="Enter project details."
-                name="description"
-                value={description}
-                onChange={e => setDescription (e.target.value)}
-                variant="outlined"
-                required
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button color="primary" variant="contained" type="submit">
-            Update Project Details
-          </Button>
-        </CardActions>
-      </form>
-    </Card>
+    <ModalForm
+      genericTitle="Edit Project"
+      title1="Project Description"
+      formLabel1="Enter a project description"
+      formName1="description"
+      formValue1={formData.description}
+      handleChange={handleChange}
+      onSubmit={onSubmit}
+      openModal={openModal}
+      handleCloseModal={handleCloseModal}
+      hasSecondForm={hasSecondForm}
+      hasRadio={hasRadio}
+    />
   );
 };
 

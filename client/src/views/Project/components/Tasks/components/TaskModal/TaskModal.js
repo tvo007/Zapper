@@ -15,6 +15,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  CardActions,
 } from '@material-ui/core';
 import Subtasks from '../Subtasks';
 
@@ -35,6 +36,8 @@ const TaskModal = props => {
     projectId,
     editTask,
     subtasks,
+    user,
+    auth,
     // projectId,
     // ticket: {_id, taskSummary, taskDescription, isCompleted},
     // auth,
@@ -139,18 +142,30 @@ const TaskModal = props => {
                 </Grid>
 
               </CardContent>
-
+              <CardActions>
+                {!auth.loading && user === auth.user._id
+                  ? <Grid container justify="flex-end">
+                      <Button onClick={handleCloseModal} color="primary">
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleCloseModal}
+                        color="primary"
+                        type="submit"
+                      >
+                        Save
+                      </Button>
+                    </Grid>
+                  : <Grid container justify="flex-end">
+                      <Button onClick={handleCloseModal} color="primary">
+                        Cancel
+                      </Button>
+                    </Grid>}
+              </CardActions>
             </Card>
 
           </form>
-          <DialogActions>
-            <Button onClick={handleCloseModal} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleCloseModal} color="primary" type="submit">
-              Save
-            </Button>
-          </DialogActions>
+          <DialogActions />
           <Card {...rest} className={clsx (classes.root, className)}>
             <CardHeader title="Subtasks" />
             <CardContent>
@@ -159,6 +174,7 @@ const TaskModal = props => {
                 subtasks={subtasks}
                 taskId={taskId}
                 projectId={projectId}
+                user={user}
               />
             </CardContent>
           </Card>

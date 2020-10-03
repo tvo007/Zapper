@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getProjects} from '../../actions/project';
 import {makeStyles} from '@material-ui/styles';
 import {IconButton, Grid, Typography} from '@material-ui/core';
@@ -23,15 +23,19 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const ProjectList = ({getProjects, project: {projects, loading}}) => {
+const ProjectList = props => {
   const classes = useStyles ();
+
+  const dispatch = useDispatch ();
 
   useEffect (
     () => {
-      getProjects ();
+      dispatch (getProjects ());
     },
-    [getProjects]
+    [dispatch]
   );
+
+  const {projects, loading} = useSelector (state => state.project);
 
   return (
     <div className={classes.root}>
@@ -63,12 +67,9 @@ const ProjectList = ({getProjects, project: {projects, loading}}) => {
 
 ProjectList.propTypes = {
   className: PropTypes.string,
-  getProjects: PropTypes.func.isRequired,
-  project: PropTypes.object.isRequired,
+  project: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  project: state.project,
-});
+// export default connect (mapStateToProps, {getProjects}) (ProjectList);
 
-export default connect (mapStateToProps, {getProjects}) (ProjectList);
+export default ProjectList;

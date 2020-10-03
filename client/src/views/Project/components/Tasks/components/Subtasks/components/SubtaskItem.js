@@ -10,7 +10,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider
+  Divider,
 } from '@material-ui/core';
 import EditForm from './EditForm';
 //import moment from 'moment';
@@ -31,11 +31,9 @@ const SubtaskItem = props => {
     isCompleted,
     //date,
     projectId,
-    subtaskActions: {
-      deleteSubtask,
-      toggleSubtask,
-      editSubtask,
-    },
+    user,
+    auth,
+    subtaskActions: {deleteSubtask, toggleSubtask, editSubtask},
     //...rest
   } = props;
 
@@ -47,19 +45,21 @@ const SubtaskItem = props => {
     setEditToggle (!editToggle);
   };
 
-  const toggleHandler = e =>
-    toggleSubtask (projectId, taskId, subtaskId); //create custom hook??
-  const deleteHandler = e =>
-    deleteSubtask (projectId, taskId, subtaskId);
+  const toggleHandler = e => toggleSubtask (projectId, taskId, subtaskId); //create custom hook??
+  const deleteHandler = e => deleteSubtask (projectId, taskId, subtaskId);
 
   const checkboxChecked = isCompleted ? true : false;
 
   return (
     <React.Fragment>
       <ListItem key={subtaskId}>
-        <ListItemIcon>
-          <Checkbox onClick={toggleHandler} checked={checkboxChecked} />
-        </ListItemIcon>
+
+        {!auth.loading &&
+          user === auth.user._id &&
+          <ListItemIcon>
+            <Checkbox onClick={toggleHandler} checked={checkboxChecked} />
+          </ListItemIcon>}
+
         <Grid
           container
           direction="column"
@@ -76,7 +76,6 @@ const SubtaskItem = props => {
                 subtaskDescription={subtaskDescription}
                 editSubtask={editSubtask}
                 editToggleHandler={editToggleHandler}
-
               />
             : <div>
                 <ListItemText>
@@ -90,23 +89,24 @@ const SubtaskItem = props => {
                     Desc: {subtaskDescription}
                   </Typography>
                 </ListItemText>
-              
-          <Grid
-            container
-            alignItems="flex-start"
-            justify="flex-end"
-            direction="row"
-          >
-            <Button variant="contained" onClick={editToggleHandler}>
-              <EditIcon />
-            </Button>
-            <Button variant="contained" onClick={deleteHandler}>
-              <DeleteIcon />
-            </Button>
 
-          </Grid>
-          </div>
-          }
+                {!auth.loading &&
+                  user === auth.user._id &&
+                  <Grid
+                    container
+                    alignItems="flex-start"
+                    justify="flex-end"
+                    direction="row"
+                  >
+                    <Button variant="contained" onClick={editToggleHandler}>
+                      <EditIcon />
+                    </Button>
+                    <Button variant="contained" onClick={deleteHandler}>
+                      <DeleteIcon />
+                    </Button>
+
+                  </Grid>}
+              </div>}
 
         </Grid>
 

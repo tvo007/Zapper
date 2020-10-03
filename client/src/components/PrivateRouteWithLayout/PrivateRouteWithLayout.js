@@ -7,7 +7,7 @@ const PrivateRouteWithLayout = props => {
   const {
     layout: Layout,
     component: Component,
-    auth: {isAuthenticated, loading},
+    auth: {isAuthenticated},
     ...rest
   } = props;
 
@@ -15,7 +15,7 @@ const PrivateRouteWithLayout = props => {
     <Route
       {...rest}
       render={matchProps =>
-        !isAuthenticated && !loading
+        !isAuthenticated
           ? <Redirect to="/sign-in" />
           : <Layout>
               <Component {...matchProps} />
@@ -32,7 +32,7 @@ PrivateRouteWithLayout.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: state.auth
 });
 
 export default connect (mapStateToProps)(PrivateRouteWithLayout);

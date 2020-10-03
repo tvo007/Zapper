@@ -17,38 +17,6 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-// const schema = {
-//   firstName: {
-//     presence: { allowEmpty: false, message: 'is required' },
-//     length: {
-//       maximum: 32
-//     }
-//   },
-//   lastName: {
-//     presence: { allowEmpty: false, message: 'is required' },
-//     length: {
-//       maximum: 32
-//     }
-//   },
-//   email: {
-//     presence: { allowEmpty: false, message: 'is required' },
-//     email: true,
-//     length: {
-//       maximum: 64
-//     }
-//   },
-//   password: {
-//     presence: { allowEmpty: false, message: 'is required' },
-//     length: {
-//       maximum: 128
-//     }
-//   },
-//   policy: {
-//     presence: { allowEmpty: false, message: 'is required' },
-//     checked: true
-//   }
-// };
-
 const useStyles = makeStyles (theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -68,7 +36,7 @@ const useStyles = makeStyles (theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: 'url(/images/auth.jpg)',
+    backgroundImage: 'url(/images/spainNightSkyPaulGilmore.jpg)',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -142,7 +110,13 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const SignUp = ({setAlert, register, isAuthenticated, history}) => {
+const SignUp = ({
+  setAlert,
+  register,
+  isAuthenticated,
+  history,
+  createProfile,
+}) => {
   const classes = useStyles ();
 
   const [formState, setFormState] = useState ({
@@ -181,7 +155,7 @@ const SignUp = ({setAlert, register, isAuthenticated, history}) => {
   };
 
   if (isAuthenticated) {
-    return <Redirect to="dashboard" />;
+    return <Redirect to="/profile/me" />;
   }
 
   return (
@@ -191,15 +165,14 @@ const SignUp = ({setAlert, register, isAuthenticated, history}) => {
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
               <Typography className={classes.quoteText} variant="h1">
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                they sold out High Life.
+              With teamwork, the sky's the limit.
               </Typography>
               <div className={classes.person}>
                 <Typography className={classes.name} variant="body1">
-                  Takamaru Ayako
+                  Tim Vo
                 </Typography>
                 <Typography className={classes.bio} variant="body2">
-                  Manager at inVision
+                  Janitor at FYB
                 </Typography>
               </div>
             </div>

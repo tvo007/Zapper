@@ -7,8 +7,6 @@ const router = express.Router ();
 const {check, validationResult} = require ('express-validator');
 const auth = require ('../../middleware/auth');
 const Project = require ('../../models/Project');
-const Post = require ('../../models/Post');
-const Profile = require ('../../models/Profile');
 const User = require ('../../models/User');
 const shortid = require ('shortid');
 
@@ -115,7 +113,7 @@ router.put (
         .json ({errors: [{msg: 'Invalid Credentials; User not authorized'}]});
     } else {
       const {description} = req.body; // only value that should change
-      const {name, avatar, title, user, tasks, tickets, date} = originalProject; // all other values should remain the same
+      const {name, avatar, title, user, tasks, date} = originalProject; // all other values should remain the same
       let newProject = {
         description,
         name,
@@ -123,7 +121,6 @@ router.put (
         user,
         title,
         tasks,
-        tickets,
         date,
         edited: {
           // added to create updated post feature
@@ -186,6 +183,7 @@ router.post (
       check ('taskDescription', 'Task description is required')
         .not ()
         .isEmpty (),
+      check ('taskType', 'Task type is required.').not ().isEmpty (),
     ],
   ],
   async (req, res) => {
@@ -198,13 +196,33 @@ router.post (
       const user = await User.findById (req.user.id).select ('-password');
       const project = await Project.findById (req.params.id);
 
+      //check if correct project
+      if (!project) {
+        return res.status (404).json ({msg: 'Project not found'});
+      }
+      //check user
+      if (project.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized.'});
+      }
+
+      const addToId = taskType => {
+        if (taskType === 'Task') {
+          return 'TS' + shortid.generate ();
+        } else if (taskType === 'Story') {
+          return 'ST' + shortid.generate ();
+        } else if (taskType === 'Ticket') {
+          return 'TX' + shortid.generate ();
+        }
+      };
+
       const newTask = {
         taskSummary: req.body.taskSummary,
         taskDescription: req.body.taskDescription,
-        // taskType: req.body,taskType,
+        taskType: req.body.taskType,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
+        taskNumber: addToId (req.body.taskType),
       };
 
       project.tasks.unshift (newTask);
@@ -231,6 +249,7 @@ router.put (
       check ('taskDescription', 'Task description is required')
         .not ()
         .isEmpty (),
+      check ('taskType', 'Task type is required').not ().isEmpty (),
     ],
   ],
   async (req, res) => {
@@ -254,7 +273,8 @@ router.put (
         users,
         taskPriority,
         subtasks,
-        // taskType
+        taskType,
+        taskNumber,
       } = task;
       let newTask = {
         _id,
@@ -268,7 +288,8 @@ router.put (
         users,
         taskPriority,
         subtasks,
-        // taskType,
+        taskType,
+        taskNumber,
         edited: {
           updated: true,
           date: Date.now (),
@@ -421,10 +442,10 @@ router.put (
   [
     auth,
     [
-      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subtaskDescription', 'Subtask description is required')
-        .not ()
-        .isEmpty (),
+      // check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
+      // check ('subtaskDescription', 'Subtask description is required')
+      //   .not ()
+      //   .isEmpty (),
     ],
   ],
   async (req, res) => {
@@ -456,11 +477,13 @@ router.put (
         return res.status (401).json ({msg: 'User not authorized'});
       }
 
-      const {subtaskSummary, subtaskDescription} = req.body;
+      // const {subtaskSummary, subtaskDescription} = req.body;
 
       const {
         _id,
         user,
+        subtaskSummary,
+        subtaskDescription,
         name,
         avatar,
         date,
@@ -472,8 +495,12 @@ router.put (
       let newSubtask = {
         _id,
         user,
-        subtaskSummary,
-        subtaskDescription,
+        subtaskSummary: req.body.subtaskSummary === ''
+          ? subtaskSummary
+          : req.body.subtaskSummary,
+        subtaskDescription: req.body.subtaskDescription === ''
+          ? subtaskDescription
+          : req.body.subtaskDescription,
         name,
         avatar,
         date,
@@ -599,935 +626,6 @@ router.put (
       await project.save ();
 
       res.json (project.tasks);
-    } catch (err) {
-      console.error (err.message);
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-//story routes go here vvvvvvvvvv
-//
-//
-//
-
-// @route    POST api/projects/stories/:id
-// @desc     create a story for the project
-// @access   Private
-
-router.post (
-  '/stories/:id',
-  [
-    auth,
-    [
-      check ('storySummary', 'Story summary is required').not ().isEmpty (),
-      check ('storyDescription', 'Story description is required')
-        .not ()
-        .isEmpty (),
-    ],
-  ],
-  async (req, res) => {
-    const errors = validationResult (req);
-    if (!errors.isEmpty ()) {
-      return res.status (400).json ({errors: errors.array ()});
-    }
-
-    try {
-      const user = await User.findById (req.user.id).select ('-password');
-      const project = await Project.findById (req.params.id);
-
-      const newStory = {
-        storySummary: req.body.storySummary,
-        storyDescription: req.body.storyDescription,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id,
-      };
-
-      project.stories.unshift (newStory);
-
-      await project.save ();
-
-      res.json (project.stories);
-    } catch (err) {
-      console.error (err.message);
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-// @route    PUT api/projects/stories/:id
-// @desc     edit a story for project
-// @access   Private
-
-router.put (
-  '/stories/:id/:story_id',
-  [
-    auth,
-    [
-      check ('storySummary', 'Story summary is required').not ().isEmpty (),
-      check ('storyDescription', 'Story description is required')
-        .not ()
-        .isEmpty (),
-    ],
-  ],
-  async (req, res) => {
-    try {
-      const project = await Project.findById (req.params.id); // Pull out story
-      const story = project.stories.find (
-        story => story.id === req.params.story_id
-      ); // Make sure story exists
-      if (!story) {
-        return res.status (404).json ({msg: 'Story does not exist'});
-      } // Check user
-      if (story.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-      const {storySummary, storyDescription} = req.body;
-      const {
-        _id,
-        user,
-        name,
-        avatar,
-        date,
-        isCompleted,
-        users,
-        storyPriority,
-        subtasks,
-      } = story;
-      let newStory = {
-        _id,
-        user,
-        storySummary,
-        storyDescription,
-        name,
-        avatar,
-        date,
-        isCompleted,
-        users,
-        storyPriority,
-        subtasks,
-        edited: {
-          updated: true,
-          date: Date.now (),
-        },
-      }; // Get edit index
-      const editIndex = project.stories
-        .map (story => story.id)
-        .indexOf (req.params.story_id);
-      project.stories.splice (editIndex, 1, newStory);
-      await project.save ();
-      res.json (project.stories);
-    } catch (err) {
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-// @route    DELETE api/projects/stories/:id/:task_id
-// @desc     Delete id
-// @access   Private
-router.delete ('/stories/:id/:story_id', auth, async (req, res) => {
-  try {
-    const project = await Project.findById (req.params.id);
-
-    // Pull out task
-    const story = project.stories.find (
-      story => story.id === req.params.story_id
-    );
-
-    // Make sure story exists
-    if (!story) {
-      return res.status (404).json ({msg: 'Story does not exist'});
-    }
-
-    // Check user
-    if (story.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    // Get remove index
-    const removeIndex = project.stories
-      .map (story => story.id)
-      .indexOf (req.params.story_id);
-
-    project.stories.splice (removeIndex, 1);
-
-    await project.save ();
-
-    res.json (project.stories);
-  } catch (err) {
-    console.error (err.message);
-    res.status (500).send ('Server Error');
-  }
-});
-
-//@route put api/projects/stories/:id/:story_id/isCompleted
-//desc: mark completed/not
-//access private
-router.put ('/stories/:id/:story_id/isCompleted', auth, async (req, res) => {
-  try {
-    const project = await Project.findById (req.params.id);
-
-    // Pull out task
-    const story = project.stories.find (
-      story => story.id === req.params.story_id
-    );
-
-    // Make sure story exists
-    if (!story) {
-      return res.status (404).json ({msg: 'Story does not exist'});
-    }
-
-    // Check user
-    if (story.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    story.isCompleted = !story.isCompleted;
-
-    await project.save ();
-
-    res.json (project.stories);
-  } catch (err) {
-    console.error (err.message);
-    res.status (500).send ('Server Error');
-  }
-});
-
-//story subtasks go here
-
-// @route    POST api/projects/stories/:id/:story_id
-// @desc     add subtasks under stories
-// @access   Private
-
-router.post (
-  '/stories/:id/:story_id/subtasks',
-  [
-    auth,
-    [
-      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subtaskDescription', 'Subtask description is required')
-        .not ()
-        .isEmpty (),
-    ],
-  ],
-  async (req, res) => {
-    const errors = validationResult (req);
-    if (!errors.isEmpty ()) {
-      return res.status (400).json ({errors: errors.array ()});
-    }
-
-    try {
-      const user = await User.findById (req.user.id).select ('-password');
-      const project = await Project.findById (req.params.id);
-      // Pull out story
-      const story = project.stories.find (
-        story => story.id === req.params.story_id
-      );
-
-      if (!story) {
-        return res.status (404).json ({msg: 'Task does not exist'});
-      }
-
-      // Check user
-      if (story.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      const addIndex = project.stories
-        .map (story => story.id)
-        .indexOf (req.params.story_id);
-
-      const newSubtask = {
-        subtaskSummary: req.body.subtaskSummary,
-        subtaskDescription: req.body.subtaskDescription,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id,
-      };
-
-      project.stories[addIndex].subtasks.unshift (newSubtask);
-
-      await project.save ();
-
-      res.json (project.stories);
-    } catch (err) {
-      console.error (err.message);
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-// @route    PUT api/projects/stories/:id/:story_id/:subtask_id
-// @desc     edit subtask by id
-// @access   Private
-router.put (
-  '/stories/:id/:story_id/:subtask_id',
-  [
-    auth,
-    [
-      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subtaskDescription', 'Subtask description is required')
-        .not ()
-        .isEmpty (),
-    ],
-  ],
-  async (req, res) => {
-    try {
-      const project = await Project.findById (req.params.id); // Pull out task
-      const story = project.stories.find (
-        story => story.id === req.params.story_id
-      ); // Make sure task exists
-      if (!story) {
-        return res.status (404).json ({msg: 'Task does not exist'});
-      } // Check user
-      if (story.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      const storyIndex = project.stories
-        .map (story => story.id)
-        .indexOf (req.params.story_id);
-
-      const subtask = project.stories[storyIndex].subtasks.find (
-        subtask => subtask.id === req.params.subtask_id
-      );
-
-      // Make sure subtask exists
-      if (!subtask) {
-        return res.status (404).json ({msg: 'Subtask does not exist'});
-      }
-
-      // Check user
-      if (subtask.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      const {subtaskSummary, subtaskDescription} = req.body;
-
-      const {
-        _id,
-        user,
-        name,
-        avatar,
-        date,
-        isCompleted,
-        users,
-        taskPriority,
-      } = subtask;
-
-      let newSubTask = {
-        _id,
-        user,
-        subtaskSummary,
-        subtaskDescription,
-        name,
-        avatar,
-        date,
-        isCompleted,
-        users,
-        taskPriority,
-        edited: {
-          updated: true,
-          date: Date.now (),
-        },
-      };
-
-      const editIndex = project.stories[storyIndex].subtasks
-        .map (subtask => subtask.id)
-        .indexOf (req.params.subtask_id);
-
-      project.stories[storyIndex].subtasks.splice (editIndex, 1, newSubTask);
-      await project.save ();
-      res.json (project.stories);
-    } catch (err) {
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-// @route    DELETE api/projects/stories/:id/:story_id/:subtask_id
-// @desc     Delete subtask by id
-// @access   Private
-
-router.delete ('/stories/:id/:story_id/:subtask_id', auth, async (req, res) => {
-  try {
-    const project = await Project.findById (req.params.id);
-
-    const story = project.stories.find (
-      story => story.id === req.params.story_id
-    );
-
-    // Make sure task exists
-    if (!story) {
-      return res.status (404).json ({msg: 'Task does not exist'});
-    }
-
-    // Check user
-    if (story.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    const storyIndex = project.stories
-      .map (story => story.id)
-      .indexOf (req.params.story_id);
-
-    const subtask = project.stories[storyIndex].subtasks.find (
-      subtask => subtask.id === req.params.subtask_id
-    );
-
-    // Make sure subtask exists
-    if (!subtask) {
-      return res.status (404).json ({msg: 'Subtask does not exist'});
-    }
-
-    // Check user
-    if (subtask.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    // Get remove index
-    const removeIndex = project.stories[storyIndex].subtasks
-      .map (subtask => subtask.id)
-      .indexOf (req.params.subtask_id);
-
-    project.stories[storyIndex].subtasks.splice (removeIndex, 1);
-
-    await project.save ();
-
-    res.json (project.stories);
-  } catch (err) {
-    console.error (err.message);
-    res.status (500).send ('Server Error');
-  }
-});
-
-//@route put api/projects/stories/:id/:story_id/:subtask_id/isCompleted
-//desc: toggle subtask for complettion
-//access private
-router.put (
-  '/stories/:id/:story_id/:subtask_id/isCompleted',
-  auth,
-  async (req, res) => {
-    try {
-      const project = await Project.findById (req.params.id);
-
-      // Pull out task
-      const story = project.stories.find (
-        story => story.id === req.params.story_id
-      );
-
-      // Make sure task exists
-      if (!story) {
-        return res.status (404).json ({msg: 'Task does not exist'});
-      }
-
-      // Check user
-      if (story.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      //task.isCompleted = !task.isCompleted;
-      const storyIndex = project.stories
-        .map (story => story.id)
-        .indexOf (req.params.story_id);
-
-      const subtask = project.stories[storyIndex].subtasks.find (
-        subtask => subtask.id === req.params.subtask_id
-      );
-
-      // Make sure subtask exists
-      if (!subtask) {
-        return res.status (404).json ({msg: 'Subtask does not exist'});
-      }
-
-      // Check user
-      if (subtask.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      subtask.isCompleted = !subtask.isCompleted;
-
-      await project.save ();
-
-      res.json (project.stories);
-    } catch (err) {
-      console.error (err.message);
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-/**
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- */
-
-/**------------add ticket routes here! */
-
-// @route    POST api/projects/tickets/:id
-// @desc     create a ticket for the project
-// @access   Private
-router.post (
-  '/tickets/:id',
-  [
-    auth,
-    [
-      check ('ticketSummary', 'Ticket summary is required').not ().isEmpty (),
-      check ('ticketDescription', 'Ticket description is required')
-        .not ()
-        .isEmpty (),
-    ],
-  ],
-  async (req, res) => {
-    const errors = validationResult (req);
-    if (!errors.isEmpty ()) {
-      return res.status (400).json ({errors: errors.array ()});
-    }
-
-    try {
-      const user = await User.findById (req.user.id).select ('-password');
-      const project = await Project.findById (req.params.id);
-
-      const newTicket = {
-        ticketSummary: req.body.ticketSummary,
-        ticketDescription: req.body.ticketDescription,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id,
-      };
-
-      project.tickets.unshift (newTicket);
-
-      await project.save ();
-
-      res.json (project.tickets);
-    } catch (err) {
-      console.error (err.message);
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-// @route    DELETE api/projects/tickets/:id/:ticket_id
-// @desc     Delete ticket
-// @access   Private
-router.delete ('/tickets/:id/:ticket_id', auth, async (req, res) => {
-  try {
-    const project = await Project.findById (req.params.id);
-
-    // Pull out ticket
-    const ticket = project.tickets.find (
-      ticket => ticket.id === req.params.ticket_id
-    );
-
-    // Make sure task exists
-    if (!ticket) {
-      return res.status (404).json ({msg: 'Ticket does not exist'});
-    }
-
-    // Check user
-    if (ticket.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    // Get remove index
-    const removeIndex = project.tickets
-      .map (ticket => ticket.id)
-      .indexOf (req.params.ticket_id);
-
-    project.tickets.splice (removeIndex, 1);
-
-    await project.save ();
-
-    res.json (project.tickets);
-  } catch (err) {
-    console.error (err.message);
-    res.status (500).send ('Server Error');
-  }
-});
-
-//-----------
-//change to toggleTicketComplete
-//@route put api/projects/tickets/:id/:ticket_id/isCompleted
-//desc: toggles ticket completed state
-//access private
-router.put ('/tickets/:id/:ticket_id/isCompleted', auth, async (req, res) => {
-  try {
-    const project = await Project.findById (req.params.id);
-
-    // Pull out ticket
-    const ticket = project.tickets.find (
-      ticket => ticket.id === req.params.ticket_id
-    );
-
-    // Make sure ticket exists
-    if (!ticket) {
-      return res.status (404).json ({msg: 'Ticket does not exist'});
-    }
-
-    // Check user
-    if (ticket.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    ticket.isCompleted = !ticket.isCompleted;
-
-    await project.save ();
-
-    res.json (project.tickets);
-  } catch (err) {
-    console.error (err.message);
-    res.status (500).send ('Server Error');
-  }
-});
-
-// @route    PUT api/projects/tickets/:id
-// @desc     edit ticket details
-// @access   Private
-router.put (
-  '/tickets/:id/:ticket_id',
-  [
-    auth,
-    [
-      check ('ticketSummary', 'Ticket summary is required').not ().isEmpty (),
-      check ('ticketDescription', 'Ticket description is required')
-        .not ()
-        .isEmpty (),
-    ],
-  ],
-  async (req, res) => {
-    try {
-      const project = await Project.findById (req.params.id); // Pull out ticket
-      const ticket = project.tickets.find (
-        ticket => ticket.id === req.params.ticket_id
-      ); // Make sure task exists
-      if (!ticket) {
-        return res.status (404).json ({msg: 'Ticket does not exist'});
-      } // Check user
-      if (ticket.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-      const {ticketSummary, ticketDescription} = req.body;
-      const {
-        _id,
-        user,
-        name,
-        avatar,
-        date,
-        isCompleted,
-        users,
-        ticketPriority,
-        ticketNumber,
-        subtasks,
-      } = ticket;
-      let newTicket = {
-        _id,
-        user,
-        ticketSummary,
-        ticketDescription,
-        name,
-        avatar,
-        date,
-        isCompleted,
-        users,
-        ticketPriority,
-        ticketNumber,
-        subtasks,
-        edited: {
-          updated: true,
-          date: Date.now (),
-        },
-      }; // Get remove index
-      const editIndex = project.tickets
-        .map (ticket => ticket.id)
-        .indexOf (req.params.ticket_id);
-      project.tickets.splice (editIndex, 1, newTicket);
-      await project.save ();
-      res.json (project.tickets);
-    } catch (err) {
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-//add ticket subtask
-
-//story subtasks go here
-
-// @route    POST api/projects/stories/:id/:story_id
-// @desc     add subtasks under stories
-// @access   Private
-
-router.post (
-  '/tickets/:id/:ticket_id/subtasks',
-  [
-    auth,
-    [
-      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subtaskDescription', 'Subtask description is required')
-        .not ()
-        .isEmpty (),
-    ],
-  ],
-  async (req, res) => {
-    const errors = validationResult (req);
-    if (!errors.isEmpty ()) {
-      return res.status (400).json ({errors: errors.array ()});
-    }
-
-    try {
-      const user = await User.findById (req.user.id).select ('-password');
-      const project = await Project.findById (req.params.id);
-      // Pull out story
-      const ticket = project.tickets.find (
-        ticket => ticket.id === req.params.ticket_id
-      );
-
-      if (!ticket) {
-        return res.status (404).json ({msg: 'Ticket does not exist'});
-      }
-
-      // Check user
-      if (ticket.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      const addIndex = project.tickets
-        .map (ticket => ticket.id)
-        .indexOf (req.params.ticket_id);
-
-      const newSubtask = {
-        subtaskSummary: req.body.subtaskSummary,
-        subtaskDescription: req.body.subtaskDescription,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id,
-      };
-
-      project.tickets[addIndex].subtasks.unshift (newSubtask);
-
-      await project.save ();
-
-      res.json (project.tickets);
-    } catch (err) {
-      console.error (err.message);
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-router.put (
-  '/tickets/:id/:ticket_id/:subtask_id',
-  [
-    auth,
-    [
-      check ('subtaskSummary', 'Subtask summary is required').not ().isEmpty (),
-      check ('subtaskDescription', 'Subtask description is required')
-        .not ()
-        .isEmpty (),
-    ],
-  ],
-  async (req, res) => {
-    try {
-      const project = await Project.findById (req.params.id); // Pull out task
-      const ticket = project.tickets.find (
-        ticket => ticket.id === req.params.ticket_id
-      ); // Make sure task exists
-      if (!ticket) {
-        return res.status (404).json ({msg: 'Subtask does not exist'});
-      } // Check user
-      if (ticket.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      const ticketIndex = project.tickets
-        .map (ticket => ticket.id)
-        .indexOf (req.params.ticket_id);
-
-      const subtask = project.tickets[ticketIndex].subtasks.find (
-        subtask => subtask.id === req.params.subtask_id
-      );
-
-      // Make sure subtask exists
-      if (!subtask) {
-        return res.status (404).json ({msg: 'Subtask does not exist'});
-      }
-
-      // Check user
-      if (subtask.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      const {subtaskSummary, subtaskDescription} = req.body;
-
-      const {
-        _id,
-        user,
-        name,
-        avatar,
-        date,
-        isCompleted,
-        users,
-        taskPriority,
-      } = subtask;
-
-      let newSubtask = {
-        _id,
-        user,
-        subtaskSummary,
-        subtaskDescription,
-        name,
-        avatar,
-        date,
-        isCompleted,
-        users,
-        taskPriority,
-        edited: {
-          updated: true,
-          date: Date.now (),
-        },
-      };
-
-      const editIndex = project.tickets[ticketIndex].subtasks
-        .map (subtask => subtask.id)
-        .indexOf (req.params.subtask_id);
-
-      project.tickets[ticketIndex].subtasks.splice (editIndex, 1, newSubtask);
-      await project.save ();
-      res.json (project.tickets);
-    } catch (err) {
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-// @route    DELETE api/projects/tickets/:id/:ticket_id/:subtask_id
-// @desc     Delete subtask by id
-// @access   Private
-router.delete (
-  '/tickets/:id/:ticket_id/:subtask_id',
-  auth,
-  async (req, res) => {
-    try {
-      const project = await Project.findById (req.params.id);
-
-      const ticket = project.tickets.find (
-        ticket => ticket.id === req.params.ticket_id
-      );
-
-      // Make sure task exists
-      if (!ticket) {
-        return res.status (404).json ({msg: 'Task does not exist'});
-      }
-
-      // Check user
-      if (ticket.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      const ticketIndex = project.tickets
-        .map (ticket => ticket.id)
-        .indexOf (req.params.ticket_id);
-
-      const subtask = project.tickets[ticketIndex].subtasks.find (
-        subtask => subtask.id === req.params.subtask_id
-      );
-
-      // Make sure subtask exists
-      if (!subtask) {
-        return res.status (404).json ({msg: 'Subtask does not exist'});
-      }
-
-      // Check user
-      if (subtask.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      // Get remove index
-      const removeIndex = project.tickets[ticketIndex].subtasks
-        .map (subtask => subtask.id)
-        .indexOf (req.params.subtask_id);
-
-      project.tickets[ticketIndex].subtasks.splice (removeIndex, 1);
-
-      await project.save ();
-
-      res.json (project.tickets);
-    } catch (err) {
-      console.error (err.message);
-      res.status (500).send ('Server Error');
-    }
-  }
-);
-
-//@route put api/projects/tickets/:id/:ticket_id/:subtask_id/isCompleted
-//desc: toggle subtask for complettion
-//access private
-router.put (
-  '/tickets/:id/:ticket_id/:subtask_id/isCompleted',
-  auth,
-  async (req, res) => {
-    try {
-      const project = await Project.findById (req.params.id);
-
-      // Pull out task
-      const ticket = project.tickets.find (
-        ticket => ticket.id === req.params.ticket_id
-      );
-
-      // Make sure task exists
-      if (!ticket) {
-        return res.status (404).json ({msg: 'Task does not exist'});
-      }
-
-      // Check user
-      if (ticket.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      //task.isCompleted = !task.isCompleted;
-      const ticketIndex = project.tickets
-        .map (ticket => ticket.id)
-        .indexOf (req.params.ticket_id);
-
-      const subtask = project.tickets[ticketIndex].subtasks.find (
-        subtask => subtask.id === req.params.subtask_id
-      );
-
-      // Make sure subtask exists
-      if (!subtask) {
-        return res.status (404).json ({msg: 'Subtask does not exist'});
-      }
-
-      // Check user
-      if (subtask.user.toString () !== req.user.id) {
-        return res.status (401).json ({msg: 'User not authorized'});
-      }
-
-      subtask.isCompleted = !subtask.isCompleted;
-
-      await project.save ();
-
-      res.json (project.tickets);
     } catch (err) {
       console.error (err.message);
       res.status (500).send ('Server Error');

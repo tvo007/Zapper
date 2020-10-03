@@ -1,16 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {Grid} from '@material-ui/core';
-import {connect} from 'react-redux';
 import {getProject} from '../../actions/project';
 import {ProjectDetails} from './components';
-import {
-  ProjectDetailsForm,
-  Stories,
-  Tickets,
-  Tasks,
-} from './components';
+import Tasks from '../Tasks' //import Tasks component, one level up
+//converting into hooks
+import {useSelector, useDispatch} from 'react-redux';
+import {useParams} from 'react-router-dom';
 
 const useStyles = makeStyles (theme => ({
   root: {
@@ -18,45 +15,21 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const Project = ({getProject, project: {project, loading}, match}) => {
+const Project = props => {
+  const dispatch = useDispatch ();
+  const {id} = useParams ();
+
   useEffect (
     () => {
-      getProject (match.params.id);
+      dispatch (getProject (id));
     },
-    [getProject, match.params.id]
+    [dispatch, id]
   );
+
+  const {project, loading} = useSelector (state => state.project);
+  const auth = useSelector (state => state.auth);
+
   const classes = useStyles ();
-
-  const [projectFormToggle, setProjectFormToggle] = useState (false);
-
-  const [showTasksToggle, setShowTasksToggle] = useState (false);
-
-  const [showStoriesToggle, setShowStoriesToggle] = useState (false);
-
-  const [showTicketsToggle, setShowTicketsToggle] = useState (false);
-
-  const handleProjectFormToggle = () => {
-    setProjectFormToggle (!projectFormToggle);
-  };
-
-  const handleShowTasks = () => {
-    setShowTasksToggle (!showTasksToggle);
-  };
-
-  const handleShowStories = () => {
-    setShowStoriesToggle (!showStoriesToggle);
-  };
-
-  const handleShowTickets = () => {
-    setShowTicketsToggle (!showTicketsToggle);
-  };
-
-  const showProjectForm = projectFormToggle
-    ? <ProjectDetailsForm
-        projectId={project._id}
-        projectDescription={project.description}
-      />
-    : null;
 
   return loading || project === null
     ? <div>LOADING!</div>
@@ -64,35 +37,29 @@ const Project = ({getProject, project: {project, loading}, match}) => {
 
         <Grid container spacing={4}>
           <Grid item lg={12} md={12} xl={12} xs={12}>
-            <ProjectDetails
-              project={project}
-              handleProjectFormToggle={handleProjectFormToggle}
-              handleShowTasks={handleShowTasks}
-              handleShowTickets={handleShowTickets}
-              handleShowStories={handleShowStories}
-            />
-            {showProjectForm}
+            <ProjectDetails project={project} auth={auth} />
           </Grid>
-          {showTasksToggle
-            ? <Tasks projectId={project._id} tasks={project.tasks} />
-            : null}
-          {showStoriesToggle
-            ? <Stories projectId={project._id} stories={project.stories} />
-            : null}
-          {showTicketsToggle
-            ? <Tickets projectId={project._id} tickets={project.tickets} />
-            : null}
+
+          <Tasks
+            projectId={project._id}
+            tasks={project.tasks}
+            user={project.user}
+          />
+
         </Grid>
       </div>;
 };
 
 Project.propTypes = {
-  getProject: PropTypes.func.isRequired,
-  project: PropTypes.object.isRequired,
+  getProject: PropTypes.func,
+  project: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-  project: state.project,
-});
+// const mapStateToProps = state => ({
+//   project: state.project,
+//   auth: state.auth,
+// });
 
-export default connect (mapStateToProps, {getProject}) (Project);
+// export default connect (mapStateToProps, {getProject}) (Project);
+
+export default Project;
