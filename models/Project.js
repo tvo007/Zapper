@@ -29,8 +29,6 @@
 
 const mongoose = require ('mongoose');
 
-const shortid = require ('shortid');
-
 const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema ({
@@ -88,166 +86,13 @@ const ProjectSchema = new Schema ({
       taskPriority: {
         type: Number,
       },
-      // taskType: {
-      //   type: String,
-      // },
-      subtasks: [
-        {
-          user: {
-            type: Schema.Types.ObjectId,
-            ref: 'users',
-          },
-          subtaskSummary: {
-            type: String,
-            required: true,
-          },
-
-          subtaskDescription: {
-            type: String,
-            required: true,
-          },
-          name: {
-            type: String,
-          },
-          avatar: {
-            type: String,
-          },
-          date: {
-            type: Date,
-            default: Date.now,
-          },
-          isCompleted: {
-            type: Boolean,
-            default: false,
-          },
-          users: {
-            type: Schema.Types.ObjectId,
-            ref: 'users',
-          },
-          taskPriority: {
-            type: Number,
-          },
-        },
-      ],
-    },
-  ],
-
-  stories: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-      },
-      storySummary: {
-        type: String,
-        required: true,
-      },
-
-      storyDescription: {
-        type: String,
-        required: true,
-      },
-      name: {
+      taskType: {
         type: String,
       },
-      avatar: {
-        type: String,
-      },
-      date: {
-        type: Date,
-        default: Date.now,
-      },
-      isCompleted: {
-        type: Boolean,
-        default: false,
-      },
-      users: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-      },
-      storyPriority: {
-        type: Number,
-      },
-      subtasks: [
-        {
-          user: {
-            type: Schema.Types.ObjectId,
-            ref: 'users',
-          },
-          subtaskSummary: {
-            type: String,
-            required: true,
-          },
 
-          subtaskDescription: {
-            type: String,
-            required: true,
-          },
-          name: {
-            type: String,
-          },
-          avatar: {
-            type: String,
-          },
-          date: {
-            type: Date,
-            default: Date.now,
-          },
-          isCompleted: {
-            type: Boolean,
-            default: false,
-          },
-          users: {
-            type: Schema.Types.ObjectId,
-            ref: 'users',
-          },
-          taskPriority: {
-            type: Number,
-          },
-        },
-      ],
-    },
-  ],
-
-  tickets: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-      },
-      ticketNumber: {
+      taskNumber: {
         type: String,
         uppercase: true,
-        default: shortid.generate,
-      },
-      ticketSummary: {
-        type: String,
-        required: true,
-      },
-      ticketDescription: {
-        type: String,
-        required: true,
-      },
-      name: {
-        type: String,
-      },
-      avatar: {
-        type: String,
-      },
-      date: {
-        type: Date,
-        default: Date.now,
-      },
-      isCompleted: {
-        type: Boolean,
-        default: false,
-      },
-      users: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-      },
-      ticketPriority: {
-        type: Number,
       },
       subtasks: [
         {
@@ -289,6 +134,7 @@ const ProjectSchema = new Schema ({
       ],
     },
   ],
+
   date: {
     type: Date,
     default: Date.now,

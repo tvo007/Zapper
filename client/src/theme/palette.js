@@ -8,9 +8,9 @@ export default {
   white,
   primary: {
     contrastText: white,
-    dark: colors.deepPurple[900],
-    main: colors.deepPurple[500],
-    light: colors.deepPurple[100],
+    dark: colors.purple[800],
+    main: colors.purple[800],
+    light: colors.purple[800],
   },
   secondary: {
     contrastText: white,

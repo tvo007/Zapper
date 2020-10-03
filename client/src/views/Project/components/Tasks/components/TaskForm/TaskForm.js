@@ -2,22 +2,17 @@ import React, {useState} from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Divider,
-  Grid,
-  Button,
-  TextField,
-} from '@material-ui/core';
+import {Card, CardActions, Button} from '@material-ui/core';
 import {connect} from 'react-redux';
-import {addTask} from '../../../../../../actions/project';
+import {addTask} from '../../../../../../actions/task';
+import ModalForm from '../../../../../../components/Modals/ModalForm';
+import {useDispatch, useSelector} from 'react-redux'
+
 
 const initialState = {
   taskSummary: '',
   taskDescription: '',
+  taskType: 'Task',
 };
 
 const useStyles = makeStyles (() => ({
@@ -25,13 +20,29 @@ const useStyles = makeStyles (() => ({
 }));
 
 const TaskForm = props => {
-  const {className, projectId, addTask, ...rest} = props;
+  const {auth, user, className, projectId, addTask, ...rest} = props;
+
+
 
   const classes = useStyles ();
 
+  //modal state
+
+  const [openModal, setOpenModal] = useState (false);
+
+  const handleClickOpenModal = () => {
+    setOpenModal (true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal (false);
+  };
+
+  //form state
+
   const [formData, setFormData] = useState (initialState);
 
-  const {taskSummary, taskDescription} = formData;
+  const {taskSummary, taskDescription, taskType} = formData;
 
   const handleChange = e => {
     setFormData ({
@@ -44,10 +55,74 @@ const TaskForm = props => {
     e.preventDefault ();
     addTask (projectId, formData);
     setFormData (initialState);
+    handleCloseModal ();
   };
+
+  //second form state
+  const hasSecondForm = true;
+  //radio state
+  const hasRadio = true;
+
+  //generic modal
+
+  const showForm = openModal
+    ? <ModalForm
+        genericTitle="Task"
+        title1="Summary"
+        title2="Description"
+        formLabel1="Enter a task summary."
+        formName1="taskSummary"
+        formValue1={taskSummary}
+        formLabel2="Enter a task description."
+        formName2="taskDescription"
+        formValue2={taskDescription}
+        formLabel3="Enter a task summary."
+        formName3="taskType"
+        formValue3={taskType}
+        handleChange={handleChange}
+        onSubmit={onSubmit}
+        openModal={openModal}
+        handleCloseModal={handleCloseModal}
+        hasSecondForm={hasSecondForm}
+        hasRadio={hasRadio}
+      />
+    : null;
 
   return (
     <Card {...rest} className={clsx (classes.root, className)}>
+      {showForm}
+      <CardActions>
+
+        {
+          !auth.loading &&
+          user === auth.user._id &&
+          <Button
+            color="primary"
+            variant="contained"
+            type="button"
+            onClick={handleClickOpenModal}
+          >
+            Add Task
+          </Button>
+        }
+      </CardActions>
+    </Card>
+  );
+};
+
+TaskForm.propTypes = {
+  className: PropTypes.string,
+  addTask: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect (mapStateToProps, {addTask}) (TaskForm);
+
+/**
+ * <Card {...rest} className={clsx (classes.root, className)}>
       <form autoComplete="off" onSubmit={onSubmit}>
         <CardHeader title="Tasks" />
         <CardContent>
@@ -76,6 +151,35 @@ const TaskForm = props => {
                 required
               />
             </Grid>
+            <Grid item md={12} xs={12}>
+              <FormControl component="fieldset" required>
+                <FormLabel component="legend">Task Type</FormLabel>
+                <RadioGroup
+                  aria-label="Task Type"
+                  name="taskType"
+                  value={taskType}
+                  onChange={handleChange}
+                >
+                  <Grid container>
+                    <FormControlLabel
+                      value="Task"
+                      control={<Radio />}
+                      label="Task"
+                    />
+                    <FormControlLabel
+                      value="Story"
+                      control={<Radio />}
+                      label="Story"
+                    />
+                    <FormControlLabel
+                      value="Ticket"
+                      control={<Radio />}
+                      label="Ticket"
+                    />
+                  </Grid>
+                </RadioGroup>
+              </FormControl>
+            </Grid>
           </Grid>
         </CardContent>
         <Divider />
@@ -86,12 +190,5 @@ const TaskForm = props => {
         </CardActions>
       </form>
     </Card>
-  );
-};
-
-TaskForm.propTypes = {
-  className: PropTypes.string,
-  addTask: PropTypes.func.isRequired,
-};
-
-export default connect (null, {addTask}) (TaskForm);
+ * 
+ */

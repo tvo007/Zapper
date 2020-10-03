@@ -6,10 +6,8 @@ import {Divider, Drawer} from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SettingsIcon from '@material-ui/icons/Settings';
+// import SettingsIcon from '@material-ui/icons/Settings';
 import {getCurrentProfile} from '../../../../actions/profile';
 
 import {Profile, SidebarNav} from './components';
@@ -45,7 +43,6 @@ const Sidebar = props => {
     variant,
     onClose,
     className,
-    auth: {user: _id},
     getCurrentProfile,
     profile,
   } = props;
@@ -57,7 +54,7 @@ const Sidebar = props => {
     [getCurrentProfile]
   );
 
-  const authIdRoute = `/profile/${_id}`;
+  //const authIdRoute = `/profile/${_id}`;
   const classes = useStyles ();
 
   const pages = [
@@ -76,26 +73,26 @@ const Sidebar = props => {
       href: '/projects',
       icon: <ShoppingBasketIcon />,
     },
-    {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />,
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />,
-    },
+    // {
+    //   title: 'Typography',
+    //   href: '/typography',
+    //   icon: <TextFieldsIcon />,
+    // },
+    // {
+    //   title: 'Icons',
+    //   href: '/icons',
+    //   icon: <ImageIcon />,
+    // },
     {
       title: 'Account',
-      href: authIdRoute,
+      href: '/profile/me',
       icon: <AccountBoxIcon />,
     },
-    {
-      title: 'Settings',
-      href: '/settings',
-      icon: <SettingsIcon />,
-    },
+    // {
+    //   title: 'Settings',
+    //   href: '/settings',
+    //   icon: <SettingsIcon />,
+    // },
   ];
 
   return (

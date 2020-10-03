@@ -7,22 +7,6 @@ import {login} from '../../actions/auth';
 import {makeStyles} from '@material-ui/styles';
 import {Grid, Button, TextField, Link, Typography} from '@material-ui/core';
 
-// const schema = {
-//   email: {
-//     presence: {allowEmpty: false, message: 'is required'},
-//     email: true,
-//     length: {
-//       maximum: 64,
-//     },
-//   },
-//   password: {
-//     presence: {allowEmpty: false, message: 'is required'},
-//     length: {
-//       maximum: 128,
-//     },
-//   },
-// };
-
 const useStyles = makeStyles (theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -42,7 +26,7 @@ const useStyles = makeStyles (theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: 'url(/images/auth.jpg)',
+    backgroundImage: 'url(/images/spainNightSkyPaulGilmore.jpg)',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -138,13 +122,8 @@ const SignIn = ({login, isAuthenticated}) => {
     login (email, password);
   };
 
-  // const hasError = field =>
-  //   formState.touched[field] && formState.errors[field] ? true : false;
-
-  //redir if logged in
-
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/projects" />;
   }
 
   return (
@@ -154,15 +133,14 @@ const SignIn = ({login, isAuthenticated}) => {
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
               <Typography className={classes.quoteText} variant="h1">
-                Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
-                they sold out High Life.
+                With teamwork, the sky's the limit.
               </Typography>
               <div className={classes.person}>
                 <Typography className={classes.name} variant="body1">
-                  Takamaru Ayako
+                  Tim Vo
                 </Typography>
                 <Typography className={classes.bio} variant="body2">
-                  Manager at inVision
+                  Janitor at FYB
                 </Typography>
               </div>
             </div>
@@ -234,10 +212,6 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
-// const ConnectedSignIn = connect (null, {login}) (SignIn);
-// export default withRouter (SignIn);
-
-// export const SignInWithRouter = withRouter(Signin)
 
 export default compose (withRouter, connect (mapStateToProps, {login})) (
   SignIn
