@@ -24,17 +24,15 @@ const ItemTemplate = props => {
     selectedTasks,
     // deleteTask,
     // toggleTaskCompleted,
-    // projectId,
     // taskNumber,
     // editTask,
     // taskType,
     checkboxChecked,
     toggleHandler,
-    handleOpenModal,
     deleteHandler,
-    children,
     user,
     auth,
+    routeChange,
     //...rest
   } = props;
 
@@ -76,15 +74,14 @@ const ItemTemplate = props => {
       {!auth.loading && user === auth.user._id
         ? <TableCell>
 
-            <AssignmentIcon onClick={handleOpenModal} />
+            <AssignmentIcon onClick={routeChange} />
+
             <DeleteIcon onClick={deleteHandler} />
 
           </TableCell>
         : <TableCell>
-            <AssignmentIcon onClick={handleOpenModal} />
+            <AssignmentIcon onClick={routeChange} />
           </TableCell>}
-
-      {children}
 
     </TableRow>
   );

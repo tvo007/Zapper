@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import {makeStyles} from '@material-ui/styles';
 import {Grid} from '@material-ui/core';
 import {getProject} from '../../actions/project';
+import {getTasks} from '../../actions/task';
 import {ProjectDetails} from './components';
-import Tasks from '../Tasks' //import Tasks component, one level up
+import Tasks from '../Tasks'; //import Tasks component, one level up
 //converting into hooks
 import {useSelector, useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
@@ -17,16 +18,24 @@ const useStyles = makeStyles (theme => ({
 
 const Project = props => {
   const dispatch = useDispatch ();
-  const {id} = useParams ();
+  const {projectId} = useParams ();
 
   useEffect (
     () => {
-      dispatch (getProject (id));
+      dispatch (getProject (projectId));
     },
-    [dispatch, id]
+    [dispatch, projectId]
   );
 
+  // useEffect (
+  //   () => {
+  //     dispatch (getTasks (projectId));
+  //   },
+  //   [dispatch, projectId]
+  // );
+
   const {project, loading} = useSelector (state => state.project);
+
   const auth = useSelector (state => state.auth);
 
   const classes = useStyles ();

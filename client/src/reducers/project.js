@@ -5,6 +5,8 @@ import {
   DELETE_PROJECT,
   GET_PROJECT,
   ADD_PROJECT,
+  GET_TASKS,
+  GET_TASK,
   ADD_TASK,
   REMOVE_TASK,
   TOGGLE_TASK_COMPLETED,
@@ -13,12 +15,12 @@ import {
   TOGGLE_SUBTASK,
   EDIT_TASK,
   EDIT_SUBTASK,
-
 } from '../actions/types';
 
 const initialState = {
   projects: [],
   project: null,
+  // task: null,
   loading: true,
   error: {},
 };
@@ -58,6 +60,9 @@ export default function (state = initialState, action) {
         error: payload,
         loading: false,
       };
+    //task redux
+
+
     case TOGGLE_TASK_COMPLETED:
       return {
         ...state,
@@ -99,15 +104,32 @@ export default function (state = initialState, action) {
         loading: false,
       };
     //^^subject to change
+    // case GET_TASKS:
+    //   return {
+    //     ...state,
+    //     tasks: payload,
+    //     loading: false,
+    //   };
+    // case GET_TASK:
+    //   return {
+    //     ...state,
+    //     task: payload,
+    //     loading: false,
+    //   };
+    //new stuff ^^^
     case ADD_TASK:
+    // return {
+    //   ...state,
+    //   project: {...state.project, tasks: payload},
+    //   loading: false,
+    // };
     case EDIT_TASK:
-    case EDIT_SUBTASK:
       return {
         ...state,
         project: {...state.project, tasks: payload},
         loading: false,
       };
-
+    case EDIT_SUBTASK:
     case ADD_SUBTASK:
       return {
         ...state,
@@ -152,9 +174,6 @@ export default function (state = initialState, action) {
         },
         loading: false,
       };
- 
-
-    
 
     default:
       return state;

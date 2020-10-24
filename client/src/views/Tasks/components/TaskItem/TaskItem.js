@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 //import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import ItemTemplate from '../../../../components/Tables/ItemTemplate';
@@ -6,6 +7,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import useModal from '../../../../utils/useModal';
 import {deleteTask, toggleTaskCompleted} from '../../../../actions/task';
 import TaskModal from '../TaskModal/TaskModal';
+import {Link} from '@material-ui/core';
 
 const TaskItem = props => {
   const {
@@ -25,7 +27,11 @@ const TaskItem = props => {
     //...rest
   } = props;
 
-  const {handleOpenModal, handleCloseModal, openModal} = useModal ();
+  let history = useHistory ();
+
+  // const {routeChange} = usePath (`/projects/${projectId}/tasks/${taskId}`);
+
+  // const {handleOpenModal, handleCloseModal, openModal} = useModal ();
 
   const auth = useSelector (state => state.auth);
   const dispatch = useDispatch ();
@@ -34,6 +40,10 @@ const TaskItem = props => {
   const toggleHandler = e => dispatch (toggleTaskCompleted (projectId, taskId));
 
   const checkboxChecked = isCompleted ? true : false; //custom hook??
+
+  const routeToTask = () => {
+    history.push (`/projects/${projectId}/tasks/${taskId}`);
+  };
 
   // const classes = useStyles ();
 
@@ -55,26 +65,11 @@ const TaskItem = props => {
       taskType={taskType}
       checkboxChecked={checkboxChecked}
       toggleHandler={toggleHandler}
-      handleOpenModal={handleOpenModal}
       deleteHandler={deleteHandler}
       auth={auth}
       user={user}
-    >
-      <TaskModal
-        handleCloseModal={handleCloseModal}
-        openModal={openModal}
-        taskNumber={taskNumber}
-        taskSummary={taskSummary}
-        taskDescription={taskDescription}
-        date={date}
-        taskId={taskId}
-        projectId={projectId}
-        subtasks={subtasks}
-        auth={auth}
-        user={user}
-      />
-
-    </ItemTemplate>
+      routeChange={routeToTask}
+    />
   );
 };
 

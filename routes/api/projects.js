@@ -66,13 +66,13 @@ router.get ('/', auth, async (req, res) => {
   }
 });
 
-//@route get api/projects/:id
+//@route get api/projects/:project_id
 //desc: get posts by id
 //access private
 
-router.get ('/:id', auth, async (req, res) => {
+router.get ('/:project_id', async (req, res) => {
   try {
-    const project = await Project.findById (req.params.id);
+    const project = await Project.findById (req.params.project_id);
 
     if (!project) {
       return res.status (404).json ({msg: 'Project not found'});
@@ -88,7 +88,7 @@ router.get ('/:id', auth, async (req, res) => {
   }
 });
 
-// @route  PUT api/projects/:id
+// @route  PUT api/projects/:project_id
 // @desc   Edit a post
 // @access Private
 
@@ -145,13 +145,13 @@ router.put (
   }
 );
 
-//@route delete api/projects/:id
+//@route delete api/projects/:project_id
 //desc: del a project
 //access private
 
-router.delete ('/:id', auth, async (req, res) => {
+router.delete ('/:project_id', auth, async (req, res) => {
   try {
-    const project = await Project.findById (req.params.id);
+    const project = await Project.findById (req.params.project_id);
 
     if (!project) {
       return res.status (404).json ({msg: 'Project not found'});
@@ -171,11 +171,59 @@ router.delete ('/:id', auth, async (req, res) => {
   }
 });
 
-// @route    POST api/projects/tasks/:id
+// @route    get api/projects/project_id/tasks
+// @desc     get tasks for project
+// @access   Private
+
+router.get ('/:project_id/tasks', auth, async (req, res) => {
+  try {
+    const project = await Project.findById (req.params.project_id);
+
+    if (!project) {
+      return res.status (404).json ({msg: 'Project not found'});
+    }
+
+    res.json (project.tasks);
+  } catch (err) {
+    console.error (err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status (404).json ({msg: 'Project not found'});
+    }
+    res.status (500).send ('Server Error');
+  }
+});
+
+//get task by id
+router.get ('/:project_id/tasks/:task_id', auth, async (req, res) => {
+  try {
+    const project = await Project.findById (req.params.project_id);
+
+    // Pull out task
+    const task = project.tasks.find (task => task.id === req.params.task_id);
+
+    // Make sure task exists
+    if (!task) {
+      return res.status (404).json ({msg: 'Task does not exist'});
+    }
+
+    // Check user
+    if (task.user.toString () !== req.user.id) {
+      return res.status (401).json ({msg: 'User not authorized'});
+    }
+
+    res.json (task);
+  } catch (err) {
+    console.error (err.message);
+    res.status (500).send ('Server Error');
+  }
+});
+
+// @route    POST api/projects/:project_id/tasks
+//actual route: api/projects/:project_id/tasks
 // @desc     create/update a task for the project
 // @access   Private
 router.post (
-  '/tasks/:id',
+  '/:project_id/tasks',
   [
     auth,
     [
@@ -194,7 +242,7 @@ router.post (
 
     try {
       const user = await User.findById (req.user.id).select ('-password');
-      const project = await Project.findById (req.params.id);
+      const project = await Project.findById (req.params.project_id);
 
       //check if correct project
       if (!project) {
@@ -237,11 +285,11 @@ router.post (
   }
 );
 
-// @route    PUT api/projects/tasks/:id
+// @route    PUT api/projects/:project_id/tasks/:task_id'
 // @desc     edit a task for project
 // @access   Private
 router.put (
-  '/tasks/:id/:task_id',
+  '/:project_id/tasks/:task_id',
   [
     auth,
     [
@@ -254,7 +302,7 @@ router.put (
   ],
   async (req, res) => {
     try {
-      const project = await Project.findById (req.params.id); // Pull out task
+      const project = await Project.findById (req.params.project_id); // Pull out task
       const task = project.tasks.find (task => task.id === req.params.task_id); // Make sure task exists
       if (!task) {
         return res.status (404).json ({msg: 'Task does not exist'});
@@ -307,12 +355,12 @@ router.put (
   }
 );
 
-// @route    DELETE api/projects/tasks/:id/:task_id
+// @route    DELETE api/projects/:project_id/tasks/:task_id'
 // @desc     Delete id
 // @access   Private
-router.delete ('/tasks/:id/:task_id', auth, async (req, res) => {
+router.delete ('/:project_id/tasks/:task_id', auth, async (req, res) => {
   try {
-    const project = await Project.findById (req.params.id);
+    const project = await Project.findById (req.params.project_id);
 
     // Pull out task
     const task = project.tasks.find (task => task.id === req.params.task_id);
@@ -343,43 +391,127 @@ router.delete ('/tasks/:id/:task_id', auth, async (req, res) => {
   }
 });
 
-//@route put api/projects/tasks/:id/:task_id/isCompleted
+//@route put api/projects/:project_id/tasks/:task_id/isCompleted
 //desc: like a post
 //access private
-router.put ('/tasks/:id/:task_id/isCompleted', auth, async (req, res) => {
-  try {
-    const project = await Project.findById (req.params.id);
+router.put (
+  '/:project_id/tasks/:task_id/isCompleted',
+  auth,
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.id);
 
-    // Pull out task
-    const task = project.tasks.find (task => task.id === req.params.task_id);
+      // Pull out task
+      const task = project.tasks.find (task => task.id === req.params.task_id);
 
-    // Make sure task exists
-    if (!task) {
-      return res.status (404).json ({msg: 'Task does not exist'});
+      // Make sure task exists
+      if (!task) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      // Check user
+      if (task.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      task.isCompleted = !task.isCompleted;
+
+      await project.save ();
+
+      res.json (project.tasks);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
     }
-
-    // Check user
-    if (task.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    task.isCompleted = !task.isCompleted;
-
-    await project.save ();
-
-    res.json (project.tasks);
-  } catch (err) {
-    console.error (err.message);
-    res.status (500).send ('Server Error');
   }
-});
+);
 
-// @route    POST api/projects/tasks/:id/:task_id
+// @route    get api/projects/:project_id/tasks/:task_id/subtasks
+// @desc     get subtasks under by task id
+// @access   Private
+
+router.get (
+  '/:project_id/tasks/:task_id/subtasks',
+  [auth],
+  async (req, res) => {
+    const errors = validationResult (req);
+    if (!errors.isEmpty ()) {
+      return res.status (400).json ({errors: errors.array ()});
+    }
+
+    try {
+      const user = await User.findById (req.user.id).select ('-password');
+      const project = await Project.findById (req.params.project_id);
+      // Pull out task
+      const task = project.tasks.find (task => task.id === req.params.task_id);
+
+      if (!task) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      //Check user
+      if (task.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const taskIndex = project.tasks
+        .map (task => task.id)
+        .indexOf (req.params.task_id);
+
+      res.json (project.tasks[taskIndex].subtasks);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
+router.get (
+  '/:project_id/tasks/:task_id/subtasks/:subtask_id',
+  [auth],
+  async (req, res) => {
+    const errors = validationResult (req);
+    if (!errors.isEmpty ()) {
+      return res.status (400).json ({errors: errors.array ()});
+    }
+
+    try {
+      const user = await User.findById (req.user.id).select ('-password');
+      const project = await Project.findById (req.params.project_id);
+      // Pull out task
+      const task = project.tasks.find (task => task.id === req.params.task_id);
+
+      const subtask = task.subtasks.find (
+        subtask => subtask.id === req.params.subtask_id
+      );
+
+      if (!task) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      // Check user
+      if (task.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const subtaskIndex = task.subtasks
+        .map (subtask => subtask.id)
+        .indexOf (req.params.subtask_id);
+
+      res.json (task.subtasks[subtaskIndex]);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
+// @route    POST api/projects/:project_id/tasks/:task_id/subtasks
 // @desc     add subtasks under tasks
 // @access   Private
 
 router.post (
-  '/tasks/:id/:task_id/subtasks',
+  '/:project_id/tasks/:task_id/subtasks',
   [
     auth,
     [
@@ -397,7 +529,7 @@ router.post (
 
     try {
       const user = await User.findById (req.user.id).select ('-password');
-      const project = await Project.findById (req.params.id);
+      const project = await Project.findById (req.params.project_id);
       // Pull out task
       const task = project.tasks.find (task => task.id === req.params.task_id);
 
@@ -434,11 +566,11 @@ router.post (
   }
 );
 
-// @route    PUT api/projects/tasks/:id/:task_id/:subtask_id
+// @route    PUT api/projects/project_id/tasks/task_id/subtasks/subtask_id
 // @desc     edit subtask by id
 // @access   Private
 router.put (
-  '/tasks/:id/:task_id/:subtask_id',
+  '/:project_id/tasks/:task_id/subtasks/:subtask_id',
   [
     auth,
     [
@@ -450,7 +582,7 @@ router.put (
   ],
   async (req, res) => {
     try {
-      const project = await Project.findById (req.params.id); // Pull out task
+      const project = await Project.findById (req.params.project_id); // Pull out task
       const task = project.tasks.find (task => task.id === req.params.task_id); // Make sure task exists
       if (!task) {
         return res.status (404).json ({msg: 'Task does not exist'});
@@ -526,68 +658,72 @@ router.put (
   }
 );
 
-// @route    DELETE api/projects/tasks/:id/:task_id/:subtask_id
+// @route    DELETE api/projects/:project_id/tasks/:task_id/subtasks/:subtask_id
 // @desc     Delete subtask by id
 // @access   Private
-router.delete ('/tasks/:id/:task_id/:subtask_id', auth, async (req, res) => {
-  try {
-    const project = await Project.findById (req.params.id);
-
-    const task = project.tasks.find (task => task.id === req.params.task_id);
-
-    // Make sure task exists
-    if (!task) {
-      return res.status (404).json ({msg: 'Task does not exist'});
-    }
-
-    // Check user
-    if (task.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    const taskIndex = project.tasks
-      .map (task => task.id)
-      .indexOf (req.params.task_id);
-
-    const subtask = project.tasks[taskIndex].subtasks.find (
-      subtask => subtask.id === req.params.subtask_id
-    );
-
-    // Make sure subtask exists
-    if (!subtask) {
-      return res.status (404).json ({msg: 'Subtask does not exist'});
-    }
-
-    // Check user
-    if (subtask.user.toString () !== req.user.id) {
-      return res.status (401).json ({msg: 'User not authorized'});
-    }
-
-    // Get remove index
-    const removeIndex = project.tasks[taskIndex].subtasks
-      .map (subtask => subtask.id)
-      .indexOf (req.params.subtask_id);
-
-    project.tasks[taskIndex].subtasks.splice (removeIndex, 1);
-
-    await project.save ();
-
-    res.json (project.tasks);
-  } catch (err) {
-    console.error (err.message);
-    res.status (500).send ('Server Error');
-  }
-});
-
-//@route put api/projects/tasks/:id/:task_id/:subtask_id/isCompleted
-//desc: toggle subtask for complettion
-//access private
-router.put (
-  '/tasks/:id/:task_id/:subtask_id/isCompleted',
+router.delete (
+  '/:project_id/tasks/:task_id/subtasks/:subtask_id',
   auth,
   async (req, res) => {
     try {
-      const project = await Project.findById (req.params.id);
+      const project = await Project.findById (req.params.project_id);
+
+      const task = project.tasks.find (task => task.id === req.params.task_id);
+
+      // Make sure task exists
+      if (!task) {
+        return res.status (404).json ({msg: 'Task does not exist'});
+      }
+
+      // Check user
+      if (task.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      const taskIndex = project.tasks
+        .map (task => task.id)
+        .indexOf (req.params.task_id);
+
+      const subtask = project.tasks[taskIndex].subtasks.find (
+        subtask => subtask.id === req.params.subtask_id
+      );
+
+      // Make sure subtask exists
+      if (!subtask) {
+        return res.status (404).json ({msg: 'Subtask does not exist'});
+      }
+
+      // Check user
+      if (subtask.user.toString () !== req.user.id) {
+        return res.status (401).json ({msg: 'User not authorized'});
+      }
+
+      // Get remove index
+      const removeIndex = project.tasks[taskIndex].subtasks
+        .map (subtask => subtask.id)
+        .indexOf (req.params.subtask_id);
+
+      project.tasks[taskIndex].subtasks.splice (removeIndex, 1);
+
+      await project.save ();
+
+      res.json (project.tasks);
+    } catch (err) {
+      console.error (err.message);
+      res.status (500).send ('Server Error');
+    }
+  }
+);
+
+//@route put api/projects/:project_id/tasks/:task_id/subtasks/:subtask_id/isCompleted'
+//desc: toggle subtask for complettion
+//access private
+router.put (
+  '/:project_id/tasks/:task_id/subtasks/:subtask_id/isCompleted',
+  auth,
+  async (req, res) => {
+    try {
+      const project = await Project.findById (req.params.project_id);
 
       // Pull out task
       const task = project.tasks.find (task => task.id === req.params.task_id);

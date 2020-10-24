@@ -15,6 +15,7 @@ import {
   SignIn as SignInView,
   Project as ProjectView,
   NotFound as NotFoundView,
+  Task as TaskView
 } from './views';
 
 //experiemntal redux addition
@@ -62,7 +63,13 @@ const Routes = ({auth: {user: _id}}) => {
         component={ProjectView} // to be refined into unique project route
         exact
         layout={MainLayout}
-        path="/projects/:id"
+        path="/projects/:projectId"
+      />
+      <PrivateRouteWithLayout
+        component={TaskView} // single task route
+        exact
+        layout={MainLayout}
+        path="/projects/:projectId/tasks/:taskId"
       />
       <PrivateRouteWithLayout
         component={TypographyView}

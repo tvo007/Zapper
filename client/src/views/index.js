@@ -11,3 +11,5 @@ export { default as UserList } from './UserList';
 export {default as Project} from './Project'
 export {default as Tasks} from './Tasks'
 export {default as Subtasks} from './Subtasks'
+export {default as Task} from './Task'
+

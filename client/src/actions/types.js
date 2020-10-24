@@ -31,6 +31,8 @@ export const GET_PROJECT = 'GET_PROJECT';
 export const ADD_PROJECT = 'ADD_PROJECT';
 
 //tasks
+export const GET_TASKS = 'GET_TASKS';
+export const GET_TASK = 'GET_TASK';
 export const ADD_TASK = 'ADD_TASK';
 export const REMOVE_TASK = 'REMOVE_TASK';
 export const TOGGLE_TASK_COMPLETED = 'TOGGLE_TASK_COMPLETED';
